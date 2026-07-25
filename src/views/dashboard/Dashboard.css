@@ -1,0 +1,52 @@
+.dashboard-container {
+    padding: 24px;
+    background-color: #F9FAFB;
+    min-height: 100vh;
+}
+
+.stat-card {
+    border-left: 4px solid;
+    border-color: inherit;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .dashboard-container {
+        padding: 16px;
+    }
+    
+    .dashboard-header {
+        padding: 16px !important;
+    }
+}
+
+/* Animation for loading state */
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.loading-shimmer {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Custom scrollbar */
+.dashboard-container ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.dashboard-container ::-webkit-scrollbar-track {
+    background: #F3F4F6;
+    border-radius: 3px;
+}
+
+.dashboard-container ::-webkit-scrollbar-thumb {
+    background: #9CA3AF;
+    border-radius: 3px;
+}
+
+.dashboard-container ::-webkit-scrollbar-thumb:hover {
+    background: #6B7280;
+}

@@ -1,0 +1,9 @@
+.modal.show .modal-dialog{
+    max-width: 500px;
+    width: 100%;
+}
+#myserch{
+    width:300px !important;
+    float:right;
+    margin-top: -60px;
+}
