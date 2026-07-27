@@ -395,7 +395,7 @@ const AuthLogin = ({ ...others }) => {
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit} {...others}>
             <Grid item sx={{ mb: 3 }} style={{ textAlign: 'center' }}>
-              <h3>Login Desk</h3>
+              <h3 style={{ fontFamily : "" , fontSize : "35px" , }}>Login Desk</h3>
             </Grid>
             <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
               <InputLabel htmlFor="outlined-adornment-email-login">Email Address</InputLabel>
@@ -427,13 +427,15 @@ const AuthLogin = ({ ...others }) => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 endAdornment={
-                  <InputAdornment position="end">
+                  <InputAdornment position="end" >
                     <IconButton
+                      style={{color : "white" }}
                       aria-label="toggle password visibility"
                       onClick={handleClickShowPassword}
                       onMouseDown={handleMouseDownPassword}
                       edge="end"
                       size="large"
+                      
                     >
                       {showPassword ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
