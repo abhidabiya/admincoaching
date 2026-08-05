@@ -111,7 +111,7 @@ const ProfileSection = (props) => {
                     borderColor: theme.palette.primary.light,
                     backgroundColor: theme.palette.primary.light,
                     '&[aria-controls="menu-list-grow"], &:hover': {
-                        borderColor: '#7c4dff',
+                        borderColor: '#005effb9',
                         // background: `#7c4dff`,
                         color: theme.palette.primary.light,
                         '& svg': {
@@ -123,12 +123,12 @@ const ProfileSection = (props) => {
                     }
                 }}
                 icon={
-                    <Avatar
+                    <Avatar 
                         src={admin.image != null ? `${IMAGE_PATH}${admin.image}` : `${IMAGE_PATH}placeholder.png`}
                         sx={{
                             ...theme.typography.mediumAvatar,
                             margin: '8px 0 8px 8px !important',
-                            cursor: 'pointer'
+                            cursor: 'pointer',
                         }}
                         ref={anchorRef}
                         aria-controls={open ? 'menu-list-grow' : undefined}
@@ -193,10 +193,10 @@ const ProfileSection = (props) => {
                                                         borderRadius: `${customization.borderRadius}px`,
                                                         '&:hover': {
                                                             '& .MuiListItemText-root .MuiTypography-root': {
-                                                                color: '#000000'
+                                                                color: '#ffffff'
                                                             },
                                                             '& .MuiListItemIcon-root': {
-                                                                color: '#000000'
+                                                                color: '#ffffff'
                                                             }
                                                         }
                                                     }}
@@ -222,10 +222,10 @@ const ProfileSection = (props) => {
                                                         borderRadius: `${customization.borderRadius}px`,
                                                         '&:hover': {
                                                             '& .MuiListItemText-root .MuiTypography-root': {
-                                                                color: '#000000'
+                                                                color: '#ffffff'
                                                             },
                                                             '& .MuiListItemIcon-root': {
-                                                                color: '#000000'
+                                                                color: '#ffffff'
                                                             }
                                                         }
                                                     }}

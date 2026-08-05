@@ -204,7 +204,7 @@ const ManageContent = () => {
         </p>
       </div>{' '}
       <div>
-        <MainCard>
+        <MainCard >
           <Tabs
             value={value}
             onChange={handleChange}
@@ -224,7 +224,7 @@ const ManageContent = () => {
 
           {value === 0 && (
             <div className="mt-4">
-              <Typography variant="body1" gutterBottom>
+              <Typography variant="body1" gutterBottom >
                 About us
               </Typography>
               <JoditEditor
@@ -236,7 +236,7 @@ const ManageContent = () => {
               />
               <br />
               <p style={{ color: 'red' }}>{emptycontent}</p>
-              <button className="btn mt-2 btn-primary" onClick={() => handleUpdateContent('About Us')}>
+              <button className="btn mt-2" onClick={() => handleUpdateContent('About Us')} style={{ backgroundColor: '#3268f1', color: '#fff' }}>
                 Update
               </button>
             </div>

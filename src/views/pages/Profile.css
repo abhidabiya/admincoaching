@@ -1,3 +1,107 @@
 .custom-placeholder::placeholder {
     font-size: 4px !important;
 }
+
+.profile-card-left {
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.profile-avatar-wrapper {
+    position: relative;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.profile-avatar {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #e0e0e0;
+    transition: border-color 0.3s ease;
+}
+
+.fw-semibold{
+    color: #dfddddf4 !important; /* Primary color */
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 500 !important;
+    font-size: 14px !important;
+}
+
+/* .profile-avatar-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+} */
+
+
+.profile-avatar-wrapper {
+    position: relative;
+    cursor: pointer;
+    margin-top: 10px;
+    background: transparent !important; /* Ensure wrapper has no background */
+}
+
+.profile-avatar {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    object-fit: contain; /* CHANGE: 'cover' se 'contain' kar diya. Yeh image ko crop nahi karega aur puri image dikhayega */
+    border: none; /* CHANGE: Border hata diya jo peechi ek circle jaisa background bana raha tha */
+    background: transparent !important; /* CHANGE: CSS background transparent kar diya */
+    filter: drop-shadow(0px 0px 10px rgba(123, 168, 190, 0.424)); /* OPTIONAL: Agar background hat jaye toh image thodi 3D/standout lage isliye shadow add ki */
+}
+
+.profile-avatar-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.profile-avatar-wrapper:hover .profile-avatar-overlay {
+    opacity: 1;
+}
+
+.profile-avatar-wrapper:hover .profile-avatar-overlay {
+    opacity: 1;
+}
+
+.profile-avatar-wrapper:hover .profile-avatar {
+    border-color: #6366f1; /* Primary color highlight on hover */
+}
+
+/* Make form inputs look slightly more modern */
+.form-control.shadow-sm {
+    border-radius: 8px;
+    padding: 10px 15px;
+}
+
+/* Tab styling adjustments */
+.MuiTab-root {
+    font-weight: 600 !important;
+    text-transform: none !important;
+}

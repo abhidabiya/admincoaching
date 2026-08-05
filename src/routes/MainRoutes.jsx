@@ -40,7 +40,6 @@ import ViewGuardDetails from 'views/pages/ViewGuardDetails';
 import ManageQuiz from 'views/pages/ManageQuiz';
 import GuardTabularReport from 'views/pages/GuardTabularReport';
 import ManageEarning from 'views/pages/ManageEarning';
-
 import ViewSociety from 'views/pages/ViewSociety';
 
 import ManageExpenses from 'views/pages/ManageExpenses';
@@ -50,6 +49,8 @@ import AdmissionForm from 'views/pages/AdmissionForm.jsx';
 import StudentUserList from 'views/pages/StudentUserList.jsx';
 import EnquiryManagement from 'views/pages/EnquiryManagement.jsx';
 import EditStudentUser from 'views/pages/EditStudentUser.jsx';
+import InquaryData from 'views/pages/InquaryData';
+import TaskManagement from 'views/pages/TaskManagement.jsx';
 
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard')));
 const CustomerList = Loadable(lazy(() => import('views/pages/CustomerList')));
@@ -74,11 +75,19 @@ const MainRoutes = {
                     path: APP_PREFIX_PATH + '/admission-form',
                     element: <AdmissionForm />
                 },
-
                 {
                     path: APP_PREFIX_PATH + '/student-list',
                     element: <StudentUserList />
 
+                },
+                {
+                    path: APP_PREFIX_PATH + '/inquiry-list',
+                    element: <InquaryData />
+
+                },
+                {
+                    path: APP_PREFIX_PATH + '/task-management',
+                    element: <TaskManagement />
                 },
               
 

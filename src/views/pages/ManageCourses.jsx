@@ -357,9 +357,9 @@ const ManageCourses = () => {
                     }
                 />
                 <Button 
-                    className="btn btn-primary" 
+                    className="btn " 
                     onClick={() => navigate(APP_PREFIX_PATH + "/add-courses")} 
-                    style={{ width: '210px' }}
+                    style={{ width: '200px'  , backgroundColor: '#3268f1', color: '#fff' }}
                 >
                     <AddIcon />
                     Add New Course

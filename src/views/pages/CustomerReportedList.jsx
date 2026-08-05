@@ -188,7 +188,9 @@ const CustomerReportedList = () => {
             </Col>
 
             <Col md={2}>
-              <Button className="btn btn-primary" type="submit" style={{ marginTop: '27px' }}>
+              <Button className="btn" type="submit" 
+              style={{ backgroundColor: '#3268f1', color: '#fff' ,marginTop: '27px' }}
+              >
                 Submit
               </Button>
             </Col>

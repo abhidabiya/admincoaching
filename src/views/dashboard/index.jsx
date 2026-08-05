@@ -88,7 +88,7 @@ const Dashboard = () => {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                     <div>
                         <Typography variant="body2" style={{ 
-                            color: '#60a5fa',   // soft blue
+                            color: '#dbdbdb',   // soft blue
                             fontWeight: 600,
                             textTransform: 'uppercase',
                             fontSize: '0.75rem',
@@ -149,15 +149,32 @@ const Dashboard = () => {
         </Card>
     );
 
+    // const userName = user?.name || "User";
+    const userName = localStorage.getItem('userName') || "User";
+
+const getGreeting = () => {
+    const hour = new Date().getHours();
+
+    if (hour >= 5 && hour < 12) {
+        return "Good Morning";
+    } else if (hour >= 12 && hour < 17) {
+        return "Good Afternoon";
+    } else if (hour >= 17 && hour < 21) {
+        return "Good Evening";
+    } else {
+        return "Good Night";
+    }
+};
+
     return (
         <div style={{ 
             padding: '24px',
-            backgroundColor: '#F9FAFB',
+            
             minHeight: '100vh'
         }}>
             {/* Header Section */}
             <div style={{ 
-                backgroundColor: '#FFFFFF', 
+                backgroundColor: '#fffffff3', 
                 borderRadius: '12px', 
                 padding: '24px',
                 marginBottom: '24px',
@@ -170,7 +187,7 @@ const Dashboard = () => {
                     marginBottom: '8px'
                 }}>
                     <div>
-                        <Typography variant="h4" style={{
+                        <Typography variant="h3" style={{
                             color: '#1F2937',
                             fontWeight: 700,
                             fontFamily: 'Poppins, sans-serif',
@@ -178,8 +195,15 @@ const Dashboard = () => {
                         }}>
                             Coaching Desk Dashboard
                         </Typography>
-                        <Typography variant="body1" style={{ color: '#6B7280' }}>
-                            Welcome back! Here's your institute overview
+                        <Typography
+                               variant="body1"
+                               style={{
+                                color: '#7a7f89',
+                                fontSize: '14px',
+                                marginTop: '6px'
+                             }}
+                            >
+                        {getGreeting()}, <span style={{ fontWeight: 500 , color: '#5caafd'  , fontSize: '15px' }}> {userName}</span>! Here's what's happening today.
                         </Typography>
                     </div>
                     <div style={{ display: 'flex', gap: '12px' }}>
@@ -189,13 +213,13 @@ const Dashboard = () => {
                             style={{ 
                                 borderRadius: '8px',
                                 textTransform: 'none',
-                                borderColor: '#D1D5DB'
+                                borderColor: '#5589d6'
                             }}
                         >
                             Export Report
                         </Button>
                         <IconButton style={{ 
-                            backgroundColor: '#F3F4F6',
+                            backgroundColor: '#aee5ff44',
                             borderRadius: '8px'
                         }}>
                             <NotificationsActiveIcon />
@@ -211,7 +235,7 @@ const Dashboard = () => {
                         title="Total Students"
                        
                         value={<span style={{ color: 'white' }}>{dashboardData.totalStudents}</span>}
-                        icon={<PeopleIcon style={{ fontSize: '28px', color: '#10B981' }} />}
+                        icon={<PeopleIcon style={{ fontSize: '28px', color: '#00d8fe' }} />}
                         change={12}
                         color="#60a5fa"
                         subtitle="Active students this month"
@@ -399,8 +423,8 @@ const Dashboard = () => {
                                                         borderRadius: '12px',
                                                         fontSize: '0.75rem',
                                                         fontWeight: 600,
-                                                        backgroundColor: transaction.status === 'Paid' ? '#D1FAE5' : '#FEF3C7',
-                                                        color: transaction.status === 'Paid' ? '#059669' : '#D97706'
+                                                        backgroundColor: transaction.status === 'Paid' ? '#2e6c4c' : '#f3e9b7f4',
+                                                        color: transaction.status === 'Paid' ? '#7bd3b7' : '#ab7c1ec5'
                                                     }}>
                                                         {transaction.status}
                                                     </span>
@@ -492,7 +516,7 @@ const Dashboard = () => {
                                     style={{ 
                                         borderRadius: '8px',
                                         textTransform: 'none',
-                                        borderColor: '#D1D5DB'
+                                        borderColor: '#5589d6'
                                     }}
                                 >
                                     View Full Schedule

@@ -33,6 +33,7 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import SubjectIcon from '@mui/icons-material/Subject';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import { Avatar } from '@mui/material';
+import { color } from 'framer-motion';
 
 const columns = [
     { id: 'S_No', label: 'S.No.', align: 'center' },
@@ -466,9 +467,9 @@ const ManageFaculty = () => {
                     }}
                 />
                 <Button 
-                    className="btn btn-primary" 
+                    className="btn" 
                     onClick={() => setShowModal2(true)}
-                    style={{ width: '210px' }}
+                    style={{ width: '180px'  , backgroundColor: '#3268f1', color: '#fff' }}
                 >
                     <AddIcon />
                     Add Faculty
@@ -598,14 +599,15 @@ const ManageFaculty = () => {
                         <button 
                             onClick={() => handleChangePage(null, page - 1)} 
                             disabled={page === 0} 
-                            style={{ marginRight: '8px' }}
+                            style={{ marginRight: '8px' , border: '1px solid #bcb9b9', padding: '5px 10px', borderRadius: '4px', color: '#fff', cursor: page === 0 ? 'not-allowed' : 'pointer' , backgroundColor : 'transparent' }}
                         >
                             {'<'}
                         </button>
                         <button
                             onClick={() => handleChangePage(null, page + 1)}
                             disabled={(page + 1) * rowsPerPage >= filteredFaculty.length}
-                        >
+                            style={{ marginRight: '8px' , border: '1px solid #bcb9b9', padding: '5px 10px', borderRadius: '4px', color: '#fff', cursor: page === 0 ? 'not-allowed' : 'pointer' , backgroundColor : 'transparent' }}
+                            >
                             {'>'}
                         </button>
                     </div>
@@ -793,13 +795,13 @@ const ManageFaculty = () => {
                     size="lg"
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title>Add New Faculty</Modal.Title>
+                        <Modal.Title style={{color : "#0d0909"}}>Add New Faculty</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <form onSubmit={handleAdd}>
                             <div className="row">
                                 <div className="col-md-6 mb-3">
-                                    <label className="form-label">Faculty Name *</label>
+                                    <label className="form-label" style={{color : "#898989"}}>Faculty Name *</label>
                                     <input
                                         type="text"
                                         className={`form-control ${addNameError ? 'is-invalid' : ''}`}
@@ -814,7 +816,7 @@ const ManageFaculty = () => {
                                 </div>
                                 
                                 <div className="col-md-6 mb-3">
-                                    <label className="form-label">Email *</label>
+                                    <label className="form-label" style={{color : "#898989"}}>Email *</label>
                                     <input
                                         type="email"
                                         className={`form-control ${addEmailError ? 'is-invalid' : ''}`}
@@ -831,7 +833,7 @@ const ManageFaculty = () => {
                             
                             <div className="row">
                                 <div className="col-md-6 mb-3">
-                                    <label className="form-label">Phone Number *</label>
+                                    <label className="form-label" style={{color : "#898989"}}>Phone Number *</label>
                                     <input
                                         type="tel"
                                         className={`form-control ${addPhoneError ? 'is-invalid' : ''}`}
@@ -847,7 +849,7 @@ const ManageFaculty = () => {
                                 </div>
                                 
                                 <div className="col-md-6 mb-3">
-                                    <label className="form-label">Subjects</label>
+                                    <label className="form-label" style={{color : "#898989"}}>Subjects</label>
                                     <input
                                         type="text"
                                         className="form-control"
@@ -860,7 +862,7 @@ const ManageFaculty = () => {
                             
                             <div className="row">
                                 <div className="col-md-6 mb-3">
-                                    <label className="form-label">Experience</label>
+                                    <label className="form-label" style={{color : "#898989"}}>Experience</label>
                                     <input
                                         type="text"
                                         className="form-control"
@@ -871,7 +873,7 @@ const ManageFaculty = () => {
                                 </div>
                                 
                                 <div className="col-md-6 mb-3">
-                                    <label className="form-label">Qualification</label>
+                                    <label className="form-label" style={{color : "#898989"}}>Qualification</label>
                                     <input
                                         type="text"
                                         className="form-control"
@@ -886,10 +888,10 @@ const ManageFaculty = () => {
                         </form>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={handleCloseAddModal}>
+                        <Button variant="secondary" onClick={handleCloseAddModal} style={{backgroundColor : "#7a77779d", color : "#ffff"}}>
                             Cancel
                         </Button>
-                        <Button variant="primary" onClick={handleAdd}>
+                        <Button variant="primary" onClick={handleAdd} style={{backgroundColor : "#3268f1", color : "#ffff"}}>
                             Add Faculty
                         </Button>
                     </Modal.Footer>

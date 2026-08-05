@@ -25,6 +25,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import Box from '@mui/material/Box';
 import axios from 'axios';
 import { API_URL } from 'config/constant';
+import { color } from 'framer-motion';
 
 const columns = [
     { id: 'number', label: 'S.No.', align: 'center' },
@@ -270,7 +271,9 @@ const ManageFaq = () => {
                         'aria-label': 'weight'
                     }}
                 />
-                <Button className="btn btn-primary " onClick={handleShowModal2} style={{ width: '210px' }}>
+                <Button className="btn" onClick={handleShowModal2} 
+                 style={{ width: '160px'  , backgroundColor: '#3268f1', color: '#fff' ,marginLeft: '10px' }}
+                >
                 <AddIcon />Add FAQ
                     
                 </Button>
@@ -385,12 +388,15 @@ const ManageFaq = () => {
                         style={{ marginLeft: '26px', marginTop: '15px' }}
                     >{`Showing ${Math.min(filteredUsers.length > 0 ? page * rowsPerPage + 1 : 0, filteredUsers.length)} to ${Math.min((page + 1) * rowsPerPage, filteredUsers.length)} of ${filteredUsers.length} entries`}</p>
                     <div  style={{ marginRight: '15px' }}>
-                        <button onClick={() => handleChangePage(null, page - 1)} disabled={page === 0} style={{ marginRight: '8px' }}>
+                        <button onClick={() => handleChangePage(null, page - 1)} disabled={page === 0} style={{ marginRight: '8px' }}
+                        style={{ marginRight: '8px' , border: '1px solid #bcb9b9', padding: '5px 10px', borderRadius: '4px', color: '#fff', cursor: page === 0 ? 'not-allowed' : 'pointer' , backgroundColor : 'transparent' }}
+                            >
                             {'<'}
                         </button>
                         <button
                             onClick={() => handleChangePage(null, page + 1)}
                             disabled={(page + 1) * rowsPerPage >= filteredUsers.length}
+                            style={{ border: '1px solid #bcb9b9', padding: '5px 10px', borderRadius: '4px', color: '#fff', cursor: (page + 1) * rowsPerPage >= filteredUsers.length ? 'not-allowed' : 'pointer' , backgroundColor : 'transparent' }}
                         >
                             {'>'}
                         </button>
@@ -411,13 +417,13 @@ const ManageFaq = () => {
                     }}
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title style={{ fontSize: '17px' }}>Add FAQ</Modal.Title>
+                        <Modal.Title style={{color : '#0d0909'}}>Add FAQ</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         {/* Add your form fields here */}
                         <form>
                             <div className="mb-3">
-                                <label htmlFor="editCategoryName" className="form-label">
+                                <label htmlFor="editCategoryName" className="form-label" style={{ color: '#898989' }}>
                                     Question
                                 </label>
                                 <textarea
@@ -436,7 +442,7 @@ const ManageFaq = () => {
                             </div>
 
                             <div className="mb-3">
-                                <label htmlFor="editCategoryName" className="form-label">
+                                <label htmlFor="editCategoryName" className="form-label" style={{ color: '#898989' }}>
                                     Answer
                                 </label>
                                 <textarea
@@ -458,7 +464,7 @@ const ManageFaq = () => {
                         </form>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="primary" className="btn btn-primary " onClick={handleAdd}>
+                        <Button variant="primary" className="btn" onClick={handleAdd} style={{ backgroundColor: '#3268f1', color: '#fff' , width: '110px' }}>
                             Add FAQ
                         </Button>
                     </Modal.Footer>

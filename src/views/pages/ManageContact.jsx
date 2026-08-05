@@ -210,7 +210,7 @@ const ManageContact = () => {
           placeholder="Search"
           onChange={handleSearch}
           startAdornment={
-            <InputAdornment position="start">
+            <InputAdornment position="start" style={{color : "#717380"}}>
               <IconSearch stroke={1.5} size="1rem" />
             </InputAdornment>
           }
@@ -307,14 +307,14 @@ const ManageContact = () => {
             <button
               onClick={() => handleChangePage(null, page - 1)}
               disabled={page === 0}
-              style={{ borderRadius: '4px', marginRight: '10px', background: 'whitesmoke' }}
+              style={{ marginRight: '8px' , border: '1px solid #bcb9b9', padding: '5px 10px', borderRadius: '4px', color: '#fff', cursor: page === 0 ? 'not-allowed' : 'pointer' , backgroundColor : 'transparent' }}
             >
               {'<'}
             </button>
             <button
               onClick={() => handleChangePage(null, page + 1)}
               disabled={(page + 1) * rowsPerPage >= filteredContact.length}
-              style={{ marginRight: '8px', borderRadius: '4px', background: 'whitesmoke' }}
+              style={{ border: '1px solid #bcb9b9', padding: '5px 10px', borderRadius: '4px', color: '#fff', cursor: (page + 1) * rowsPerPage >= filteredContact.length ? 'not-allowed' : 'pointer' , backgroundColor : 'transparent' }}
             >
               {'>'}
             </button>

@@ -378,17 +378,19 @@ const ManageEarning = () => {
                     id="input-search-profile"
                     onChange={handleSearch}
                     placeholder="Search"
-                    // startAdornment={
-                    //     <InputAdornment position="start">
-                    //         <IconSearch stroke={1.5} size="1rem" color={theme.palette.grey[500]} />
-                    //     </InputAdornment>
-                    // }
+                    startAdornment={
+                        <InputAdornment position="start">
+                            <IconSearch stroke={1.5} size="1rem" color={theme.palette.grey[500]} />
+                        </InputAdornment>
+                    }
                     aria-describedby="search-helper-text"
                     inputProps={{
                         'aria-label': 'weight'
                     }}
                 />
-                <Button className="btn btn-primary " onClick={exportToExcel} >
+                <Button className="btn" onClick={exportToExcel} 
+                style={{ width: '180px'  , backgroundColor: '#3268f1', color: '#fff' ,marginLeft: '10px' }}
+                 >
                     <AddIcon />
                     Export to Excel
                 </Button>
@@ -493,12 +495,15 @@ const ManageEarning = () => {
                         style={{ marginLeft: '26px', marginTop: '15px' }}
                     >{`Showing ${Math.min(filteredUsers.length > 0 ? page * rowsPerPage + 1 : 0, filteredUsers.length)} to ${Math.min((page + 1) * rowsPerPage, filteredUsers.length)} of ${filteredUsers.length} entries`}</p>
                     <div style={{ marginRight: '15px' }}>
-                        <button onClick={() => handleChangePage(null, page - 1)} disabled={page === 0} style={{ marginRight: '8px' }}>
+                        <button onClick={() => handleChangePage(null, page - 1)} disabled={page === 0} 
+                        style={{ marginRight: '8px' , border: '1px solid #bcb9b9', padding: '5px 10px', borderRadius: '4px', color: '#fff', cursor: page === 0 ? 'not-allowed' : 'pointer' , backgroundColor : 'transparent' }}
+                        >
                             {'<'}
                         </button>
                         <button
                             onClick={() => handleChangePage(null, page + 1)}
                             disabled={(page + 1) * rowsPerPage >= filteredUsers.length}
+                            style={{ border: '1px solid #bcb9b9', padding: '5px 10px', borderRadius: '4px', color: '#fff', cursor: (page + 1) * rowsPerPage >= filteredUsers.length ? 'not-allowed' : 'pointer' , backgroundColor : 'transparent' }}
                         >
                             {'>'}
                         </button>

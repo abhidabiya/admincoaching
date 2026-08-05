@@ -197,7 +197,7 @@ const ManageBroadcast = () => {
                     {errors.message && <Form.Control.Feedback type="invalid">{errors.message}</Form.Control.Feedback>}
                   </Col>
                 </Form.Group>
-                <Button className="btn btn-primary" type="button" onClick={SendBroadcast} disabled={isButtonDisabled}>
+                <Button className="btn btn-primary" type="button" onClick={SendBroadcast} disabled={isButtonDisabled}  >
                   Submit
                 </Button>
               </Form>
@@ -306,7 +306,9 @@ const ManageBroadcast = () => {
                     {errors.message && <Form.Control.Feedback type="invalid">{errors.message}</Form.Control.Feedback>}
                   </Col>
                 </Form.Group>
-                <Button className="btn btn-primary" type="button" onClick={SendBroadcast} disabled={isButtonDisabled}>
+                <Button className="btn"  type="button" onClick={SendBroadcast} disabled={isButtonDisabled}  
+                //  style={{ backgroundColor: '#3268f1', color: '#fff' }}
+                  >
                   Submit
                 </Button>
               </Form>

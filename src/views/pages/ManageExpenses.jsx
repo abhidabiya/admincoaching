@@ -717,9 +717,9 @@ const ManageExpenses = () => {
         </Box>
         
         <Button 
-          className="btn btn-primary" 
+          className="btn " 
           onClick={() => setShowAddModal(true)}
-          style={{ width: '180px', marginLeft: '16px' }}
+          style={{ width: '160px'  , backgroundColor: '#3268f1', color: '#fff' ,marginLeft: '10px' }}
         >
           <AddIcon />
           Add Expense
@@ -738,7 +738,6 @@ const ManageExpenses = () => {
                     align={column.align} 
                     style={{ 
                       minWidth: column.minWidth,
-                      backgroundColor: '#F9FAFB',
                       fontWeight: '600'
                     }}
                   >
@@ -868,13 +867,14 @@ const ManageExpenses = () => {
             <button 
               onClick={() => handleChangePage(null, page - 1)} 
               disabled={page === 0} 
-              style={{ marginRight: '8px' }}
+              style={{ marginRight: '8px' , border: '1px solid #bcb9b9', padding: '5px 10px', borderRadius: '4px', color: '#fff', cursor: page === 0 ? 'not-allowed' : 'pointer' , backgroundColor : 'transparent' }}
             >
               {'<'}
             </button>
             <button
               onClick={() => handleChangePage(null, page + 1)}
               disabled={(page + 1) * rowsPerPage >= filteredExpenses.length}
+              style={{ border: '1px solid #bcb9b9', padding: '5px 10px', borderRadius: '4px', color: '#fff', cursor: (page + 1) * rowsPerPage >= filteredExpenses.length ? 'not-allowed' : 'pointer' , backgroundColor : 'transparent' }}
             >
               {'>'}
             </button>
@@ -1104,13 +1104,13 @@ const ManageExpenses = () => {
         size="lg"
       >
         <Modal.Header closeButton>
-          <Modal.Title>Add New Expense</Modal.Title>
+          <Modal.Title style={{color : '#0d0909'}}>Add New Expense</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={handleAdd}>
             <div className="row">
               <div className="col-md-6 mb-3">
-                <label className="form-label">Date *</label>
+                <label className="form-label" style={{ color: '#898989' }}>Date *</label>
                 <DatePicker
                   value={addDate}
                   onChange={(newValue) => {
@@ -1129,7 +1129,7 @@ const ManageExpenses = () => {
               </div>
               
               <div className="col-md-6 mb-3">
-                <label className="form-label">Category *</label>
+                <label className="form-label" style={{ color: '#898989' }} >Category *</label>
                 <select
                   className={`form-select ${addCategoryError ? 'is-invalid' : ''}`}
                   value={addCategory}
@@ -1151,7 +1151,7 @@ const ManageExpenses = () => {
             
             <div className="row">
               <div className="col-md-12 mb-3">
-                <label className="form-label">Description *</label>
+                <label className="form-label" style={{ color: '#898989' }}>Description *</label>
                 <textarea
                   className={`form-control ${addDescriptionError ? 'is-invalid' : ''}`}
                   value={addDescription}
@@ -1168,7 +1168,7 @@ const ManageExpenses = () => {
             
             <div className="row">
               <div className="col-md-6 mb-3">
-                <label className="form-label">Amount (₹) *</label>
+                <label className="form-label" style={{ color: '#898989' }}>Amount (₹) *</label>
                 <input
                   type="number"
                   className={`form-control ${addAmountError ? 'is-invalid' : ''}`}
@@ -1184,7 +1184,7 @@ const ManageExpenses = () => {
               </div>
               
               <div className="col-md-6 mb-3">
-                <label className="form-label">Payment Mode</label>
+                <label className="form-label" style={{ color: '#898989' }}>Payment Mode</label>
                 <select
                   className="form-select"
                   value={addPaymentMode}
@@ -1201,7 +1201,7 @@ const ManageExpenses = () => {
             
             <div className="row">
               <div className="col-md-6 mb-3">
-                <label className="form-label">Receipt Number</label>
+                <label className="form-label" style={{ color: '#898989' }}>Receipt Number</label>
                 <input
                   type="text"
                   className="form-control"
@@ -1212,7 +1212,7 @@ const ManageExpenses = () => {
               </div>
               
               <div className="col-md-6 mb-3">
-                <label className="form-label">Remarks</label>
+                <label className="form-label" style={{ color: '#898989' }}>Remarks</label>
                 <input
                   type="text"
                   className="form-control"
@@ -1227,10 +1227,10 @@ const ManageExpenses = () => {
           </form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowAddModal(false)}>
+          <Button variant="secondary" onClick={() => setShowAddModal(false)} style={{backgroundColor : "#7a77779d", color : "#ffff"}}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={handleAdd}>
+          <Button variant="primary" onClick={handleAdd} style={{backgroundColor : "#3268f1", color : "#ffff"}}>
             Add Expense
           </Button>
         </Modal.Footer>

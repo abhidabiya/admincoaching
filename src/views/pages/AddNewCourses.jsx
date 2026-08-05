@@ -438,13 +438,14 @@ function AddNewCourses() {
                                     disabled={loading}
                                 >
                                     {loading ? (
+                                        
                                         <>
-                                            <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                            <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" style={{ backgroundColor: '#007dea' }}></span>
                                             Adding Course...
                                         </>
-                                    ) : 'Add Course'}
+                                    ) : 'Add Course '}
                                 </Button>
-                                <Button 
+                                <Button style={{ backgroundColor: '#007dea', borderColor: '#92989d' }}
                                     variant="secondary" 
                                     className="ms-2"
                                     onClick={() => navigate(APP_PREFIX_PATH + '/manage-courses')}

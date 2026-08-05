@@ -240,7 +240,7 @@ const handleCloseImage = () => {
 
   return (
     <>
-      <div className="col-xl-12" style={{ backgroundColor: '#FFF', borderRadius: '12px', padding: '10px', marginBottom: '5px' }}>
+      <div className="col-xl-12" style={{ backgroundColor: '#FFF', borderRadius: '12px', padding: '10px', marginBottom: '40px' }}>
         <p
           style={{
             fontSize: '1.25rem',
@@ -260,7 +260,9 @@ const handleCloseImage = () => {
       <Box alignItems="end" justifyContent="end" display="flex" className="mobile-res">
       
       
-        <Button className="btn btn-primary" onClick={handleShowModal2} style={{ width: '250px' , margin:'10px 0'}}>
+        <Button className="btn" onClick={handleShowModal2} 
+        style={{ width: '160px'  , backgroundColor: '#3268f1', color: '#fff' ,marginLeft: '10px'  , marginBottom: '40px' }}
+        >
         <AddIcon /> Add Banner
         </Button>
       </Box>

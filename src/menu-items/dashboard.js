@@ -14,11 +14,14 @@ import {
     IconHelpCircle,
     IconCurrencyDollar,
     IconCalendarRepeat,
-    IconShield,
+    IconMessage2Plus ,
     IconBug,
     IconPercentage,
     IconQuestionMark,
     IconBuilding,
+    IconDeviceIpadQuestion   ,
+    IconUserScan ,
+    IconChecklist
 } from '@tabler/icons-react';
 import { IconBuildingCommunity } from "@tabler/icons-react";
 import QuizOutlinedIcon from '@mui/icons-material/QuizOutlined';
@@ -33,7 +36,7 @@ import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
 // constant
 const icons = {
     IconDashboard,
-    IconGuard: IconShield,
+    IconMessage2Plus  : IconMessage2Plus,
     IconManageSociety: ApartmentOutlinedIcon,
     // IconManageIssues: ReportProblemOutlinedIcon,
     IconUsers,
@@ -53,6 +56,9 @@ const icons = {
     IconCalendarRepeat,
     IconBug,
     IconPercentage,
+    IconDeviceIpadQuestion  ,
+    IconUserScan ,
+    IconChecklist
 };
 
 // ==============================|| DASHBOARD MENU ITEMS ||============================== //
@@ -73,10 +79,27 @@ const menuItems = {
             title: "Admission-Form",
             type: 'item',
             url: APP_PREFIX_PATH + '/admission-form',
-            icon: icons.IconGuard
+            icon: icons.IconMessage2Plus 
         },
 
-
+        
+        
+        {
+            id: 'inquiry_form',
+            title: "Inquiries",
+            type: 'item',
+            url: APP_PREFIX_PATH + '/inquiry-list',
+            icon: icons.IconDeviceIpadQuestion  
+        },
+        
+        {
+            id: 'task_management',
+            title: "Task Manager",
+            type: 'item',
+            url: APP_PREFIX_PATH + '/task-management',
+            icon: icons.IconChecklist  
+        },
+        
         {
             id: 'manage-customer',
             title: 'Manage Users',
@@ -103,7 +126,7 @@ const menuItems = {
             title: "Manage Feculty",
             type: 'item',
             url: APP_PREFIX_PATH + '/manage-feculty',
-            icon: icons.IconGuard
+            icon: icons.IconUserScan 
         },
         {
             id: 'manage_courses',

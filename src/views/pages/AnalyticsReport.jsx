@@ -150,7 +150,7 @@ const UserAnaReport = () => {
       </div>
       <Typography
         className="d-flex justify-content-center"
-        style={{ marginTop: '30px', marginBottom: '30px', color: '#000' }}
+        style={{ marginTop: '30px', marginBottom: '30px', color: '#b6b3b3' }}
         variant="h3"
         gutterBottom
       >
@@ -166,7 +166,7 @@ const UserAnaReport = () => {
           </Card>
         </Grid>
 
-        <Typography className="" style={{ margin: ' 40px auto 30px', color: '#000' }} variant="h3" gutterBottom>
+        <Typography className="" style={{ margin: ' 40px auto 30px', color: '#b6b3b3' }} variant="h3" gutterBottom>
           2025 Yearly Analytical Reports of Users
         </Typography>
 
