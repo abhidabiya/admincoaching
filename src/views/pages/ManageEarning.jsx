@@ -40,21 +40,15 @@ const columns = [
     { id: 'S_No', label: 'S.No.', align: 'center',  },
     // { id: 'actions', label: 'Actions', minWidth: 150, align: 'center' },
     { id: 'name', label: 'Name', align: 'center' , minWidth: "170px" },
-    { id: 'email', label: 'Email', align: 'center' , minWidth: "150px"},
+    { id: 'email', label: 'Course Name', align: 'center' , minWidth: "150px"},
     // { id: 'password', label: 'Password', align: 'center' },
-    { id: 'society', label: 'Transaction ID',  align: 'center', minWidth: "130px" },
-    { id: 'Building', label: 'Parking Hours', align: 'center' , minWidth: "130px"},
+    { id: 'society', label: 'Amount',  align: 'center', minWidth: "130px" },
+    { id: 'Building', label: 'Payment Mode', align: 'center' , minWidth: "130px"},
     // { id: 'role', label: 'Role', align: 'center' },
-    { id: 'number', label: 'Parking No.', minWidth: 170, align: 'center' },
-    { id: 'role', label: 'Parking Charges', align: 'center' },
+    { id: 'role', label: 'Payment Date', align: 'center' },
+    { id: 'number', label: 'Duration', minWidth: 170, align: 'center' },
     { id: 'date_time', label: 'Create Date & Time', minWidth: "180px", align: 'center' }
 ];
-
-
-
-
-
-
 
 
 const ManageEarning = () => {

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { API_URL } from 'config/constant';
 import { IconUserQuestion  ,IconUserHeart  ,IconInfoCircle  ,IconCalendarWeek ,IconMail ,IconPhone  ,IconMapPin} from '@tabler/icons-react'
 ;
+
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // THEME
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -143,6 +144,8 @@ const LeftPanel = ({ isAdmissionForm, handleFormTypeChange, formData, submitting
   const submitted = parseFloat(formData.fees_submitted) || 0;
   const regFee = parseFloat(formData.registration_fee) || 0;
 
+
+ 
   return (
     <div style={{
       width: 380, flexShrink: 0,
@@ -286,7 +289,81 @@ const SectionCard = ({ title, children, accentColor, style }) => (
   </div>
 );
 
-const PersonalDetailsSection = ({ formData, errors, handleChange, isAdmissionForm, submitting }) => (
+const PersonalDetailsSection = ({ formData, errors, handleChange, isAdmissionForm, submitting }) => {
+const stateOptions = [
+  "Andhra Pradesh",
+  "Arunachal Pradesh",
+  "Assam",
+  "Bihar",
+  "Chhattisgarh",
+  "Goa",
+  "Gujarat",
+  "Haryana",
+  "Himachal Pradesh",
+  "Jharkhand",
+  "Karnataka",
+  "Kerala",
+  "Madhya Pradesh",
+  "Maharashtra",
+  "Manipur",
+  "Meghalaya",
+  "Mizoram",
+  "Nagaland",
+  "Odisha",
+  "Punjab",
+  "Rajasthan",
+  "Sikkim",
+  "Tamil Nadu",
+  "Telangana",
+  "Tripura",
+  "Uttar Pradesh",
+  "Uttarakhand",
+  "West Bengal",
+  "Andaman and Nicobar Islands",
+  "Chandigarh",
+  "Dadra and Nagar Haveli and Daman and Diu",
+  "Delhi",
+  "Jammu and Kashmir",
+  "Ladakh",
+  "Lakshadweep",
+  "Puducherry",
+];  
+  
+const cityOptions = [
+  "Indore",
+  "Bhopal",
+  "Ujjain",
+  "Dewas",
+  "Ratlam",
+  "Mandsaur",
+  "Neemuch",
+  "Shajapur",
+  "Sehore",
+  "Khandwa",
+  "Khargone",
+  "Burhanpur",
+  "Dhar",
+  "Jhabua",
+  "Alirajpur",
+  "Barwani",
+  "Gwalior",
+  "Jabalpur",
+  "Sagar",
+  "Rewa",
+  "Satna",
+  "Katni",
+  "Chhindwara",
+  "Betul",
+  "Narmadapuram",
+  "Vidisha",
+  "Shivpuri",
+  "Morena",
+  "Bhind",
+  "Singrauli",
+]; 
+
+return(
+      <>
   <SectionCard title="Personal Information" accentColor={getAccent(isAdmissionForm)}>
     <Row>
       <FieldWrapper label="Student Name" required error={errors.name} cols={50}>
@@ -310,13 +387,36 @@ const PersonalDetailsSection = ({ formData, errors, handleChange, isAdmissionFor
           <option value="">Select</option><option value="1">Male</option><option value="2">Female</option><option value="3">Other</option>
         </SelectInput>
       </FieldWrapper>
+
+       <FieldWrapper label="Age"  error={errors.age}  cols={isAdmissionForm ? 33 : 50}>
+          <SelectInput  name="age"  value={formData.age}  onChange={handleChange}  error={!!errors.age}  disabled={submitting}>
+            <option value="">Select Age</option> {Array.from({ length: 100 }, (_, i) => (   <option key={i + 1} value={i + 1}>     {i + 1} Years</option>
+              ))}
+             </SelectInput>
+       </FieldWrapper>
+      
     </Row>
     <Row style={{ marginTop: 16 }}>
-      <FieldWrapper label="Contact Number" required error={errors.contact_number} cols={50}>
-        <TextInput name="contact_number" value={formData.contact_number} onChange={handleChange} placeholder="9876543210" icon={<IconPhone size={18} />} error={!!errors.contact_number} disabled={submitting} />
+      <FieldWrapper label="State" error={errors.state} cols={isAdmissionForm ? 33 : 50}>
+      <SelectInput name="state" value={formData.state} onChange={handleChange} error={!!errors.state} disabled={submitting} >
+        <option value="">Select State</option>
+        {stateOptions.map((state) => (<option key={state} value={state}>  {state}</option>))}
+      </SelectInput>
       </FieldWrapper>
-      <FieldWrapper label="Parent/Guardian Number" required={isAdmissionForm} error={errors.parent_contact} cols={50}>
-        <TextInput name="parent_contact" value={formData.parent_contact} onChange={handleChange} placeholder="9876543210" icon={<IconPhone size={18} />} error={!!errors.parent_contact} disabled={submitting} />
+      <FieldWrapper label="City" error={errors.city} cols={isAdmissionForm ? 33 : 50}>
+           <SelectInput name="city"  value={formData.city} onChange={handleChange} error={!!errors.city} disabled={submitting}>
+             <option value="">Select City</option>{cityOptions.map((city) => (  <option key={city} value={city}> {city}  </option>
+             ))}
+           </SelectInput>
+      </FieldWrapper>
+    </Row>
+
+    <Row style={{ marginTop: 16 }}>
+      <FieldWrapper label="Contact Number" required error={errors.contact_number} cols={50}>
+        <TextInput type='number' name="contact_number" value={formData.contact_number} onChange={handleChange} placeholder="XXXXXXX981" icon={<IconPhone size={18} />} error={!!errors.contact_number} disabled={submitting} />
+      </FieldWrapper>
+      <FieldWrapper  label="Parent/Guardian Number" required={isAdmissionForm} error={errors.parent_contact} cols={50}>
+        <TextInput type='number' name="parent_contact" value={formData.parent_contact} onChange={handleChange} placeholder="XXXXXXX981" icon={<IconPhone size={18} />} error={!!errors.parent_contact} disabled={submitting} />
       </FieldWrapper>
     </Row>
     <div style={{ marginTop: 16 }}>
@@ -325,7 +425,9 @@ const PersonalDetailsSection = ({ formData, errors, handleChange, isAdmissionFor
       </FieldWrapper>
     </div>
   </SectionCard>
-);
+  </>
+)
+};
 
 const AcademicDetailsSection = ({ formData, errors, handleChange, isAdmissionForm, submitting, courses, loading, qualifications, enquiryTypes, timingSlots }) => (
   <SectionCard title={isAdmissionForm ? 'Academic Details' : 'Course Details'} accentColor={getAccent(isAdmissionForm)}>
@@ -345,12 +447,14 @@ const AcademicDetailsSection = ({ formData, errors, handleChange, isAdmissionFor
           </SelectInput>
         </FieldWrapper>
       )}
-      <FieldWrapper label="Select Course" required error={errors.course_name} helperText={loading ? 'Loading courses...' : ''} cols={50}>
-        <SelectInput name="course_name" value={formData.course_name} onChange={handleChange} error={!!errors.course_name} disabled={submitting || loading}>
-          <option value="">Select Course</option>
-          {courses.map(c => <option key={c.course_id || c.id} value={c.course_name}>{c.course_name}{c.fees ? ` (₹${c.fees})` : ''}</option>)}
-        </SelectInput>
-      </FieldWrapper>
+      {isAdmissionForm || (
+        <FieldWrapper label="Course" required error={errors.enquiry_type} cols={50}>
+          <SelectInput name="course_name" value={formData.course_name}  error={!!errors.course_name} disabled={submitting}>
+            <option value="">Select</option>
+          </SelectInput>
+        </FieldWrapper>
+      )}
+      
     </Row>
     {!isAdmissionForm && (
       <Row style={{ marginTop: 16 }}>
@@ -364,6 +468,32 @@ const AcademicDetailsSection = ({ formData, errors, handleChange, isAdmissionFor
     )}
   </SectionCard>
 );
+
+const AcademicCourseDetails = ({formData,errors,handleChange,isAdmissionForm,submitting,qualifications,}) =>
+  isAdmissionForm ? (
+    <SectionCard title="Course Details" accentColor={getAccent(true)}>
+      <Row>
+        <FieldWrapper label="Select Course" required error={errors.qualification} cols={isAdmissionForm ? 45 :50} >
+          <SelectInput  name="qualification"  value={formData.qualification}  onChange={handleChange}  error={!!errors.qualification}  disabled={submitting}>
+            <option value="">Select</option>
+          </SelectInput>
+        </FieldWrapper>
+         <FieldWrapper label="Select Teacher" required error={errors.qualification} cols={isAdmissionForm ? 45 : 50} >
+          <SelectInput  name="qualification"  value={formData.qualification}  onChange={handleChange}  error={!!errors.qualification}  disabled={submitting}>
+            <option value="">Select</option>
+          </SelectInput>
+        </FieldWrapper>
+         <FieldWrapper label="Batch Start Date" required error={errors.qualification} cols={isAdmissionForm ? 45 : 50} >
+          <TextInput name="date_of_admission" type="date" value={formData.date_of_admission}  error={!!errors.date_of_admission} disabled={submitting} />
+        </FieldWrapper>
+         <FieldWrapper label="Batch End Date" required error={errors.qualification} cols={isAdmissionForm ? 45 : 50}  >
+          <TextInput name="date_of_admission" type="date" value={formData.date_of_admission}  error={!!errors.date_of_admission} disabled={submitting} />
+        </FieldWrapper>
+      </Row>
+    </SectionCard>
+  ) : null;
+
+
 
 const FeesDetailsSection = ({ formData, errors, handleChange, isAdmissionForm, submitting, showRegistrationFee, paymentModes }) => {
   if (!isAdmissionForm && !showRegistrationFee) return null;
@@ -612,8 +742,9 @@ const AdmissionForm = () => {
 
             <PersonalDetailsSection formData={formData} errors={errors} handleChange={handleChange} isAdmissionForm={isAdmissionForm} submitting={submitting} />
             <AcademicDetailsSection formData={formData} errors={errors} handleChange={handleChange} isAdmissionForm={isAdmissionForm} submitting={submitting} courses={courses} loading={loading} qualifications={qualifications} enquiryTypes={enquiryTypes} timingSlots={timingSlots} />
+            <AcademicCourseDetails formData={formData} errors={errors} handleChange={handleChange} isAdmissionForm={isAdmissionForm} submitting={submitting} courses={courses} loading={loading} qualifications={qualifications} enquiryTypes={enquiryTypes} timingSlots={timingSlots} />
             <FeesDetailsSection formData={formData} errors={errors} handleChange={handleChange} isAdmissionForm={isAdmissionForm} submitting={submitting} showRegistrationFee={showRegistrationFee} paymentModes={paymentModes} />
-
+            
             <div style={{ textAlign: 'center', marginTop: 12, fontSize: 11.5, color: '#94a3b8' }}>
             </div>
               All information provided will be kept confidential and used only for admission/enquiry purposes.
