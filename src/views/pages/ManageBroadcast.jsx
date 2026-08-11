@@ -12,7 +12,7 @@ import axios from 'axios';
 const ManageBroadcast = () => {
   const [value, setValue] = useState(0);
   const [title, setTitle] = useState('');
-  const [content, setContent] = useState(0); // 0: All Users, 1: Select Users, 2: All Guards, 3: Select Guards
+  const [content, setContent] = useState(0); // 0: All Users, 1: Select Users, 2: All Feculty, 3: Select Feculty
   const [users, setUsers] = useState([]);
   const [guards, setGuards] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
@@ -157,8 +157,8 @@ const ManageBroadcast = () => {
         <Tabs value={value} onChange={handleChange} textColor="secondary" indicatorColor="secondary" aria-label="secondary tabs example">
           <Tab label="All Users" />
           <Tab label="Select Users" />
-          <Tab label="All Guards" />
-          <Tab label="Select Guards" />
+          <Tab label="All Feculty" />
+          <Tab label="Select Feculty" />
         </Tabs>
         <TabPanel value={value} index={0}>
           <Row>
@@ -320,7 +320,7 @@ const ManageBroadcast = () => {
             <Col md={12}>
               <Form>
                 <Form.Group className="mb-3" controlId="exampleForm.ControlSelect1">
-                  <Form.Label>Select Guards</Form.Label>
+                  <Form.Label>Select Feculty</Form.Label>
                   <Col sm={10}>
                     <Select
                       isMulti
@@ -331,7 +331,7 @@ const ManageBroadcast = () => {
                         setErrors({ ...errors, selectedGuards: '' });
                       }}
                       isInvalid={!!errors.selectedGuards}
-                      placeholder="Select guards"
+                      placeholder="Select Feculty"
                     />
                     {errors.selectedGuards && (
                       <Form.Control.Feedback type="invalid" style={{ display: 'block', color: 'red' }}>

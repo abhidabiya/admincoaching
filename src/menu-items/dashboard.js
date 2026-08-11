@@ -247,14 +247,14 @@ const menuItems = {
                     icon: icons.IconReportAnalytics,
                     breadcrumbs: true
                 },
-                {
-                    id: 'guard_ana_report',
-                    title: 'Guard Analytics Report',
-                    type: 'item',
-                    url: APP_PREFIX_PATH + '/guard-ana-report',
-                    icon: icons.IconGuard,
-                    breadcrumbs: true
-                },
+                // {
+                //     id: 'guard_ana_report',
+                //     title: 'Guard Analytics Report',
+                //     type: 'item',
+                //     url: APP_PREFIX_PATH + '/guard-ana-report',
+                //     icon: icons.IconGuard,
+                //     breadcrumbs: true
+                // },
                
             ]
         },

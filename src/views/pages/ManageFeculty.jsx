@@ -39,11 +39,13 @@ const columns = [
     { id: 'S_No', label: 'S.No.', align: 'center' },
     { id: 'actions', label: 'Actions', minWidth: 150, align: 'center' },
     { id: 'profile', label: 'Profile', align: 'center' },
-    { id: 'name', label: 'Faculty Name', align: 'center' },
+    { id: 'name', label: 'Name', align: 'center' },
     { id: 'email', label: 'Email', align: 'center' },
     { id: 'phone', label: 'Phone', align: 'center' },
     { id: 'subjects', label: 'Subjects', align: 'center' },
     { id: 'experience', label: 'Experience', align: 'center' },
+    { id: 'salary', label: 'Salary', align: 'center' },
+    { id: 'bond', label: 'Bond', align: 'center' },
     { id: 'qualification', label: 'Qualification', align: 'center' },
     { id: 'date_time', label: 'Join Date', minWidth: 120, align: 'center' }
 ];
@@ -86,6 +88,8 @@ const ManageFaculty = () => {
     const [addPhone, setAddPhone] = useState('');
     const [addSubjects, setAddSubjects] = useState('');
     const [addExperience, setAddExperience] = useState('');
+    const [addBond, setAddbond] = useState('');
+    const [addFacultysalary, setAddFacultysalary] = useState('');
     const [addQualification, setAddQualification] = useState('');
     
     // Add error states
@@ -130,6 +134,9 @@ const ManageFaculty = () => {
                 phone: '9876543210',
                 subjects: 'Mathematics, Physics',
                 experience: '10 years',
+                salary: '10,000',
+                bond: '2 yrs',
+                
                 qualification: 'PhD in Mathematics',
                 profile_image: 'https://randomuser.me/api/portraits/men/32.jpg',
                 join_date: '2022-01-15'
@@ -142,6 +149,8 @@ const ManageFaculty = () => {
                 phone: '9876543211',
                 subjects: 'English Literature',
                 experience: '8 years',
+                salary: '15,000',
+                bond: '6 yrs',
                 qualification: 'MA in English',
                 profile_image: 'https://randomuser.me/api/portraits/women/44.jpg',
                 join_date: '2021-03-20'
@@ -154,6 +163,8 @@ const ManageFaculty = () => {
                 phone: '9876543212',
                 subjects: 'Computer Science',
                 experience: '12 years',
+                salary: '25,000',
+                bond: '1 yrs',
                 qualification: 'MTech in CS',
                 profile_image: 'https://randomuser.me/api/portraits/men/67.jpg',
                 join_date: '2020-06-10'
@@ -364,6 +375,8 @@ const ManageFaculty = () => {
             phone: addPhone,
             subjects: addSubjects,
             experience: addExperience,
+            addFacultysalary : addFacultysalary,
+            addBond : addBond,
             qualification: addQualification,
             profile_image: 'https://randomuser.me/api/portraits/men/' + (Math.floor(Math.random() * 100) + 1) + '.jpg',
             join_date: new Date().toISOString().split('T')[0]
@@ -395,6 +408,8 @@ const ManageFaculty = () => {
         setAddPhone('');
         setAddSubjects('');
         setAddExperience('');
+        setAddFacultysalary('');
+        setAddbond('')
         setAddQualification('');
         setAddNameError('');
         setAddEmailError('');
@@ -568,6 +583,14 @@ const ManageFaculty = () => {
                                             {row.experience}
                                         </TableCell>
 
+                                         <TableCell style={{ textAlign: 'center' }}>
+                                            {row.salary}
+                                        </TableCell>
+
+                                         <TableCell style={{ textAlign: 'center' }}>
+                                            {row.bond}
+                                        </TableCell>
+
                                         <TableCell style={{ textAlign: 'center' }}>
                                             {row.qualification}
                                         </TableCell>
@@ -663,6 +686,15 @@ const ManageFaculty = () => {
                                     <div className="col-md-6 mb-3">
                                         <h6>Experience</h6>
                                         <p>{facultyToView.experience}</p>
+                                    </div>
+                                     <div className="col-md-6 mb-3">
+                                        <h6>Salary</h6>
+                                        <p>{facultyToView.salary}</p>
+                                    </div>
+
+                                     <div className="col-md-6 mb-3">
+                                        <h6>Bond</h6>
+                                        <p>{facultyToView.bond}</p>
                                     </div>
                                     <div className="col-md-12 mb-3">
                                         <h6>Qualification</h6>
@@ -864,14 +896,35 @@ const ManageFaculty = () => {
                                 <div className="col-md-6 mb-3">
                                     <label className="form-label" style={{color : "#898989"}}>Experience</label>
                                     <input
-                                        type="text"
+                                        type="number"
                                         className="form-control"
                                         value={addExperience}
                                         onChange={(e) => setAddExperience(e.target.value)}
                                         placeholder="e.g., 5 years"
                                     />
                                 </div>
-                                
+                                <div className="col-md-6 mb-3">
+                                    <label className="form-label" style={{color : "#898989"}}>Faculty Salary</label>
+                                    <input 
+                                        type="number"
+                                        name='salary'
+                                        className="form-control"
+                                        placeholder="Enter monthly ₹ Salary"
+                                        value={addFacultysalary}
+                                        onChange={(e) => setAddFacultysalary(e.target.value)}
+                                        
+                                    />
+                                </div>
+                                <div className="col-md-6 mb-3">
+                                    <label className="form-label" style={{color : "#898989"}}>Bond</label>
+                                    <input
+                                        type="number"
+                                        className="form-control"
+                                        value={addBond}
+                                        onChange={(e) => setAddbond(e.target.value)}
+                                        placeholder="e.g., 1 years , 2 years"
+                                    />
+                                </div>
                                 <div className="col-md-6 mb-3">
                                     <label className="form-label" style={{color : "#898989"}}>Qualification</label>
                                     <input
@@ -883,6 +936,8 @@ const ManageFaculty = () => {
                                     />
                                 </div>
                             </div>
+
+                            
                             
                             {error && <div className="alert alert-danger">{error}</div>}
                         </form>
