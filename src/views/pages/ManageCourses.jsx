@@ -25,6 +25,8 @@ import { useNavigate } from "react-router-dom";
 import { APP_PREFIX_PATH } from 'config/constant';
 import { toast } from 'react-toastify';
 import JoditEditor from 'jodit-react';
+import { style } from '@mui/system';
+import { color } from 'framer-motion';
 
 const columns = [
     { id: 's_no', label: 'S.No.', align: 'center' },
@@ -417,8 +419,8 @@ const ManageCourses = () => {
                                                     <Edit fontSize="small" sx={{ mr: 1 }} />
                                                     Edit
                                                 </MenuItem>
-                                                <MenuItem onClick={() => handleAction('toggle_status', row)}>
-                                                    {row.active === 1 ? 'Deactivate' : 'Activate'}
+                                                <MenuItem onClick={() => handleAction('toggle_status', row)} >
+                                                    {row.active === 1 ?    'Deactivate' : 'Activate'}
                                                 </MenuItem>
                                                 <MenuItem onClick={() => handleAction('delete', row)} sx={{ color: 'error.main' }}>
                                                     <Delete fontSize="small" sx={{ mr: 1 }} />
@@ -517,64 +519,64 @@ const ManageCourses = () => {
             {/* View Course Modal */}
             <Modal show={showViewModal} onHide={() => setShowViewModal(false)} size="lg" centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>Course Details</Modal.Title>
+                    <Modal.Title style={{color : "#000000"}}>Course Details</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {viewCourse && (
                         <div className="row">
                             <div className="col-md-6">
                                 <div className="mb-3">
-                                    <label className="form-label fw-bold">Course Name:</label>
-                                    <p>{viewCourse.course_name}</p>
+                                    <label className="form-label fw-bold " style={{color : "#4f4e4e9f" , fontFamily : 'revert-layer' }}>Course Name:</label>
+                                    <p style={{color : "#bed9e0"}}>{viewCourse.course_name}</p>
                                 </div>
                                 <div className="mb-3">
-                                    <label className="form-label fw-bold">Course Title:</label>
-                                    <p>{viewCourse.title}</p>
+                                    <label className="form-label fw-bold" style={{color : "#4f4e4e9f" , fontFamily : 'revert-layer'}}>Course Title:</label>
+                                    <p style={{color : "#bed9e0"}}>{viewCourse.title}</p>
                                 </div>
                                 <div className="mb-3">
-                                    <label className="form-label fw-bold">Fees:</label>
-                                    <p className="fw-bold">
+                                    <label className="form-label fw-bold" style={{color : "#4f4e4e9f" , fontFamily : 'revert-layer'}}>Fees:</label>
+                                    <p style={{color : "#bed9e0"}} className="fw-bold">
                                         <CurrencyRupee fontSize="small" />
                                         {viewCourse.fees}
                                     </p>
                                 </div>
                                 <div className="mb-3">
-                                    <label className="form-label fw-bold">Duration:</label>
-                                    <p>{viewCourse.duration || 'N/A'}</p>
+                                    <label className="form-label fw-bold" style={{color : "#4f4e4e9f" , fontFamily : 'revert-layer'}}>Duration:</label>
+                                    <p style={{color : "#bed9e0"}}>{viewCourse.duration || 'N/A'}</p>
                                 </div>
                                 <div className="mb-3">
-                                    <label className="form-label fw-bold">Category:</label>
-                                    <p>{viewCourse.category || 'N/A'}</p>
+                                    <label className="form-label fw-bold" style={{color : "#4f4e4e9f" , fontFamily : 'revert-layer'}}>Category:</label>
+                                    <p style={{color : "#bed9e0"}}>{viewCourse.category || 'N/A'}</p>
                                 </div>
                             </div>
                             <div className="col-md-6">
                                 <div className="mb-3">
-                                    <label className="form-label fw-bold">Minimum Fees:</label>
-                                    <p>
+                                    <label className="form-label fw-bold" style={{color : "#4f4e4e9f" , fontFamily : 'revert-layer'}}>Minimum Fees:</label>
+                                    <p style={{color : "#bed9e0"}}>
                                         <CurrencyRupee fontSize="small" />
                                         {viewCourse.minimum_fees}
                                     </p>
                                 </div>
                                 <div className="mb-3">
-                                    <label className="form-label fw-bold">Maximum Fees:</label>
-                                    <p>
+                                    <label className="form-label fw-bold"style={{color : "#4f4e4e9f" , fontFamily : 'revert-layer'}}>Maximum Fees:</label>
+                                    <p style={{color : "#bed9e0"}}>
                                         <CurrencyRupee fontSize="small" />
                                         {viewCourse.maximum_fees}
                                     </p>
                                 </div>
                                 <div className="mb-3">
-                                    <label className="form-label fw-bold">Status:</label>
-                                    <p>{getStatusBadge(viewCourse.active)}</p>
+                                    <label className="form-label fw-bold" style={{color : "#4f4e4e9f" , fontFamily : 'revert-layer'}}>Status:</label>
+                                    <p style={{color : "#bed9e0"}}>{getStatusBadge(viewCourse.active)}</p>
                                 </div>
                                 <div className="mb-3">
-                                    <label className="form-label fw-bold">Created Date:</label>
-                                    <p>{viewCourse.createtime}</p>
+                                    <label className="form-label fw-bold"style={{color : "#4f4e4e9f" , fontFamily : 'revert-layer'}}>Created Date:</label>
+                                    <p style={{color : "#bed9e0"}}>{viewCourse.createtime}</p>
                                 </div>
                             </div>
                             
                             {viewCourse.image && (
                                 <div className="col-12 mb-3">
-                                    <label className="form-label fw-bold">Course Image:</label>
+                                    <label className="form-label fw-bold"style={{color : "#4f4e4e9f" , fontFamily : 'revert-layer'}}>Course Image:</label>
                                     <div className="mt-2">
                                         <img 
                                             src={getImageUrl(viewCourse.image)} 
@@ -591,10 +593,10 @@ const ManageCourses = () => {
                             )}
                             
                             <div className="col-12 mb-3">
-                                <label className="form-label fw-bold">Description:</label>
+                                <label className="form-label fw-bold"style={{color : "#4f4e4e9f" , fontFamily : 'revert-layer'}}>Description:</label>
                                 <div 
-                                    className="border p-3 rounded bg-light"
-                                    style={{ maxHeight: '300px', overflowY: 'auto' }}
+                                    className="border p-3 rounded bg-light fw-bold"
+                                    style={{ maxHeight: '300px', overflowY: 'auto' , color: "red" ,  }}
                                     dangerouslySetInnerHTML={{ __html: viewCourse.description || 'No description available' }}
                                 />
                             </div>
@@ -602,22 +604,23 @@ const ManageCourses = () => {
                     )}
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowViewModal(false)}>
+                    <Button className='fw-bold' variant="secondary" onClick={() => setShowViewModal(false)} style={{color : "#898888"}}>
                         Close
                     </Button>
                 </Modal.Footer>
             </Modal>
+            
 
             {/* Edit Course Modal */}
             <Modal show={showEditModal} onHide={() => setShowEditModal(false)} size="lg" centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>Edit Course</Modal.Title>
+                    <Modal.Title style={{color : "#0c0c0cdf"}}>Edit Course</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form onSubmit={handleEditSubmit}>
                         <div className="row">
                             <div className="col-md-6 mb-3">
-                                <Form.Label>Course Name *</Form.Label>
+                                <Form.Label style={{color : "#797878"}}>Course Name *</Form.Label>
                                 <Form.Control
                                     type="text"
                                     value={editCourseName}
@@ -634,7 +637,7 @@ const ManageCourses = () => {
                             </div>
                             
                             <div className="col-md-6 mb-3">
-                                <Form.Label>Course Title *</Form.Label>
+                                <Form.Label style={{color : "#797878"}}>Course Title *</Form.Label>
                                 <Form.Control
                                     type="text"
                                     value={editTitle}
@@ -653,7 +656,7 @@ const ManageCourses = () => {
                         
                         <div className="row">
                             <div className="col-md-6 mb-3">
-                                <Form.Label>Category</Form.Label>
+                                <Form.Label style={{color : "#797878"}}>Category</Form.Label>
                                 <Form.Control
                                     type="text"
                                     value={editCategory}
@@ -664,7 +667,7 @@ const ManageCourses = () => {
                             </div>
                             
                             <div className="col-md-6 mb-3">
-                                <Form.Label>Duration</Form.Label>
+                                <Form.Label style={{color : "#797878"}}>Duration</Form.Label>
                                 <Form.Control
                                     type="text"
                                     value={editDuration}
@@ -677,7 +680,7 @@ const ManageCourses = () => {
                         
                         <div className="row">
                             <div className="col-md-4 mb-3">
-                                <Form.Label>Fees (₹) *</Form.Label>
+                                <Form.Label style={{color : "#797878"}}>Fees (₹) *</Form.Label>
                                 <Form.Control
                                     type="number"
                                     value={editFees}
@@ -696,7 +699,7 @@ const ManageCourses = () => {
                             </div>
                             
                             <div className="col-md-4 mb-3">
-                                <Form.Label>Minimum Fees (₹) *</Form.Label>
+                                <Form.Label style={{color : "#797878"}}>Minimum Fees (₹) *</Form.Label>
                                 <Form.Control
                                     type="number"
                                     value={editMinFees}
@@ -715,7 +718,7 @@ const ManageCourses = () => {
                             </div>
                             
                             <div className="col-md-4 mb-3">
-                                <Form.Label>Maximum Fees (₹) *</Form.Label>
+                                <Form.Label style={{color : "#797878"}}>Maximum Fees (₹) *</Form.Label>
                                 <Form.Control
                                     type="number"
                                     value={editMaxFees}
@@ -736,7 +739,7 @@ const ManageCourses = () => {
                         
                         <div className="row mb-3">
                             <div className="col-md-12">
-                                <Form.Label>Course Image</Form.Label>
+                                <Form.Label style={{color : "#797878"}}>Course Image</Form.Label>
                                 <Form.Control
                                     type="file"
                                     accept="image/*"
@@ -781,7 +784,7 @@ const ManageCourses = () => {
                         
                         <div className="row mb-3">
                             <div className="col-md-6">
-                                <Form.Label>Status</Form.Label>
+                                <Form.Label >Status</Form.Label>
                                 <Form.Select
                                     value={editActive}
                                     onChange={(e) => setEditActive(parseInt(e.target.value))}
@@ -795,7 +798,7 @@ const ManageCourses = () => {
                         
                         <div className="row mb-3">
                             <div className="col-12">
-                                <Form.Label>Description *</Form.Label>
+                                <Form.Label style={{color : "#797878"}}>Description *</Form.Label>
                                 <JoditEditor
                                     value={editDescription}
                                     config={{
@@ -823,10 +826,10 @@ const ManageCourses = () => {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowEditModal(false)} disabled={loading}>
+                    <Button style={{color : "#797878"}} variant="secondary" onClick={() => setShowEditModal(false)} disabled={loading}>
                         Cancel
                     </Button>
-                    <Button variant="primary" onClick={handleEditSubmit} disabled={loading}>
+                    <Button variant="primary" onClick={handleEditSubmit} disabled={loading} style={{color : "#3d619e"}}>
                         {loading ? 'Updating...' : 'Update Course'}
                     </Button>
                 </Modal.Footer>

@@ -1,3 +1,4 @@
+
 .dashboard-container {
     padding: 24px;
     background-color: #F9FAFB;
@@ -11,7 +12,7 @@
 
 /* Responsive adjustments */
 @media (max-width: 600px) {
-    .dashboard-container {
+    .dashboard-container { 
         padding: 16px;
     }
     

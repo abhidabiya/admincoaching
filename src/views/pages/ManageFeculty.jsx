@@ -643,7 +643,7 @@ const ManageFaculty = () => {
                     size="lg"
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title>Faculty Details</Modal.Title>
+                        <Modal.Title style={{color : "#2c2c2c"}}>Faculty Details</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         {facultyToView && (
@@ -659,7 +659,7 @@ const ManageFaculty = () => {
                                         </Avatar>
                                     </div>
                                     <div className="col-md-9">
-                                        <h4>{facultyToView.name}</h4>
+                                        <h4 style={{color : "#5e8bb0"}}>{facultyToView.name}</h4>
                                         <p className="text-muted mb-1">
                                             <EmailIcon fontSize="small" className="me-2" />
                                             {facultyToView.email}
@@ -677,35 +677,35 @@ const ManageFaculty = () => {
                                 
                                 <div className="row">
                                     <div className="col-md-6 mb-3">
-                                        <h6>Subjects</h6>
-                                        <p>
+                                        <h6 style={{color : "#525252ea"}}>Subjects</h6>
+                                        <p style={{color : "#716e6ec5"}}>
                                             <SubjectIcon fontSize="small" className="me-2" />
                                             {facultyToView.subjects}
                                         </p>
                                     </div>
                                     <div className="col-md-6 mb-3">
-                                        <h6>Experience</h6>
-                                        <p>{facultyToView.experience}</p>
+                                        <h6 style={{color : "#525252ea"}}>Experience</h6>
+                                        <p style={{color : "#716e6ec5"}}>{facultyToView.experience}</p>
                                     </div>
                                      <div className="col-md-6 mb-3">
-                                        <h6>Salary</h6>
-                                        <p>{facultyToView.salary}</p>
+                                        <h6 style={{color : "#525252ea"}}>Salary</h6>
+                                        <p style={{color : "#716e6ec5"}}>{facultyToView.salary}</p>
                                     </div>
 
                                      <div className="col-md-6 mb-3">
-                                        <h6>Bond</h6>
-                                        <p>{facultyToView.bond}</p>
+                                        <h6 style={{color : "#525252ea"}}>Bond</h6>
+                                        <p style={{color : "#716e6ec5"}}>{facultyToView.bond}</p>
                                     </div>
                                     <div className="col-md-12 mb-3">
-                                        <h6>Qualification</h6>
-                                        <p>{facultyToView.qualification}</p>
+                                        <h6 style={{color : "#525252ea"}}>Qualification</h6>
+                                        <p style={{color : "#716e6ec5"}}>{facultyToView.qualification}</p>
                                     </div>
                                 </div>
                             </div>
                         )}
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={handleCloseViewModal}>
+                        <Button style={{color : "#828181"}} variant="secondary" onClick={handleCloseViewModal}>
                             Close
                         </Button>
                     </Modal.Footer>
@@ -718,13 +718,13 @@ const ManageFaculty = () => {
                     size="lg"
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title>Edit Faculty</Modal.Title>
+                        <Modal.Title style={{color : "#535252"}}>Edit Faculty</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <form onSubmit={handleEdit}>
                             <div className="row">
                                 <div className="col-md-6 mb-3">
-                                    <label className="form-label">Faculty Name *</label>
+                                    <label style={{color : "#7f7e7e"}} className="form-label">Faculty Name *</label>
                                     <input
                                         type="text"
                                         className={`form-control ${editNameError ? 'is-invalid' : ''}`}
@@ -739,7 +739,7 @@ const ManageFaculty = () => {
                                 </div>
                                 
                                 <div className="col-md-6 mb-3">
-                                    <label className="form-label">Email *</label>
+                                    <label style={{color : "#7f7e7e"}} className="form-label">Email *</label>
                                     <input
                                         type="email"
                                         className={`form-control ${editEmailError ? 'is-invalid' : ''}`}
@@ -756,7 +756,7 @@ const ManageFaculty = () => {
                             
                             <div className="row">
                                 <div className="col-md-6 mb-3">
-                                    <label className="form-label">Phone Number *</label>
+                                    <label style={{color : "#7f7e7e"}} className="form-label">Phone Number *</label>
                                     <input
                                         type="tel"
                                         className={`form-control ${editPhoneError ? 'is-invalid' : ''}`}
@@ -772,7 +772,7 @@ const ManageFaculty = () => {
                                 </div>
                                 
                                 <div className="col-md-6 mb-3">
-                                    <label className="form-label">Subjects</label>
+                                    <label style={{color : "#7f7e7e"}} className="form-label">Subjects</label>
                                     <input
                                         type="text"
                                         className="form-control"
@@ -785,7 +785,7 @@ const ManageFaculty = () => {
                             
                             <div className="row">
                                 <div className="col-md-6 mb-3">
-                                    <label className="form-label">Experience</label>
+                                    <label style={{color : "#7f7e7e"}} className="form-label">Experience</label>
                                     <input
                                         type="text"
                                         className="form-control"
@@ -796,7 +796,7 @@ const ManageFaculty = () => {
                                 </div>
                                 
                                 <div className="col-md-6 mb-3">
-                                    <label className="form-label">Qualification</label>
+                                    <label style={{color : "#7f7e7e"}} className="form-label">Qualification</label>
                                     <input
                                         type="text"
                                         className="form-control"
@@ -811,10 +811,10 @@ const ManageFaculty = () => {
                         </form>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={handleCloseEditModal}>
+                        <Button style={{color : "#4b4a4a"}} variant="secondary" onClick={handleCloseEditModal}>
                             Cancel
                         </Button>
-                        <Button variant="primary" onClick={handleEdit}>
+                        <Button style={{color : "#282727"}} variant="primary" onClick={handleEdit}>
                             Update Faculty
                         </Button>
                     </Modal.Footer>
@@ -959,16 +959,16 @@ const ManageFaculty = () => {
                     centered
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title>Confirm Delete</Modal.Title>
+                        <Modal.Title style={{color : "#545252"}}>Confirm Delete</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>
+                    <Modal.Body style={{color : "#989898"}}>
                         Are you sure you want to delete this faculty member? This action cannot be undone.
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+                        <Button style={{color : "#8e8d8d"}} variant="secondary" onClick={() => setShowDeleteModal(false)}>
                             Cancel
                         </Button>
-                        <Button variant="danger" onClick={deleteFaculty}>
+                        <Button style={{color : "#3d3d3d"}} variant="danger" onClick={deleteFaculty}>
                             Delete
                         </Button>
                     </Modal.Footer>
