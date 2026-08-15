@@ -31,7 +31,7 @@ import { IconSearch } from '@tabler/icons-react';
 import InputAdornment from '@mui/material/InputAdornment';
 import { useTheme } from '@mui/material/styles';
 import axios from 'axios';
-import { API_URL, APP_PREFIX_PATH, IMAGE_PATH } from 'config/constant';
+import { API_URL, APP_PREFIX_PATH } from 'config/constant';
 import { Modal } from 'react-bootstrap';
 import { encode as base64_encode } from 'base-64';
 import { CircularProgress, Alert, AlertTitle } from '@mui/material';

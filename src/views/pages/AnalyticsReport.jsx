@@ -6,7 +6,7 @@ import { Card, Grid, Typography } from '@mui/material';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { API_URL, APP_PREFIX_PATH, IMAGE_PATH } from 'config/constant';
+import { API_URL } from 'config/constant';
 // project import
 
 // import { gridSpacing } from 'config.js';
@@ -48,13 +48,13 @@ const UserAnaReport = () => {
 
   const seriesmonthly = [
     {
-      name: 'Total Users',
+      name: 'Total Students',
       data: monthlyDetails
     }
   ];
   const seriesyearly = [
     {
-      name: 'Total Users',
+      name: 'Total Students',
       data: yearlyDetails
     }
   ];
@@ -81,7 +81,7 @@ const UserAnaReport = () => {
     },
     yaxis: {
       title: {
-        text: 'Users'
+        text: 'Students'
       }
     },
 
@@ -113,11 +113,11 @@ const UserAnaReport = () => {
       enabled: false
     },
     xaxis: {
-      categories: ['2020', '2021', '2022', '2023', '2024', '2025']
+      categories: ['2027', '2028', '2029', '2030', '2031', '2032']
     },
     yaxis: {
       title: {
-        text: 'Users'
+        text: 'Students'
       }
     },
 
@@ -145,7 +145,7 @@ const UserAnaReport = () => {
             marginBottom: ' 5px'
           }}
         >
-          Users Analytical Reports
+          Students Analytical Reports
         </p>
       </div>
       <Typography
@@ -154,7 +154,7 @@ const UserAnaReport = () => {
         variant="h3"
         gutterBottom
       >
-        2025 Monthly Analytical Reports of Users
+        2027 Monthly Analytical Reports of Students
       </Typography>
 
       <Grid container>
@@ -167,7 +167,7 @@ const UserAnaReport = () => {
         </Grid>
 
         <Typography className="" style={{ margin: ' 40px auto 30px', color: '#b6b3b3' }} variant="h3" gutterBottom>
-          2025 Yearly Analytical Reports of Users
+          2027 Yearly Analytical Reports of Students
         </Typography>
 
         <Grid item xs={12} md={12}>
