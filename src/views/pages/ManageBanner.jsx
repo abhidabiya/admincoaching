@@ -252,7 +252,7 @@ const handleCloseImage = () => {
             marginBottom: '5px'
           }}
         >
-          Gatepass  Banners
+          Manage  Banners
         </p>
       </div>
     

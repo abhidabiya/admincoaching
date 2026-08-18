@@ -183,7 +183,7 @@ const menuItems = {
 
         {
             id: 'manage_banner',
-            title: 'Gatepass Banners',
+            title: 'Manage Banners',
             type: 'item',
             url: APP_PREFIX_PATH + '/manage-banner',
             icon: IconCalendarRepeat
