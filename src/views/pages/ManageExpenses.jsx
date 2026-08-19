@@ -24,7 +24,6 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import Box from '@mui/material/Box';
 import axios from 'axios';
 import { API_URL } from 'config/constant';
-import { APP_PREFIX_PATH } from 'config/constant';
 import { useNavigate } from "react-router-dom";
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import CategoryIcon from '@mui/icons-material/Category';
@@ -100,6 +99,8 @@ const ManageExpenses = () => {
   const [expenseToEdit, setExpenseToEdit] = useState(null);
   const [expenseToView, setExpenseToView] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [apiError, setApiError] = useState('');
   
   // Summary states
   const [totalExpenses, setTotalExpenses] = useState(0);
@@ -128,6 +129,7 @@ const ManageExpenses = () => {
   const [addCategoryError, setAddCategoryError] = useState('');
   const [addDescriptionError, setAddDescriptionError] = useState('');
   const [addAmountError, setAddAmountError] = useState('');
+  const [addReceiptError, setAddReceiptError] = useState('');
   
   // Edit state
   const [editDate, setEditDate] = useState(dayjs());
@@ -147,7 +149,41 @@ const ManageExpenses = () => {
   // General error
   const [error, setError] = useState('');
 
-  // Initialize with mock data
+  // Fetch all expenses
+  const fetchData = () => {
+    setLoading(true);
+    setApiError('');
+    
+    axios
+      .get(`${API_URL}get_all_expense`)
+      .then((response) => {
+        if (response.data.success) {
+          const data = response.data.data || [];
+          // Map API data to display format
+          const mappedData = data.map((expense, index) => ({
+            ...expense,
+            s_no: index + 1,
+            expense_id: expense.expense_id,
+            category_label: expenseCategories.find(cat => cat.id === expense.category)?.label || expense.category || 'Others',
+            category_color: expenseCategories.find(cat => cat.id === expense.category)?.color || '#000',
+            category_icon: expenseCategories.find(cat => cat.id === expense.category)?.icon || '📦',
+            payment_mode: expense.paymode || 'Cash',
+            receipt_no: expense.receipt_number || '',
+            date: expense.date || expense.createtime?.split(' ')[0] || dayjs().format('YYYY-MM-DD')
+          }));
+          setExpenseData(mappedData);
+        } else {
+          setApiError(response.data.msg || 'Failed to fetch expenses');
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching expenses:', error);
+        setApiError('Error fetching expenses. Please try again.');
+        setLoading(false);
+      });
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -162,90 +198,6 @@ const ManageExpenses = () => {
     filterExpenses();
   }, [searchQuery, filterCategory, filterMonth, filterYear, expenseData]);
 
-  const fetchData = () => {
-    // Mock data for demonstration
-    const mockExpenseData = [
-      {
-        id: 'E001',
-        date: '2024-03-01',
-        category: 'shop_rent',
-        description: 'Monthly shop rent',
-        amount: 15000,
-        payment_mode: 'Bank Transfer',
-        receipt_no: 'RCPT-001',
-        remarks: 'Paid to landlord'
-      },
-      {
-        id: 'E002',
-        date: '2024-03-05',
-        category: 'electricity',
-        description: 'Monthly electricity bill',
-        amount: 2500,
-        payment_mode: 'UPI',
-        receipt_no: 'RCPT-002',
-        remarks: 'March bill payment'
-      },
-      {
-        id: 'E003',
-        date: '2024-03-10',
-        category: 'water',
-        description: 'Water bill payment',
-        amount: 800,
-        payment_mode: 'Cash',
-        receipt_no: 'RCPT-003',
-        remarks: 'Quarterly bill'
-      },
-      {
-        id: 'E004',
-        date: '2024-03-15',
-        category: 'salary',
-        description: 'Teacher salaries',
-        amount: 45000,
-        payment_mode: 'Bank Transfer',
-        receipt_no: 'RCPT-004',
-        remarks: 'March salary disbursement'
-      },
-      {
-        id: 'E005',
-        date: '2024-03-20',
-        category: 'internet',
-        description: 'Internet subscription',
-        amount: 1200,
-        payment_mode: 'UPI',
-        receipt_no: 'RCPT-005',
-        remarks: 'Monthly plan'
-      },
-      {
-        id: 'E006',
-        date: '2024-02-01',
-        category: 'shop_rent',
-        description: 'Monthly shop rent',
-        amount: 15000,
-        payment_mode: 'Bank Transfer',
-        receipt_no: 'RCPT-006',
-        remarks: 'February rent'
-      },
-      {
-        id: 'E007',
-        date: '2024-02-05',
-        category: 'electricity',
-        description: 'Electricity bill',
-        amount: 2200,
-        payment_mode: 'UPI',
-        receipt_no: 'RCPT-007',
-        remarks: 'February bill'
-      }
-    ].map((expense, index) => ({
-      ...expense,
-      s_no: index + 1,
-      category_label: expenseCategories.find(cat => cat.id === expense.category)?.label || expense.category,
-      category_color: expenseCategories.find(cat => cat.id === expense.category)?.color || '#000',
-      category_icon: expenseCategories.find(cat => cat.id === expense.category)?.icon || '📦'
-    }));
-
-    setExpenseData(mockExpenseData);
-  };
-
   const calculateSummary = () => {
     if (expenseData.length === 0) {
       setTotalExpenses(0);
@@ -256,21 +208,27 @@ const ManageExpenses = () => {
     }
 
     // Total expenses
-    const total = expenseData.reduce((sum, expense) => sum + expense.amount, 0);
+    const total = expenseData.reduce((sum, expense) => sum + (parseFloat(expense.amount) || 0), 0);
     setTotalExpenses(total);
 
     // Monthly expenses (current month)
     const currentMonthStart = dayjs().startOf('month').format('YYYY-MM-DD');
     const currentMonthEnd = dayjs().endOf('month').format('YYYY-MM-DD');
     const monthly = expenseData
-      .filter(expense => expense.date >= currentMonthStart && expense.date <= currentMonthEnd)
-      .reduce((sum, expense) => sum + expense.amount, 0);
+      .filter(expense => {
+        const expenseDate = expense.date || expense.createtime?.split(' ')[0];
+        return expenseDate >= currentMonthStart && expenseDate <= currentMonthEnd;
+      })
+      .reduce((sum, expense) => sum + (parseFloat(expense.amount) || 0), 0);
     setMonthlyExpenses(monthly);
 
     // Yearly expenses (current year)
     const yearly = expenseData
-      .filter(expense => expense.date.startsWith(currentYear))
-      .reduce((sum, expense) => sum + expense.amount, 0);
+      .filter(expense => {
+        const expenseDate = expense.date || expense.createtime?.split(' ')[0];
+        return expenseDate?.startsWith(currentYear);
+      })
+      .reduce((sum, expense) => sum + (parseFloat(expense.amount) || 0), 0);
     setYearlyExpenses(yearly);
 
     // Category-wise expenses
@@ -278,7 +236,7 @@ const ManageExpenses = () => {
     expenseCategories.forEach(category => {
       const total = expenseData
         .filter(expense => expense.category === category.id)
-        .reduce((sum, expense) => sum + expense.amount, 0);
+        .reduce((sum, expense) => sum + (parseFloat(expense.amount) || 0), 0);
       categoryTotals[category.id] = total;
     });
     setCategoryWiseExpenses(categoryTotals);
@@ -308,14 +266,17 @@ const ManageExpenses = () => {
     // Apply month filter
     if (filterMonth !== 'all') {
       filtered = filtered.filter(expense => {
-        const expenseMonth = dayjs(expense.date).format('MMMM');
-        return expenseMonth === filterMonth;
+        const expenseDate = expense.date || expense.createtime?.split(' ')[0];
+        return expenseDate ? dayjs(expenseDate).format('MMMM') === filterMonth : false;
       });
     }
 
     // Apply year filter
-    if (filterYear !== 'all') {
-      filtered = filtered.filter(expense => expense.date.startsWith(filterYear));
+    if (filterYear !== 'all' && filterYear !== 'all') {
+      filtered = filtered.filter(expense => {
+        const expenseDate = expense.date || expense.createtime?.split(' ')[0];
+        return expenseDate?.startsWith(filterYear);
+      });
     }
 
     setFilteredExpenses(filtered);
@@ -333,27 +294,62 @@ const ManageExpenses = () => {
 
   const handleAction = (action, expenseData) => {
     if (action === 'view') {
-      setShowViewModal(true);
-      setExpenseToView(expenseData);
+      fetchSingleExpense(expenseData.expense_id || expenseData.id);
       setSelectedIndex(null);
     } else if (action === 'Edit') {
       setShowEditModal(true);
       setExpenseToEdit(expenseData);
-      setEditDate(dayjs(expenseData.date));
-      setEditCategory(expenseData.category);
+      setExpenseToDelete(expenseData.expense_id || expenseData.id || expenseData.s_no);
+      setEditDate(dayjs(expenseData.date || expenseData.createtime?.split(' ')[0] || new Date()));
+      setEditCategory(expenseData.category || '');
       setEditDescription(expenseData.description || '');
-      setEditAmount(expenseData.amount.toString());
-      setEditPaymentMode(expenseData.payment_mode || 'Cash');
-      setEditReceiptNo(expenseData.receipt_no || '');
+      setEditAmount(expenseData.amount?.toString() || '');
+      setEditPaymentMode(expenseData.paymode || expenseData.payment_mode || 'Cash');
+      setEditReceiptNo(expenseData.receipt_number || expenseData.receipt_no || '');
       setEditRemarks(expenseData.remarks || '');
-      setExpenseToDelete(expenseData.id || expenseData.s_no);
+      setSelectedIndex(null);
     } else if (action === 'Delete') {
       setShowDeleteModal(true);
-      setExpenseToDelete(expenseData.id || expenseData.s_no);
+      setExpenseToDelete(expenseData.expense_id || expenseData.id || expenseData.s_no);
       setSelectedIndex(null);
     }
   };
 
+  // Fetch single expense by ID
+  const fetchSingleExpense = (expenseId) => {
+    setLoading(true);
+    setApiError('');
+    
+    axios
+      .get(`${API_URL}getonexpense/${expenseId}`)
+      .then((response) => {
+        if (response.data.success) {
+          const data = response.data.data;
+          const mappedData = {
+            ...data,
+            expense_id: expenseId,
+            category_label: expenseCategories.find(cat => cat.id === data.category)?.label || data.category || 'Others',
+            category_color: expenseCategories.find(cat => cat.id === data.category)?.color || '#000',
+            category_icon: expenseCategories.find(cat => cat.id === data.category)?.icon || '📦',
+            payment_mode: data.paymode || 'Cash',
+            receipt_no: data.receipt_number || '',
+            date: data.date || data.createtime?.split(' ')[0] || dayjs().format('YYYY-MM-DD')
+          };
+          setExpenseToView(mappedData);
+          setShowViewModal(true);
+        } else {
+          setApiError(response.data.msg || 'Failed to fetch expense details');
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching expense details:', error);
+        setApiError('Error fetching expense details. Please try again.');
+        setLoading(false);
+      });
+  };
+
+  // Add Expense - POST
   const handleAdd = (e) => {
     e.preventDefault();
 
@@ -364,7 +360,9 @@ const ManageExpenses = () => {
     setAddCategoryError('');
     setAddDescriptionError('');
     setAddAmountError('');
+    setAddReceiptError('');
     setError('');
+    setApiError('');
 
     // Validation
     if (!addDate) {
@@ -394,28 +392,47 @@ const ManageExpenses = () => {
       return;
     }
 
-    // Create new expense
-    const newExpense = {
-      id: `E${(expenseData.length + 1).toString().padStart(3, '0')}`,
-      s_no: expenseData.length + 1,
+    setLoading(true);
+
+    // Prepare data for API
+    const expenseData = {
       date: addDate.format('YYYY-MM-DD'),
       category: addCategory,
-      category_label: expenseCategories.find(cat => cat.id === addCategory)?.label || addCategory,
-      category_color: expenseCategories.find(cat => cat.id === addCategory)?.color || '#000',
-      category_icon: expenseCategories.find(cat => cat.id === addCategory)?.icon || '📦',
       description: addDescription,
       amount: parseFloat(addAmount),
-      payment_mode: addPaymentMode,
-      receipt_no: addReceiptNo,
-      remarks: addRemarks
+      paymode: addPaymentMode,
+      receipt_number: addReceiptNo || null,
+      remarks: addRemarks || null
     };
 
-    // Add to data
-    setExpenseData(prev => [...prev, newExpense]);
-    setShowAddModal(false);
-    resetAddForm();
+    axios
+      .post(`${API_URL}add_expense`, expenseData)
+      .then((response) => {
+        if (response.data.success) {
+          setShowAddModal(false);
+          resetAddForm();
+          fetchData(); // Refresh the list
+        } else {
+          setError(response.data.msg || 'Error adding expense');
+          // Handle duplicate receipt number
+          if (response.data.key === 55) {
+            setAddReceiptError('This receipt number already exists');
+          }
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error adding expense:', error);
+        if (error.response && error.response.data) {
+          setError(error.response.data.msg || 'Error adding expense. Please try again.');
+        } else {
+          setError('Error adding expense. Please try again.');
+        }
+        setLoading(false);
+      });
   };
 
+  // Edit Expense - PUT
   const handleEdit = (e) => {
     e.preventDefault();
 
@@ -427,6 +444,7 @@ const ManageExpenses = () => {
     setEditDescriptionError('');
     setEditAmountError('');
     setError('');
+    setApiError('');
 
     // Validation
     if (!editDate) {
@@ -456,35 +474,59 @@ const ManageExpenses = () => {
       return;
     }
 
-    // Update expense
-    setExpenseData(prev => prev.map(expense => {
-      if (expense.id === expenseToDelete || expense.s_no === expenseToDelete) {
-        return {
-          ...expense,
-          date: editDate.format('YYYY-MM-DD'),
-          category: editCategory,
-          category_label: expenseCategories.find(cat => cat.id === editCategory)?.label || editCategory,
-          category_color: expenseCategories.find(cat => cat.id === editCategory)?.color || '#000',
-          category_icon: expenseCategories.find(cat => cat.id === editCategory)?.icon || '📦',
-          description: editDescription,
-          amount: parseFloat(editAmount),
-          payment_mode: editPaymentMode,
-          receipt_no: editReceiptNo,
-          remarks: editRemarks
-        };
-      }
-      return expense;
-    }));
+    setLoading(true);
 
-    setShowEditModal(false);
-    resetEditForm();
+    // Prepare data for API
+    const expenseData = {
+      date: editDate.format('YYYY-MM-DD'),
+      category: editCategory,
+      description: editDescription,
+      amount: parseFloat(editAmount),
+      paymode: editPaymentMode,
+      receipt_number: editReceiptNo || null,
+      remarks: editRemarks || null
+    };
+
+    axios
+      .put(`${API_URL}edit_expense/${expenseToDelete}`, expenseData)
+      .then((response) => {
+        if (response.data.success) {
+          setShowEditModal(false);
+          resetEditForm();
+          fetchData(); // Refresh the list
+        } else {
+          setError(response.data.msg || 'Error updating expense');
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error updating expense:', error);
+        setError('Error updating expense. Please try again.');
+        setLoading(false);
+      });
   };
 
+  // Delete Expense - DELETE
   const deleteExpense = () => {
-    setExpenseData(prev => prev.filter(expense => 
-      expense.id !== expenseToDelete && expense.s_no !== expenseToDelete
-    ));
-    setShowDeleteModal(false);
+    setLoading(true);
+    setApiError('');
+
+    axios
+      .delete(`${API_URL}deletexpense/${expenseToDelete}`)
+      .then((response) => {
+        if (response.data.success) {
+          setShowDeleteModal(false);
+          fetchData(); // Refresh the list
+        } else {
+          setApiError(response.data.msg || 'Error deleting expense');
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error deleting expense:', error);
+        setApiError('Error deleting expense. Please try again.');
+        setLoading(false);
+      });
   };
 
   const resetAddForm = () => {
@@ -499,6 +541,7 @@ const ManageExpenses = () => {
     setAddCategoryError('');
     setAddDescriptionError('');
     setAddAmountError('');
+    setAddReceiptError('');
     setError('');
   };
 
@@ -533,7 +576,7 @@ const ManageExpenses = () => {
       currency: 'INR',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
-    }).format(amount);
+    }).format(amount || 0);
   };
 
   const getMonths = () => {
@@ -568,6 +611,29 @@ const ManageExpenses = () => {
           Track and manage all your coaching center expenses
         </p>
       </div>
+
+      {/* API Error Alert */}
+      {apiError && (
+        <div className="alert alert-danger" style={{ marginBottom: '20px' }}>
+          {apiError}
+          <button 
+            className="close" 
+            onClick={() => setApiError('')}
+            style={{ float: 'right', background: 'none', border: 'none', fontSize: '1.5rem' }}
+          >
+            &times;
+          </button>
+        </div>
+      )}
+
+      {/* Loading Spinner */}
+      {loading && (
+        <div style={{ textAlign: 'center', padding: '20px' }}>
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      )}
 
       {/* Summary Cards */}
       <Grid container spacing={3} sx={{ mb: 3 }}>
@@ -654,30 +720,28 @@ const ManageExpenses = () => {
       </Paper>
 
       {/* Search and Filters */}
-      <Box alignItems="center" justifyContent="space-between" display="flex" className="mobile-res" sx={{ mb: 3 }}>
+      <Box alignItems="center" justifyContent="space-between" display="flex" className="mobile-res" sx={{ mb: 3, flexWrap: 'wrap', gap: 1 }}>
         <OutlinedInput
-          sx={{ pr: 1, pl: 2, flex: 1, mr: 2 }}
+          sx={{ pr: 1, pl: 2, flex: 1, minWidth: '200px' }}
           id="input-search-expenses"
           onChange={handleSearch}
-          placeholder="Search expenses by description, category, amount..."
+          placeholder="Search expenses..."
           startAdornment={
             <InputAdornment position="start">
               <IconSearch stroke={1.5} size="1rem" color={theme.palette.grey[500]} />
             </InputAdornment>
           }
-          aria-describedby="search-helper-text"
-          inputProps={{
-            'aria-label': 'weight'
-          }}
+          disabled={loading}
         />
         
         {/* Filters */}
-        <Box display="flex" gap={2}>
+        <Box display="flex" gap={1} flexWrap="wrap">
           <select
             className="form-select"
             value={filterCategory}
             onChange={(e) => setFilterCategory(e.target.value)}
             style={{ width: '150px' }}
+            disabled={loading}
           >
             <option value="all">All Categories</option>
             {expenseCategories.map(category => (
@@ -691,7 +755,8 @@ const ManageExpenses = () => {
             className="form-select"
             value={filterMonth}
             onChange={(e) => setFilterMonth(e.target.value)}
-            style={{ width: '150px' }}
+            style={{ width: '130px' }}
+            disabled={loading}
           >
             <option value="all">All Months</option>
             {getMonths().map(month => (
@@ -705,7 +770,8 @@ const ManageExpenses = () => {
             className="form-select"
             value={filterYear}
             onChange={(e) => setFilterYear(e.target.value)}
-            style={{ width: '120px' }}
+            style={{ width: '100px' }}
+            disabled={loading}
           >
             <option value="all">All Years</option>
             {getYears().map(year => (
@@ -717,9 +783,10 @@ const ManageExpenses = () => {
         </Box>
         
         <Button 
-          className="btn " 
+          className="btn" 
           onClick={() => setShowAddModal(true)}
-          style={{ width: '160px'  , backgroundColor: '#3268f1', color: '#fff' ,marginLeft: '10px' }}
+          style={{ width: '160px', backgroundColor: '#3268f1', color: '#fff' }}
+          disabled={loading}
         >
           <AddIcon />
           Add Expense
@@ -747,11 +814,11 @@ const ManageExpenses = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredExpenses.length > 0 ? (
+              {!loading && filteredExpenses.length > 0 ? (
                 filteredExpenses
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={index}>
+                    <TableRow hover role="checkbox" tabIndex={-1} key={row.expense_id || index}>
                       <TableCell style={{ textAlign: 'center' }}>{row.s_no}</TableCell>
                       
                       <TableCell style={{ textAlign: 'center' }}>
@@ -762,6 +829,7 @@ const ManageExpenses = () => {
                           aria-haspopup="true"
                           onClick={(event) => handleClick(event, index)}
                           size="small"
+                          disabled={loading}
                         >
                           Actions <ArrowDropDown />
                         </Button>
@@ -790,20 +858,20 @@ const ManageExpenses = () => {
                       <TableCell style={{ textAlign: 'center' }}>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                           <CalendarTodayIcon sx={{ mr: 1, fontSize: 16 }} />
-                          {dayjs(row.date).format('DD/MM/YYYY')}
+                          {row.date ? dayjs(row.date).format('DD/MM/YYYY') : 'N/A'}
                         </div>
                       </TableCell>
 
                       <TableCell style={{ textAlign: 'center' }}>
                         <Chip
-                          label={row.category_label}
+                          label={row.category_label || 'Others'}
                           style={{
-                            backgroundColor: row.category_color + '20',
-                            color: row.category_color,
-                            border: `1px solid ${row.category_color}`,
+                            backgroundColor: (row.category_color || '#000') + '20',
+                            color: row.category_color || '#000',
+                            border: `1px solid ${row.category_color || '#000'}`,
                             fontWeight: '500'
                           }}
-                          icon={<span>{row.category_icon}</span>}
+                          icon={<span>{row.category_icon || '📦'}</span>}
                           size="small"
                         />
                       </TableCell>
@@ -811,7 +879,7 @@ const ManageExpenses = () => {
                       <TableCell style={{ textAlign: 'center' }}>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                           <DescriptionIcon sx={{ mr: 1, fontSize: 16 }} />
-                          {row.description}
+                          {row.description || 'N/A'}
                         </div>
                       </TableCell>
 
@@ -824,7 +892,7 @@ const ManageExpenses = () => {
 
                       <TableCell style={{ textAlign: 'center' }}>
                         <Chip
-                          label={row.payment_mode}
+                          label={row.payment_mode || 'Cash'}
                           variant="outlined"
                           size="small"
                         />
@@ -840,19 +908,21 @@ const ManageExpenses = () => {
                     </TableRow>
                   ))
               ) : (
-                <TableRow>
-                  <TableCell colSpan={columns.length} style={{ textAlign: 'center', padding: '40px' }}>
-                    <DescriptionIcon sx={{ fontSize: 48, color: '#9CA3AF', mb: 2 }} />
-                    <Typography variant="h6" color="textSecondary">
-                      No expenses found
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
-                      {searchQuery || filterCategory !== 'all' || filterMonth !== 'all' || filterYear !== 'all'
-                        ? 'Try adjusting your search or filters'
-                        : 'Add your first expense using the "Add Expense" button'}
-                    </Typography>
-                  </TableCell>
-                </TableRow>
+                !loading && (
+                  <TableRow>
+                    <TableCell colSpan={columns.length} style={{ textAlign: 'center', padding: '40px' }}>
+                      <DescriptionIcon sx={{ fontSize: 48, color: '#9CA3AF', mb: 2 }} />
+                      <Typography variant="h6" color="textSecondary">
+                        No expenses found
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
+                        {searchQuery || filterCategory !== 'all' || filterMonth !== 'all' || filterYear !== 'all'
+                          ? 'Try adjusting your search or filters'
+                          : 'Add your first expense using the "Add Expense" button'}
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                )
               )}
             </TableBody>
           </Table>
@@ -860,21 +930,38 @@ const ManageExpenses = () => {
 
         {/* Pagination */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px' }}>
-          <p style={{ marginLeft: '26px', marginTop: '15px' }}>
+          <p style={{ margin: 0 }}>
             {`Showing ${Math.min(filteredExpenses.length > 0 ? page * rowsPerPage + 1 : 0, filteredExpenses.length)} to ${Math.min((page + 1) * rowsPerPage, filteredExpenses.length)} of ${filteredExpenses.length} entries`}
           </p>
-          <div style={{ marginRight: '15px' }}>
+          <div>
             <button 
               onClick={() => handleChangePage(null, page - 1)} 
-              disabled={page === 0} 
-              style={{ marginRight: '8px' , border: '1px solid #bcb9b9', padding: '5px 10px', borderRadius: '4px', color: '#fff', cursor: page === 0 ? 'not-allowed' : 'pointer' , backgroundColor : 'transparent' }}
+              disabled={page === 0 || loading} 
+              style={{ 
+                marginRight: '8px', 
+                border: '1px solid #bcb9b9', 
+                padding: '5px 10px', 
+                borderRadius: '4px', 
+                color: '#333',
+                cursor: (page === 0 || loading) ? 'not-allowed' : 'pointer',
+                backgroundColor: 'transparent',
+                opacity: (page === 0 || loading) ? 0.5 : 1
+              }}
             >
               {'<'}
             </button>
             <button
               onClick={() => handleChangePage(null, page + 1)}
-              disabled={(page + 1) * rowsPerPage >= filteredExpenses.length}
-              style={{ border: '1px solid #bcb9b9', padding: '5px 10px', borderRadius: '4px', color: '#fff', cursor: (page + 1) * rowsPerPage >= filteredExpenses.length ? 'not-allowed' : 'pointer' , backgroundColor : 'transparent' }}
+              disabled={(page + 1) * rowsPerPage >= filteredExpenses.length || loading}
+              style={{ 
+                border: '1px solid #bcb9b9', 
+                padding: '5px 10px', 
+                borderRadius: '4px', 
+                color: '#333',
+                cursor: ((page + 1) * rowsPerPage >= filteredExpenses.length || loading) ? 'not-allowed' : 'pointer',
+                backgroundColor: 'transparent',
+                opacity: ((page + 1) * rowsPerPage >= filteredExpenses.length || loading) ? 0.5 : 1
+              }}
             >
               {'>'}
             </button>
@@ -889,7 +976,7 @@ const ManageExpenses = () => {
         size="lg"
       >
         <Modal.Header closeButton>
-          <Modal.Title>Expense Details</Modal.Title>
+          <Modal.Title style={{ color: '#2c2c2c' }}>Expense Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {expenseToView && (
@@ -901,22 +988,22 @@ const ManageExpenses = () => {
                       width: 80,
                       height: 80,
                       borderRadius: '50%',
-                      backgroundColor: expenseToView.category_color + '30',
+                      backgroundColor: (expenseToView.category_color || '#000') + '30',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       fontSize: '2rem'
                     }}
                   >
-                    {expenseToView.category_icon}
+                    {expenseToView.category_icon || '📦'}
                   </div>
                 </div>
                 <div className="col-md-9">
-                  <h4>{expenseToView.category_label}</h4>
+                  <h4 style={{ color: '#5e8bb0' }}>{expenseToView.category_label || 'Others'}</h4>
                   <h3 className="text-danger">{formatCurrency(expenseToView.amount)}</h3>
                   <p className="text-muted mb-1">
                     <CalendarTodayIcon fontSize="small" className="me-2" />
-                    {dayjs(expenseToView.date).format('DD MMMM YYYY')}
+                    {expenseToView.date ? dayjs(expenseToView.date).format('DD MMMM YYYY') : 'N/A'}
                   </p>
                   <p className="text-muted">
                     <ReceiptIcon fontSize="small" className="me-2" />
@@ -927,23 +1014,23 @@ const ManageExpenses = () => {
               
               <div className="row">
                 <div className="col-md-12 mb-3">
-                  <h6>Description</h6>
-                  <p className="p-2 bg-light rounded">
-                    {expenseToView.description}
+                  <h6 style={{ color: '#525252ea' }}>Description</h6>
+                  <p className="p-2 bg-light rounded" style={{ color: '#716e6ec5' }}>
+                    {expenseToView.description || 'N/A'}
                   </p>
                 </div>
                 
                 <div className="col-md-6 mb-3">
-                  <h6>Payment Mode</h6>
-                  <p>
+                  <h6 style={{ color: '#525252ea' }}>Payment Mode</h6>
+                  <p style={{ color: '#716e6ec5' }}>
                     <PaidIcon fontSize="small" className="me-2" />
-                    {expenseToView.payment_mode}
+                    {expenseToView.payment_mode || 'Cash'}
                   </p>
                 </div>
                 
                 <div className="col-md-6 mb-3">
-                  <h6>Remarks</h6>
-                  <p className="p-2 bg-light rounded">
+                  <h6 style={{ color: '#525252ea' }}>Remarks</h6>
+                  <p className="p-2 bg-light rounded" style={{ color: '#716e6ec5' }}>
                     {expenseToView.remarks || 'No remarks'}
                   </p>
                 </div>
@@ -952,7 +1039,7 @@ const ManageExpenses = () => {
           )}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowViewModal(false)}>
+          <Button variant="secondary" onClick={() => setShowViewModal(false)} style={{ color: '#828181' }}>
             Close
           </Button>
         </Modal.Footer>
@@ -965,13 +1052,13 @@ const ManageExpenses = () => {
         size="lg"
       >
         <Modal.Header closeButton>
-          <Modal.Title>Edit Expense</Modal.Title>
+          <Modal.Title style={{ color: '#535252' }}>Edit Expense</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={handleEdit}>
             <div className="row">
               <div className="col-md-6 mb-3">
-                <label className="form-label">Date *</label>
+                <label className="form-label" style={{ color: '#7f7e7e' }}>Date *</label>
                 <DatePicker
                   value={editDate}
                   onChange={(newValue) => {
@@ -983,14 +1070,15 @@ const ManageExpenses = () => {
                     textField: {
                       fullWidth: true,
                       error: !!editDateError,
-                      helperText: editDateError
+                      helperText: editDateError,
+                      disabled: loading
                     }
                   }}
                 />
               </div>
               
               <div className="col-md-6 mb-3">
-                <label className="form-label">Category *</label>
+                <label className="form-label" style={{ color: '#7f7e7e' }}>Category *</label>
                 <select
                   className={`form-select ${editCategoryError ? 'is-invalid' : ''}`}
                   value={editCategory}
@@ -998,6 +1086,7 @@ const ManageExpenses = () => {
                     setEditCategory(e.target.value);
                     setEditCategoryError('');
                   }}
+                  disabled={loading}
                 >
                   <option value="">Select Category</option>
                   {expenseCategories.map(category => (
@@ -1012,7 +1101,7 @@ const ManageExpenses = () => {
             
             <div className="row">
               <div className="col-md-12 mb-3">
-                <label className="form-label">Description *</label>
+                <label className="form-label" style={{ color: '#7f7e7e' }}>Description *</label>
                 <textarea
                   className={`form-control ${editDescriptionError ? 'is-invalid' : ''}`}
                   value={editDescription}
@@ -1022,6 +1111,7 @@ const ManageExpenses = () => {
                   }}
                   placeholder="Enter expense description"
                   rows={3}
+                  disabled={loading}
                 />
                 {editDescriptionError && <div className="text-danger small">{editDescriptionError}</div>}
               </div>
@@ -1029,7 +1119,7 @@ const ManageExpenses = () => {
             
             <div className="row">
               <div className="col-md-6 mb-3">
-                <label className="form-label">Amount (₹) *</label>
+                <label className="form-label" style={{ color: '#7f7e7e' }}>Amount (₹) *</label>
                 <input
                   type="number"
                   className={`form-control ${editAmountError ? 'is-invalid' : ''}`}
@@ -1040,16 +1130,18 @@ const ManageExpenses = () => {
                   }}
                   placeholder="Enter amount"
                   step="0.01"
+                  disabled={loading}
                 />
                 {editAmountError && <div className="text-danger small">{editAmountError}</div>}
               </div>
               
               <div className="col-md-6 mb-3">
-                <label className="form-label">Payment Mode</label>
+                <label className="form-label" style={{ color: '#7f7e7e' }}>Payment Mode</label>
                 <select
                   className="form-select"
                   value={editPaymentMode}
                   onChange={(e) => setEditPaymentMode(e.target.value)}
+                  disabled={loading}
                 >
                   {paymentModes.map(mode => (
                     <option key={mode} value={mode}>
@@ -1062,24 +1154,26 @@ const ManageExpenses = () => {
             
             <div className="row">
               <div className="col-md-6 mb-3">
-                <label className="form-label">Receipt Number</label>
+                <label className="form-label" style={{ color: '#7f7e7e' }}>Receipt Number</label>
                 <input
                   type="text"
                   className="form-control"
                   value={editReceiptNo}
                   onChange={(e) => setEditReceiptNo(e.target.value)}
                   placeholder="Enter receipt number"
+                  disabled={loading}
                 />
               </div>
               
               <div className="col-md-6 mb-3">
-                <label className="form-label">Remarks</label>
+                <label className="form-label" style={{ color: '#7f7e7e' }}>Remarks</label>
                 <input
                   type="text"
                   className="form-control"
                   value={editRemarks}
                   onChange={(e) => setEditRemarks(e.target.value)}
                   placeholder="Any additional remarks"
+                  disabled={loading}
                 />
               </div>
             </div>
@@ -1088,11 +1182,11 @@ const ManageExpenses = () => {
           </form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowEditModal(false)}>
+          <Button variant="secondary" onClick={() => setShowEditModal(false)} disabled={loading} style={{ color: '#4b4a4a' }}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={handleEdit}>
-            Update Expense
+          <Button variant="primary" onClick={handleEdit} disabled={loading} style={{ color: '#282727' }}>
+            {loading ? 'Updating...' : 'Update Expense'}
           </Button>
         </Modal.Footer>
       </Modal>
@@ -1104,7 +1198,7 @@ const ManageExpenses = () => {
         size="lg"
       >
         <Modal.Header closeButton>
-          <Modal.Title style={{color : '#0d0909'}}>Add New Expense</Modal.Title>
+          <Modal.Title style={{ color: '#0d0909' }}>Add New Expense</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={handleAdd}>
@@ -1122,14 +1216,15 @@ const ManageExpenses = () => {
                     textField: {
                       fullWidth: true,
                       error: !!addDateError,
-                      helperText: addDateError
+                      helperText: addDateError,
+                      disabled: loading
                     }
                   }}
                 />
               </div>
               
               <div className="col-md-6 mb-3">
-                <label className="form-label" style={{ color: '#898989' }} >Category *</label>
+                <label className="form-label" style={{ color: '#898989' }}>Category *</label>
                 <select
                   className={`form-select ${addCategoryError ? 'is-invalid' : ''}`}
                   value={addCategory}
@@ -1137,6 +1232,7 @@ const ManageExpenses = () => {
                     setAddCategory(e.target.value);
                     setAddCategoryError('');
                   }}
+                  disabled={loading}
                 >
                   <option value="">Select Category</option>
                   {expenseCategories.map(category => (
@@ -1161,6 +1257,7 @@ const ManageExpenses = () => {
                   }}
                   placeholder="Enter expense description"
                   rows={3}
+                  disabled={loading}
                 />
                 {addDescriptionError && <div className="text-danger small">{addDescriptionError}</div>}
               </div>
@@ -1179,6 +1276,7 @@ const ManageExpenses = () => {
                   }}
                   placeholder="Enter amount"
                   step="0.01"
+                  disabled={loading}
                 />
                 {addAmountError && <div className="text-danger small">{addAmountError}</div>}
               </div>
@@ -1189,6 +1287,7 @@ const ManageExpenses = () => {
                   className="form-select"
                   value={addPaymentMode}
                   onChange={(e) => setAddPaymentMode(e.target.value)}
+                  disabled={loading}
                 >
                   {paymentModes.map(mode => (
                     <option key={mode} value={mode}>
@@ -1204,11 +1303,16 @@ const ManageExpenses = () => {
                 <label className="form-label" style={{ color: '#898989' }}>Receipt Number</label>
                 <input
                   type="text"
-                  className="form-control"
+                  className={`form-control ${addReceiptError ? 'is-invalid' : ''}`}
                   value={addReceiptNo}
-                  onChange={(e) => setAddReceiptNo(e.target.value)}
+                  onChange={(e) => {
+                    setAddReceiptNo(e.target.value);
+                    setAddReceiptError('');
+                  }}
                   placeholder="Enter receipt number"
+                  disabled={loading}
                 />
+                {addReceiptError && <div className="text-danger small">{addReceiptError}</div>}
               </div>
               
               <div className="col-md-6 mb-3">
@@ -1219,6 +1323,7 @@ const ManageExpenses = () => {
                   value={addRemarks}
                   onChange={(e) => setAddRemarks(e.target.value)}
                   placeholder="Any additional remarks"
+                  disabled={loading}
                 />
               </div>
             </div>
@@ -1227,11 +1332,11 @@ const ManageExpenses = () => {
           </form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowAddModal(false)} style={{backgroundColor : "#7a77779d", color : "#ffff"}}>
+          <Button variant="secondary" onClick={() => setShowAddModal(false)} disabled={loading} style={{ backgroundColor: '#7a77779d', color: '#ffff' }}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={handleAdd} style={{backgroundColor : "#3268f1", color : "#ffff"}}>
-            Add Expense
+          <Button variant="primary" onClick={handleAdd} disabled={loading} style={{ backgroundColor: '#3268f1', color: '#ffff' }}>
+            {loading ? 'Adding...' : 'Add Expense'}
           </Button>
         </Modal.Footer>
       </Modal>
@@ -1243,17 +1348,17 @@ const ManageExpenses = () => {
         centered
       >
         <Modal.Header closeButton>
-          <Modal.Title>Confirm Delete</Modal.Title>
+          <Modal.Title style={{ color: '#545252' }}>Confirm Delete</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ color: '#989898' }}>
           Are you sure you want to delete this expense record? This action cannot be undone.
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+          <Button variant="secondary" onClick={() => setShowDeleteModal(false)} disabled={loading} style={{ color: '#8e8d8d' }}>
             Cancel
           </Button>
-          <Button variant="danger" onClick={deleteExpense}>
-            Delete
+          <Button variant="danger" onClick={deleteExpense} disabled={loading} style={{ color: '#3d3d3d' }}>
+            {loading ? 'Deleting...' : 'Delete'}
           </Button>
         </Modal.Footer>
       </Modal>

@@ -81,9 +81,9 @@ const ManageFaq = () => {
                 console.error('Error fetching faq data :', error);
             });
     };
-    // React.useEffect(() => {
-    //     fetchData();
-    // }, []);
+    React.useEffect(() => {
+        fetchData();
+    }, []);
 
     const handleAction = (action, faqData) => {
         if (action === 'Edit') {

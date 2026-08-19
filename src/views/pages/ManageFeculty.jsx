@@ -33,7 +33,6 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import SubjectIcon from '@mui/icons-material/Subject';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import { Avatar } from '@mui/material';
-import { color } from 'framer-motion';
 
 const columns = [
     { id: 'S_No', label: 'S.No.', align: 'center' },
@@ -67,6 +66,8 @@ const ManageFaculty = () => {
     const [facultyToDelete, setFacultyToDelete] = useState('');
     const [facultyToEdit, setFacultyToEdit] = useState(null);
     const [facultyToView, setFacultyToView] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [apiError, setApiError] = useState('');
     
     // Edit state
     const [editName, setEditName] = useState('');
@@ -75,6 +76,8 @@ const ManageFaculty = () => {
     const [editSubjects, setEditSubjects] = useState('');
     const [editExperience, setEditExperience] = useState('');
     const [editQualification, setEditQualification] = useState('');
+    const [editSalary, setEditSalary] = useState('');
+    const [editBond, setEditBond] = useState('');
     
     // Error states
     const [editNameError, setEditNameError] = useState('');
@@ -88,7 +91,7 @@ const ManageFaculty = () => {
     const [addPhone, setAddPhone] = useState('');
     const [addSubjects, setAddSubjects] = useState('');
     const [addExperience, setAddExperience] = useState('');
-    const [addBond, setAddbond] = useState('');
+    const [addBond, setAddBond] = useState('');
     const [addFacultysalary, setAddFacultysalary] = useState('');
     const [addQualification, setAddQualification] = useState('');
     
@@ -113,64 +116,24 @@ const ManageFaculty = () => {
         setPage(newPage);
     };
 
-    // Commented API call - will use mock data
+    // Fetch all faculty members
     const fetchData = () => {
-        // axios
-        //     .get(`${API_URL}get_all_faculty`)
-        //     .then((response) => {
-        //         setFacultyData(response.data.faculty_arr || []);
-        //     })
-        //     .catch((error) => {
-        //         console.error('Error fetching faculty data:', error);
-        //     });
-        
-        // Mock data for demonstration
-        const mockFacultyData = [
-            {
-                s_no: 1,
-                faculty_id: 'F001',
-                name: 'Dr. Rajesh Sharma',
-                email: 'rajesh.sharma@example.com',
-                phone: '9876543210',
-                subjects: 'Mathematics, Physics',
-                experience: '10 years',
-                salary: '10,000',
-                bond: '2 yrs',
-                
-                qualification: 'PhD in Mathematics',
-                profile_image: 'https://randomuser.me/api/portraits/men/32.jpg',
-                join_date: '2022-01-15'
-            },
-            {
-                s_no: 2,
-                faculty_id: 'F002',
-                name: 'Prof. Priya Singh',
-                email: 'priya.singh@example.com',
-                phone: '9876543211',
-                subjects: 'English Literature',
-                experience: '8 years',
-                salary: '15,000',
-                bond: '6 yrs',
-                qualification: 'MA in English',
-                profile_image: 'https://randomuser.me/api/portraits/women/44.jpg',
-                join_date: '2021-03-20'
-            },
-            {
-                s_no: 3,
-                faculty_id: 'F003',
-                name: 'Dr. Amit Verma',
-                email: 'amit.verma@example.com',
-                phone: '9876543212',
-                subjects: 'Computer Science',
-                experience: '12 years',
-                salary: '25,000',
-                bond: '1 yrs',
-                qualification: 'MTech in CS',
-                profile_image: 'https://randomuser.me/api/portraits/men/67.jpg',
-                join_date: '2020-06-10'
-            }
-        ];
-        setFacultyData(mockFacultyData);
+        setLoading(true);
+        axios
+            .get(`${API_URL}get_all_feculty_members`)
+            .then((response) => {
+                if (response.data.success) {
+                    setFacultyData(response.data.feculty_arr || []);
+                } else {
+                    setApiError(response.data.msg || 'Failed to fetch faculty data');
+                }
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.error('Error fetching faculty data:', error);
+                setApiError('Error fetching faculty data. Please try again.');
+                setLoading(false);
+            });
     };
 
     React.useEffect(() => {
@@ -183,45 +146,68 @@ const ManageFaculty = () => {
             setFacultyToEdit(facultyData);
             setEditName(facultyData.name || '');
             setEditEmail(facultyData.email || '');
-            setEditPhone(facultyData.phone || '');
-            setEditSubjects(facultyData.subjects || '');
+            setEditPhone(facultyData.mobile || facultyData.phone || '');
+            setEditSubjects(facultyData.subject || facultyData.subjects || '');
             setEditExperience(facultyData.experience || '');
             setEditQualification(facultyData.qualification || '');
-            setFacultyToDelete(facultyData.faculty_id || facultyData.s_no);
+            setEditSalary(facultyData.salary || '');
+            setEditBond(facultyData.feculty_bond || facultyData.bond || '');
+            setFacultyToDelete(facultyData.feculty_id || facultyData.faculty_id);
         } else if (action === 'Delete') {
             setShowDeleteModal(true);
-            setFacultyToDelete(facultyData.faculty_id || facultyData.s_no);
+            setFacultyToDelete(facultyData.feculty_id || facultyData.faculty_id);
             setSelectedIndex(null);
         } else if (action === 'view') {
-            setShowViewModal(true);
-            setFacultyToView(facultyData);
+            // Fetch single faculty data for view
+            fetchFacultyById(facultyData.feculty_id || facultyData.faculty_id);
             setSelectedIndex(null);
         }
     };
 
-    const deleteFaculty = () => {
-        // Commented API call
-        // axios
-        //     .post(`${API_URL}delete_faculty`, { faculty_id: facultyToDelete })
-        //     .then((response) => {
-        //         if (response.data.success) {
-        //             setShowDeleteModal(false);
-        //             fetchData();
-        //         } else {
-        //             console.error('Error deleting faculty:', response.data.message);
-        //         }
-        //     })
-        //     .catch((error) => {
-        //         console.error('Error deleting faculty:', error);
-        //     });
-        
-        // Mock delete
-        setFacultyData(prev => prev.filter(faculty => 
-            faculty.faculty_id !== facultyToDelete && faculty.s_no !== facultyToDelete
-        ));
-        setShowDeleteModal(false);
+    // Fetch single faculty by ID
+    const fetchFacultyById = (facultyId) => {
+        setLoading(true);
+        axios
+            .get(`${API_URL}get_fecultyby_id/${facultyId}`)
+            .then((response) => {
+                if (response.data.success) {
+                    const data = response.data.data;
+                    setFacultyToView(data && data.length > 0 ? data[0] : null);
+                    setShowViewModal(true);
+                } else {
+                    setApiError(response.data.msg || 'Failed to fetch faculty details');
+                }
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.error('Error fetching faculty details:', error);
+                setApiError('Error fetching faculty details. Please try again.');
+                setLoading(false);
+            });
     };
 
+    // Delete faculty
+    const deleteFaculty = () => {
+        setLoading(true);
+        axios
+            .post(`${API_URL}delete_feculty/${facultyToDelete}`)
+            .then((response) => {
+                if (response.data.success) {
+                    setShowDeleteModal(false);
+                    fetchData(); // Refresh the list
+                } else {
+                    setApiError(response.data.msg || 'Error deleting faculty');
+                }
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.error('Error deleting faculty:', error);
+                setApiError('Error deleting faculty. Please try again.');
+                setLoading(false);
+            });
+    };
+
+    // Edit/Update faculty
     const handleEdit = (e) => {
         e.preventDefault();
 
@@ -259,52 +245,40 @@ const ManageFaculty = () => {
             return;
         }
 
-        // Commented API call
-        // const data = new FormData();
-        // data.append('faculty_id', facultyToDelete);
-        // data.append('name', editName);
-        // data.append('email', editEmail);
-        // data.append('phone', editPhone);
-        // data.append('subjects', editSubjects);
-        // data.append('experience', editExperience);
-        // data.append('qualification', editQualification);
+        setLoading(true);
 
-        // axios
-        //     .post(`${API_URL}edit_faculty`, data)
-        //     .then((response) => {
-        //         if (response.data.success) {
-        //             fetchData();
-        //             setShowEditModal(false);
-        //             resetEditForm();
-        //         } else {
-        //             setError(response.data.message || 'Error updating faculty');
-        //         }
-        //     })
-        //     .catch((error) => {
-        //         console.error('Error updating faculty:', error);
-        //         setError('Error updating faculty.');
-        //     });
+        // Prepare data for API
+        const facultyData = {
+            name: editName,
+            email: editEmail,
+            mobile: editPhone,
+            subject: editSubjects,
+            experience: editExperience,
+            salary: editSalary || '0',
+            bond: editBond || '0',
+            qualification: editQualification
+        };
 
-        // Mock update
-        setFacultyData(prev => prev.map(faculty => {
-            if (faculty.faculty_id === facultyToDelete || faculty.s_no === facultyToDelete) {
-                return {
-                    ...faculty,
-                    name: editName,
-                    email: editEmail,
-                    phone: editPhone,
-                    subjects: editSubjects,
-                    experience: editExperience,
-                    qualification: editQualification
-                };
-            }
-            return faculty;
-        }));
-
-        setShowEditModal(false);
-        resetEditForm();
+        axios
+            .put(`${API_URL}edit_feculty/${facultyToDelete}`, facultyData)
+            .then((response) => {
+                if (response.data.success) {
+                    fetchData(); // Refresh the list
+                    setShowEditModal(false);
+                    resetEditForm();
+                } else {
+                    setError(response.data.msg || 'Error updating faculty');
+                }
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.error('Error updating faculty:', error);
+                setError('Error updating faculty. Please try again.');
+                setLoading(false);
+            });
     };
 
+    // Add new faculty
     const handleAdd = (e) => {
         e.preventDefault();
 
@@ -342,49 +316,41 @@ const ManageFaculty = () => {
             return;
         }
 
-        // Commented API call
-        // const data = new FormData();
-        // data.append('name', addName);
-        // data.append('email', addEmail);
-        // data.append('phone', addPhone);
-        // data.append('subjects', addSubjects);
-        // data.append('experience', addExperience);
-        // data.append('qualification', addQualification);
-        
-        // axios
-        //     .post(`${API_URL}add_faculty`, data)
-        //     .then((response) => {
-        //         if (response.data.success) {
-        //             setShowModal2(false);
-        //             fetchData();
-        //             resetAddForm();
-        //         } else {
-        //             setError(response.data.message || 'Error adding faculty');
-        //         }
-        //     })
-        //     .catch((error) => {
-        //         console.error('Error adding faculty:', error);
-        //     });
+        setLoading(true);
 
-        // Mock add
-        const newFaculty = {
-            s_no: facultyData.length + 1,
-            faculty_id: `F${(facultyData.length + 1).toString().padStart(3, '0')}`,
+        // Prepare data for API
+        const facultyData = {
             name: addName,
             email: addEmail,
-            phone: addPhone,
-            subjects: addSubjects,
+            mobile: addPhone,
+            subject: addSubjects,
             experience: addExperience,
-            addFacultysalary : addFacultysalary,
-            addBond : addBond,
-            qualification: addQualification,
-            profile_image: 'https://randomuser.me/api/portraits/men/' + (Math.floor(Math.random() * 100) + 1) + '.jpg',
-            join_date: new Date().toISOString().split('T')[0]
+            salary: addFacultysalary || '0',
+            bond: addBond || '0',
+            qualification: addQualification
         };
 
-        setFacultyData(prev => [...prev, newFaculty]);
-        setShowModal2(false);
-        resetAddForm();
+        axios
+            .post(`${API_URL}add_new_feculty`, facultyData)
+            .then((response) => {
+                if (response.data.success) {
+                    setShowModal2(false);
+                    fetchData(); // Refresh the list
+                    resetAddForm();
+                } else {
+                    setError(response.data.msg || 'Error adding faculty');
+                    // Check if it's a duplicate email error
+                    if (response.data.key === 20) {
+                        setAddEmailError('This email is already registered');
+                    }
+                }
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.error('Error adding faculty:', error);
+                setError('Error adding faculty. Please try again.');
+                setLoading(false);
+            });
     };
 
     const resetEditForm = () => {
@@ -394,6 +360,8 @@ const ManageFaculty = () => {
         setEditSubjects('');
         setEditExperience('');
         setEditQualification('');
+        setEditSalary('');
+        setEditBond('');
         setEditNameError('');
         setEditEmailError('');
         setEditPhoneError('');
@@ -409,7 +377,7 @@ const ManageFaculty = () => {
         setAddSubjects('');
         setAddExperience('');
         setAddFacultysalary('');
-        setAddbond('')
+        setAddBond('');
         setAddQualification('');
         setAddNameError('');
         setAddEmailError('');
@@ -425,10 +393,10 @@ const ManageFaculty = () => {
         const lowercasedTerm = searchQuery.toLowerCase();
         const nameMatch = faculty.name?.toLowerCase().includes(lowercasedTerm);
         const emailMatch = faculty.email?.toLowerCase().includes(lowercasedTerm);
-        const phoneMatch = faculty.phone?.toLowerCase().includes(lowercasedTerm);
-        const subjectsMatch = faculty.subjects?.toLowerCase().includes(lowercasedTerm);
+        const phoneMatch = faculty.mobile?.toLowerCase().includes(lowercasedTerm);
+        const subjectsMatch = faculty.subject?.toLowerCase().includes(lowercasedTerm);
         const qualificationMatch = faculty.qualification?.toLowerCase().includes(lowercasedTerm);
-        const dateMatch = faculty.join_date ? String(faculty.join_date).toLowerCase().includes(lowercasedTerm) : false;
+        const dateMatch = faculty.createtime ? String(faculty.createtime).toLowerCase().includes(lowercasedTerm) : false;
         
         return nameMatch || emailMatch || phoneMatch || subjectsMatch || qualificationMatch || dateMatch;
     });
@@ -484,12 +452,34 @@ const ManageFaculty = () => {
                 <Button 
                     className="btn" 
                     onClick={() => setShowModal2(true)}
-                    style={{ width: '180px'  , backgroundColor: '#3268f1', color: '#fff' }}
+                    style={{ width: '180px', backgroundColor: '#3268f1', color: '#fff' }}
+                    disabled={loading}
                 >
                     <AddIcon />
                     Add Faculty
                 </Button>
             </Box>
+
+            {apiError && (
+                <div className="alert alert-danger" style={{ marginTop: '10px' }}>
+                    {apiError}
+                    <button 
+                        className="close" 
+                        onClick={() => setApiError('')}
+                        style={{ float: 'right', background: 'none', border: 'none' }}
+                    >
+                        &times;
+                    </button>
+                </div>
+            )}
+
+            {loading && (
+                <div style={{ textAlign: 'center', padding: '20px' }}>
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            )}
             
             <Paper sx={{ width: '100%', marginTop: '20px' }}>
                 <TableContainer sx={{ maxHeight: 640 }}>
@@ -504,10 +494,10 @@ const ManageFaculty = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {filteredFaculty.length > 0 ? (
+                            {!loading && filteredFaculty.length > 0 ? (
                                 filteredFaculty.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
-                                    <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-                                        <TableCell style={{ textAlign: 'center' }}>{row.s_no}</TableCell>
+                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.feculty_id || index}>
+                                        <TableCell style={{ textAlign: 'center' }}>{row.s_no || index + 1}</TableCell>
                                         
                                         <TableCell style={{ textAlign: 'center' }}>
                                             <Button
@@ -543,94 +533,112 @@ const ManageFaculty = () => {
 
                                         <TableCell style={{ textAlign: 'center' }}>
                                             <Avatar
-                                                src={row.profile_image}
-                                                alt={row.name}
-                                                sx={{ width: 40, height: 40, margin: 'auto' }}
+                                                sx={{ width: 40, height: 40, margin: 'auto', backgroundColor: '#3268f1' }}
                                             >
-                                                {row.name?.charAt(0)}
+                                                {row.name?.charAt(0)?.toUpperCase() || 'F'}
                                             </Avatar>
                                         </TableCell>
 
                                         <TableCell style={{ textAlign: 'center' }}>
                                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                                 <PersonIcon sx={{ mr: 1, fontSize: 16 }} />
-                                                {row.name}
+                                                {row.name || 'N/A'}
                                             </div>
                                         </TableCell>
 
                                         <TableCell style={{ textAlign: 'center' }}>
                                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                                 <EmailIcon sx={{ mr: 1, fontSize: 16 }} />
-                                                {row.email}
+                                                {row.email || 'N/A'}
                                             </div>
                                         </TableCell>
 
                                         <TableCell style={{ textAlign: 'center' }}>
                                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                                 <PhoneIcon sx={{ mr: 1, fontSize: 16 }} />
-                                                {row.phone}
+                                                {row.mobile || row.phone || 'N/A'}
                                             </div>
                                         </TableCell>
 
                                         <TableCell style={{ textAlign: 'center' }}>
                                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                                 <SubjectIcon sx={{ mr: 1, fontSize: 16 }} />
-                                                {row.subjects}
+                                                {row.subject || row.subjects || 'N/A'}
                                             </div>
                                         </TableCell>
 
                                         <TableCell style={{ textAlign: 'center' }}>
-                                            {row.experience}
-                                        </TableCell>
-
-                                         <TableCell style={{ textAlign: 'center' }}>
-                                            {row.salary}
-                                        </TableCell>
-
-                                         <TableCell style={{ textAlign: 'center' }}>
-                                            {row.bond}
+                                            {row.experience || 'N/A'}
                                         </TableCell>
 
                                         <TableCell style={{ textAlign: 'center' }}>
-                                            {row.qualification}
+                                            {row.salary || 'N/A'}
+                                        </TableCell>
+
+                                        <TableCell style={{ textAlign: 'center' }}>
+                                            {row.feculty_bond || row.bond || 'N/A'}
+                                        </TableCell>
+
+                                        <TableCell style={{ textAlign: 'center' }}>
+                                            {row.qualification || 'N/A'}
                                         </TableCell>
 
                                         <TableCell style={{ textAlign: 'center' }}>
                                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                                 <CalendarTodayIcon sx={{ mr: 1, fontSize: 16 }} />
-                                                {row.join_date}
+                                                {row.createtime || row.join_date || 'N/A'}
                                             </div>
                                         </TableCell>
                                     </TableRow>
                                 ))
                             ) : (
-                                <TableRow>
-                                    <TableCell colSpan={columns.length} style={{ textAlign: 'center', padding: '20px' }}>
-                                        No Faculty Data Available
-                                    </TableCell>
-                                </TableRow>
+                                !loading && (
+                                    <TableRow>
+                                        <TableCell colSpan={columns.length} style={{ textAlign: 'center', padding: '20px' }}>
+                                            {searchQuery ? 'No faculty members found matching your search' : 'No Faculty Data Available'}
+                                        </TableCell>
+                                    </TableRow>
+                                )
                             )}
                         </TableBody>
                     </Table>
                 </TableContainer>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <p style={{ marginLeft: '26px', marginTop: '15px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 20px' }}>
+                    <p>
                         {`Showing ${Math.min(filteredFaculty.length > 0 ? page * rowsPerPage + 1 : 0, filteredFaculty.length)} to ${Math.min((page + 1) * rowsPerPage, filteredFaculty.length)} of ${filteredFaculty.length} entries`}
                     </p>
-                    <div style={{ marginRight: '15px' }}>
+                    <div>
                         <button 
                             onClick={() => handleChangePage(null, page - 1)} 
-                            disabled={page === 0} 
-                            style={{ marginRight: '8px' , border: '1px solid #bcb9b9', padding: '5px 10px', borderRadius: '4px', color: '#fff', cursor: page === 0 ? 'not-allowed' : 'pointer' , backgroundColor : 'transparent' }}
+                            disabled={page === 0 || loading} 
+                            style={{ 
+                                marginRight: '8px', 
+                                border: '1px solid #bcb9b9', 
+                                padding: '5px 10px', 
+                                borderRadius: '4px', 
+                                color: '#333',
+                                cursor: (page === 0 || loading) ? 'not-allowed' : 'pointer',
+                                backgroundColor: 'transparent',
+                                opacity: (page === 0 || loading) ? 0.5 : 1
+                            }}
                         >
                             {'<'}
                         </button>
                         <button
                             onClick={() => handleChangePage(null, page + 1)}
-                            disabled={(page + 1) * rowsPerPage >= filteredFaculty.length}
-                            style={{ marginRight: '8px' , border: '1px solid #bcb9b9', padding: '5px 10px', borderRadius: '4px', color: '#fff', cursor: page === 0 ? 'not-allowed' : 'pointer' , backgroundColor : 'transparent' }}
-                            >
+                            disabled={(page + 1) * rowsPerPage >= filteredFaculty.length || loading}
+                            style={{ 
+                                marginRight: '8px', 
+                                border: '1px solid #bcb9b9', 
+                                padding: '5px 10px', 
+                                borderRadius: '4px', 
+                                color: '#333',
+                                cursor: ((page + 1) * rowsPerPage >= filteredFaculty.length || loading) ? 'not-allowed' : 'pointer',
+                                backgroundColor: 'transparent',
+                                opacity: ((page + 1) * rowsPerPage >= filteredFaculty.length || loading) ? 0.5 : 1
+                            }}
+                        >
                             {'>'}
                         </button>
                     </div>
@@ -651,26 +659,24 @@ const ManageFaculty = () => {
                                 <div className="row mb-4">
                                     <div className="col-md-3 d-flex justify-content-center">
                                         <Avatar
-                                            src={facultyToView.profile_image}
-                                            alt={facultyToView.name}
-                                            sx={{ width: 120, height: 120 }}
+                                            sx={{ width: 120, height: 120, backgroundColor: '#3268f1', fontSize: '48px' }}
                                         >
-                                            {facultyToView.name?.charAt(0)}
+                                            {facultyToView.name?.charAt(0)?.toUpperCase() || 'F'}
                                         </Avatar>
                                     </div>
                                     <div className="col-md-9">
-                                        <h4 style={{color : "#5e8bb0"}}>{facultyToView.name}</h4>
+                                        <h4 style={{color : "#5e8bb0"}}>{facultyToView.name || 'N/A'}</h4>
                                         <p className="text-muted mb-1">
                                             <EmailIcon fontSize="small" className="me-2" />
-                                            {facultyToView.email}
+                                            {facultyToView.email || 'N/A'}
                                         </p>
                                         <p className="text-muted mb-1">
                                             <PhoneIcon fontSize="small" className="me-2" />
-                                            {facultyToView.phone}
+                                            {facultyToView.mobile || facultyToView.phone || 'N/A'}
                                         </p>
                                         <p className="text-muted">
                                             <CalendarTodayIcon fontSize="small" className="me-2" />
-                                            Joined: {facultyToView.join_date}
+                                            Joined: {facultyToView.createtime || facultyToView.join_date || 'N/A'}
                                         </p>
                                     </div>
                                 </div>
@@ -680,25 +686,24 @@ const ManageFaculty = () => {
                                         <h6 style={{color : "#525252ea"}}>Subjects</h6>
                                         <p style={{color : "#716e6ec5"}}>
                                             <SubjectIcon fontSize="small" className="me-2" />
-                                            {facultyToView.subjects}
+                                            {facultyToView.subject || facultyToView.subjects || 'N/A'}
                                         </p>
                                     </div>
                                     <div className="col-md-6 mb-3">
                                         <h6 style={{color : "#525252ea"}}>Experience</h6>
-                                        <p style={{color : "#716e6ec5"}}>{facultyToView.experience}</p>
+                                        <p style={{color : "#716e6ec5"}}>{facultyToView.experience || 'N/A'}</p>
                                     </div>
-                                     <div className="col-md-6 mb-3">
+                                    <div className="col-md-6 mb-3">
                                         <h6 style={{color : "#525252ea"}}>Salary</h6>
-                                        <p style={{color : "#716e6ec5"}}>{facultyToView.salary}</p>
+                                        <p style={{color : "#716e6ec5"}}>{facultyToView.salary || 'N/A'}</p>
                                     </div>
-
-                                     <div className="col-md-6 mb-3">
+                                    <div className="col-md-6 mb-3">
                                         <h6 style={{color : "#525252ea"}}>Bond</h6>
-                                        <p style={{color : "#716e6ec5"}}>{facultyToView.bond}</p>
+                                        <p style={{color : "#716e6ec5"}}>{facultyToView.feculty_bond || facultyToView.bond || 'N/A'}</p>
                                     </div>
                                     <div className="col-md-12 mb-3">
                                         <h6 style={{color : "#525252ea"}}>Qualification</h6>
-                                        <p style={{color : "#716e6ec5"}}>{facultyToView.qualification}</p>
+                                        <p style={{color : "#716e6ec5"}}>{facultyToView.qualification || 'N/A'}</p>
                                     </div>
                                 </div>
                             </div>
@@ -734,6 +739,7 @@ const ManageFaculty = () => {
                                             setEditNameError('');
                                         }}
                                         placeholder="Enter faculty name"
+                                        disabled={loading}
                                     />
                                     {editNameError && <div className="text-danger small">{editNameError}</div>}
                                 </div>
@@ -749,6 +755,7 @@ const ManageFaculty = () => {
                                             setEditEmailError('');
                                         }}
                                         placeholder="Enter email"
+                                        disabled={loading}
                                     />
                                     {editEmailError && <div className="text-danger small">{editEmailError}</div>}
                                 </div>
@@ -767,6 +774,7 @@ const ManageFaculty = () => {
                                         }}
                                         placeholder="Enter 10-digit phone number"
                                         maxLength="10"
+                                        disabled={loading}
                                     />
                                     {editPhoneError && <div className="text-danger small">{editPhoneError}</div>}
                                 </div>
@@ -779,6 +787,7 @@ const ManageFaculty = () => {
                                         value={editSubjects}
                                         onChange={(e) => setEditSubjects(e.target.value)}
                                         placeholder="Enter subjects (comma separated)"
+                                        disabled={loading}
                                     />
                                 </div>
                             </div>
@@ -792,6 +801,33 @@ const ManageFaculty = () => {
                                         value={editExperience}
                                         onChange={(e) => setEditExperience(e.target.value)}
                                         placeholder="e.g., 5 years"
+                                        disabled={loading}
+                                    />
+                                </div>
+                                
+                                <div className="col-md-6 mb-3">
+                                    <label style={{color : "#7f7e7e"}} className="form-label">Salary</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        value={editSalary}
+                                        onChange={(e) => setEditSalary(e.target.value)}
+                                        placeholder="Enter salary"
+                                        disabled={loading}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="row">
+                                <div className="col-md-6 mb-3">
+                                    <label style={{color : "#7f7e7e"}} className="form-label">Bond</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        value={editBond}
+                                        onChange={(e) => setEditBond(e.target.value)}
+                                        placeholder="e.g., 2 years"
+                                        disabled={loading}
                                     />
                                 </div>
                                 
@@ -803,6 +839,7 @@ const ManageFaculty = () => {
                                         value={editQualification}
                                         onChange={(e) => setEditQualification(e.target.value)}
                                         placeholder="Enter qualification"
+                                        disabled={loading}
                                     />
                                 </div>
                             </div>
@@ -811,11 +848,11 @@ const ManageFaculty = () => {
                         </form>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button style={{color : "#4b4a4a"}} variant="secondary" onClick={handleCloseEditModal}>
+                        <Button style={{color : "#4b4a4a"}} variant="secondary" onClick={handleCloseEditModal} disabled={loading}>
                             Cancel
                         </Button>
-                        <Button style={{color : "#282727"}} variant="primary" onClick={handleEdit}>
-                            Update Faculty
+                        <Button style={{color : "#282727"}} variant="primary" onClick={handleEdit} disabled={loading}>
+                            {loading ? 'Updating...' : 'Update Faculty'}
                         </Button>
                     </Modal.Footer>
                 </Modal>
@@ -843,6 +880,7 @@ const ManageFaculty = () => {
                                             setAddNameError('');
                                         }}
                                         placeholder="Enter faculty name"
+                                        disabled={loading}
                                     />
                                     {addNameError && <div className="text-danger small">{addNameError}</div>}
                                 </div>
@@ -858,6 +896,7 @@ const ManageFaculty = () => {
                                             setAddEmailError('');
                                         }}
                                         placeholder="Enter email"
+                                        disabled={loading}
                                     />
                                     {addEmailError && <div className="text-danger small">{addEmailError}</div>}
                                 </div>
@@ -876,6 +915,7 @@ const ManageFaculty = () => {
                                         }}
                                         placeholder="Enter 10-digit phone number"
                                         maxLength="10"
+                                        disabled={loading}
                                     />
                                     {addPhoneError && <div className="text-danger small">{addPhoneError}</div>}
                                 </div>
@@ -888,6 +928,7 @@ const ManageFaculty = () => {
                                         value={addSubjects}
                                         onChange={(e) => setAddSubjects(e.target.value)}
                                         placeholder="Enter subjects (comma separated)"
+                                        disabled={loading}
                                     />
                                 </div>
                             </div>
@@ -896,33 +937,37 @@ const ManageFaculty = () => {
                                 <div className="col-md-6 mb-3">
                                     <label className="form-label" style={{color : "#898989"}}>Experience</label>
                                     <input
-                                        type="number"
+                                        type="text"
                                         className="form-control"
                                         value={addExperience}
                                         onChange={(e) => setAddExperience(e.target.value)}
                                         placeholder="e.g., 5 years"
+                                        disabled={loading}
                                     />
                                 </div>
                                 <div className="col-md-6 mb-3">
                                     <label className="form-label" style={{color : "#898989"}}>Faculty Salary</label>
                                     <input 
-                                        type="number"
-                                        name='salary'
+                                        type="text"
                                         className="form-control"
-                                        placeholder="Enter monthly ₹ Salary"
+                                        placeholder="Enter monthly salary"
                                         value={addFacultysalary}
                                         onChange={(e) => setAddFacultysalary(e.target.value)}
-                                        
+                                        disabled={loading}
                                     />
                                 </div>
+                            </div>
+
+                            <div className="row">
                                 <div className="col-md-6 mb-3">
                                     <label className="form-label" style={{color : "#898989"}}>Bond</label>
                                     <input
-                                        type="number"
+                                        type="text"
                                         className="form-control"
                                         value={addBond}
-                                        onChange={(e) => setAddbond(e.target.value)}
-                                        placeholder="e.g., 1 years , 2 years"
+                                        onChange={(e) => setAddBond(e.target.value)}
+                                        placeholder="e.g., 2 years"
+                                        disabled={loading}
                                     />
                                 </div>
                                 <div className="col-md-6 mb-3">
@@ -933,21 +978,20 @@ const ManageFaculty = () => {
                                         value={addQualification}
                                         onChange={(e) => setAddQualification(e.target.value)}
                                         placeholder="Enter qualification"
+                                        disabled={loading}
                                     />
                                 </div>
                             </div>
-
-                            
                             
                             {error && <div className="alert alert-danger">{error}</div>}
                         </form>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={handleCloseAddModal} style={{backgroundColor : "#7a77779d", color : "#ffff"}}>
+                        <Button variant="secondary" onClick={handleCloseAddModal} style={{backgroundColor : "#7a77779d", color : "#ffff"}} disabled={loading}>
                             Cancel
                         </Button>
-                        <Button variant="primary" onClick={handleAdd} style={{backgroundColor : "#3268f1", color : "#ffff"}}>
-                            Add Faculty
+                        <Button variant="primary" onClick={handleAdd} style={{backgroundColor : "#3268f1", color : "#ffff"}} disabled={loading}>
+                            {loading ? 'Adding...' : 'Add Faculty'}
                         </Button>
                     </Modal.Footer>
                 </Modal>
@@ -965,11 +1009,11 @@ const ManageFaculty = () => {
                         Are you sure you want to delete this faculty member? This action cannot be undone.
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button style={{color : "#8e8d8d"}} variant="secondary" onClick={() => setShowDeleteModal(false)}>
+                        <Button style={{color : "#8e8d8d"}} variant="secondary" onClick={() => setShowDeleteModal(false)} disabled={loading}>
                             Cancel
                         </Button>
-                        <Button style={{color : "#3d3d3d"}} variant="danger" onClick={deleteFaculty}>
-                            Delete
+                        <Button style={{color : "#3d3d3d"}} variant="danger" onClick={deleteFaculty} disabled={loading}>
+                            {loading ? 'Deleting...' : 'Delete'}
                         </Button>
                     </Modal.Footer>
                 </Modal>

@@ -29,11 +29,11 @@ const columns = [
   { id: 'number', label: 'S.No.', minWidth: 70, align: 'center' },
   { id: 'Action', label: 'Action', minWidth: 90, align: 'center' },
   { id: 'f_name', label: 'First Name', minWidth: 130, align: 'center' },
-  { id: 'l_name', label: 'Last Name', minWidth: 130, align: 'center' },
-  { id: 'image', label: 'Image', minWidth: 100, align: 'center' },
+  { id: 'address', label: 'Address', minWidth: 130, align: 'center' },
+  { id: 'admission_type', label: 'Admission Type', minWidth: 100, align: 'center' },
 
   { id: 'mobile', label: 'Mobile No.', minWidth: 170, align: 'center' },
-  { id: 'status', label: 'Status', minWidth: 170, align: 'center' },
+  // { id: 'status', label: 'Status', minWidth: 170, align: 'center' },
   { id: 'date_time', label: 'Create Date & Time', minWidth: 200, align: 'center' }
 ];
 
@@ -285,17 +285,19 @@ const CustomerReportedList = () => {
                                 {/* </Menu> */}
                               </TableCell>
                               <TableCell style={{ textAlign: 'center' }}>{row.f_name ? row.f_name : 'NA'}</TableCell>
-                              <TableCell style={{ textAlign: 'center' }}>{row.l_name ? row.l_name : 'NA'}</TableCell>
-                              <TableCell style={{ textAlign: 'center' }}>
+                              <TableCell style={{ textAlign: 'center' }}>{row.address ? row.address : 'NA'}</TableCell>
+                                 <TableCell style={{ textAlign: 'center' }}>{row.admission_type == 1 ? "Admission" : 'Enquiry'}</TableCell>
+                            
+                              {/* <TableCell style={{ textAlign: 'center' }}>
                                 <img
                                   alt={row.username}
                                   src={row.image ? `${IMAGE_PATH}${row.image}` : `${IMAGE_PATH}placeholder.png`}
                                   style={{ width: '70px', height: '70px', borderRadius: '50%', objectFit: 'cover' }}
                                 />
-                              </TableCell>
+                              </TableCell> */}
 
                               <TableCell style={{ textAlign: 'center' }}>{row.mobile}</TableCell>
-                              <TableCell style={{ textAlign: 'center' }}>
+                              {/* <TableCell style={{ textAlign: 'center' }}>
                                 <p
                                   className="active-btn"
                                   style={{
@@ -309,7 +311,7 @@ const CustomerReportedList = () => {
                                 >
                                   {row.active_flag === 1 ? 'active' : 'deactive'}
                                 </p>
-                              </TableCell>
+                              </TableCell> */}
                               <TableCell style={{ textAlign: 'center' }}>{row.createtime}</TableCell>
                             </TableRow>
                           ))}

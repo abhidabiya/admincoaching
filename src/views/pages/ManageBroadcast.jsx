@@ -57,7 +57,7 @@ const ManageBroadcast = () => {
       .then((response) => {
         const userOptions = response.data.res.map((user) => ({
           value: user.user_id,
-          label: user.f_name + ' ' + user.l_name,
+          label: user.name + '  ' + user.mobile,
         }));
         setUsers(userOptions);
       })

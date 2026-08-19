@@ -4,8 +4,8 @@ export const API_URL = 'http://localhost:3003/coaching/adminapi/';
 
 
 
-export const IMAGE_PATH = 'http://localhost:3003/2024/parkom/server/webservice/images/';
-// http://localhost:3003/2024/parkom/server/adminapi
+export const IMAGE_PATH = 'http://localhost:3003/coaching_admin_server/images/';
+
 
 export const APP_LOGO = '../assets/images/logo.png';
 

@@ -97,9 +97,9 @@ const ManageContact = () => {
       });
   };
 
-  // React.useEffect(() => {
-  //   fetchData();
-  // }, []);
+  React.useEffect(() => {
+    fetchData();
+  }, []);
 
   const handleAction = (index, action, user) => {
     console.log('user : ', user);

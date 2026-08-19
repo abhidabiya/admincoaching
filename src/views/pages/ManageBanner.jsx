@@ -73,9 +73,9 @@ const ManageBanner = () => {
       });
   };
 
-  // React.useEffect(() => {
-  //   fetchData();
-  // }, []);
+  React.useEffect(() => {
+    fetchData();
+  }, []);
 
   const handleClose = () => {
     setAnchorEl(null);
