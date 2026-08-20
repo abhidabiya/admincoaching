@@ -1,10 +1,14 @@
-import * as React from 'react';
+// TaskManagement.js
+import React from 'react';
 import { useState, useEffect } from 'react';
 import { IconSticker2 } from '@tabler/icons-react';
 import Button from '@mui/material/Button';
 import { Delete, Add } from '@mui/icons-material';
 import Box from '@mui/material/Box';
 import { Modal } from 'react-bootstrap';
+
+import { API_URL } from 'config/constant';
+
 import {
     CircularProgress,
     Typography,
@@ -17,49 +21,157 @@ import {
     CardContent,
     Chip,
     Grid,
-    FormHelperText,
     Snackbar,
     Alert
 } from '@mui/material';
 
-// ===================== STATIC TASK DATA =====================
-const STATIC_NOTES = [
-    {
-        id: 1,
-        title: 'Follow up with Aarav Sharma',
-        description: 'Call regarding B.Tech CS admission',
-        category: 'Work',
-        date: '2025-02-02'
+// ===================== API SERVICES =====================
+const apiService = {
+    // 1. Add Note
+    async addNote(noteData) {
+        const formData = new FormData();
+        formData.append('title', noteData.title);
+        formData.append('description', noteData.description || '');
+        formData.append('category', noteData.category || 'Personal');
+        formData.append('date', noteData.date || new Date().toISOString().split('T')[0]);
+
+        const response = await fetch(`${API_URL}/add_note`, {
+            method: 'POST',
+            body: formData
+        });
+        
+        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.msg || 'Failed to add note');
+        }
+        return data;
     },
-    {
-        id: 2,
-        title: 'Collect fees from Ananya Gupta',
-        description: 'Second installment of ₹55,000',
-        category: 'Important',
-        date: '2025-02-01'
+
+    // 2. Get All Notes
+    async getAllNotes(params = {}) {
+        const queryParams = new URLSearchParams();
+        if (params.category) queryParams.append('category', params.category);
+        if (params.limit) queryParams.append('limit', params.limit);
+        if (params.offset) queryParams.append('offset', params.offset);
+
+        const url = `${API_URL}/get_all_notes${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
+        
+        const response = await fetch(url);
+        
+        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.msg || 'Failed to fetch notes');
+        }
+        return data;
     },
-    {
-        id: 3,
-        title: 'Send admission confirmation to Vikram Singh',
-        description: 'Email admission letter and fee receipt',
-        category: 'Work',
-        date: '2025-01-31'
+
+    // 3. Get Single Note
+    async getNoteById(id) {
+        const response = await fetch(`${API_URL}/get_note/${id}`);
+        
+        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.msg || 'Failed to fetch note');
+        }
+        return data;
     },
-    {
-        id: 4,
-        title: 'Schedule campus visit for Karthik Nair',
-        description: 'M.Tech Data Science program tour',
-        category: 'Personal',
-        date: '2025-02-02'
+
+    // 4. Update Note
+    async updateNote(id, noteData) {
+        const formData = new FormData();
+        if (noteData.title) formData.append('title', noteData.title);
+        if (noteData.description !== undefined) formData.append('description', noteData.description);
+        if (noteData.category) formData.append('category', noteData.category);
+        if (noteData.date) formData.append('date', noteData.date);
+
+        const response = await fetch(`${API_URL}/update_note/${id}`, {
+            method: 'PUT',
+            body: formData
+        });
+        
+        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.msg || 'Failed to update note');
+        }
+        return data;
     },
-    {
-        id: 5,
-        title: 'Update Pooja Deshmukh fee records',
-        description: 'Update payment schedule in system',
-        category: 'Work',
-        date: '2025-02-02'
+
+    // 5. Delete Note
+    async deleteNote(id) {
+        const response = await fetch(`${API_URL}/delete_note/${id}`, {
+            method: 'DELETE'
+        });
+        
+        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.msg || 'Failed to delete note');
+        }
+        return data;
+    },
+
+    // 6. Get Notes by Category
+    async getNotesByCategory(category) {
+        const response = await fetch(`${API_URL}/get_notes_by_category/${category}`);
+        
+        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.msg || 'Failed to fetch notes by category');
+        }
+        return data;
+    },
+
+    // 7. Get Notes Summary
+    async getNotesSummary(params = {}) {
+        const queryParams = new URLSearchParams();
+        if (params.year) queryParams.append('year', params.year);
+        if (params.month) queryParams.append('month', params.month);
+
+        const url = `${API_URL}/get_notes_summary${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
+        
+        const response = await fetch(url);
+        
+        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.msg || 'Failed to fetch summary');
+        }
+        return data;
+    },
+
+    // 8. Get Notes by Date Range
+    async getNotesByDateRange(startDate, endDate) {
+        const response = await fetch(
+            `${API_URL}/get_notes_by_date_range?start_date=${startDate}&end_date=${endDate}`
+        );
+        
+        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.msg || 'Failed to fetch notes by date range');
+        }
+        return data;
+    },
+
+    // 9. Get Recent Notes
+    async getRecentNotes(limit = 5) {
+        const response = await fetch(`${API_URL}/get_recent_notes?limit=${limit}`);
+        
+        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.msg || 'Failed to fetch recent notes');
+        }
+        return data;
+    },
+
+    // 10. Get Category Stats
+    async getCategoryStats() {
+        const response = await fetch(`${API_URL}/get_category_stats`);
+        
+        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.msg || 'Failed to fetch category stats');
+        }
+        return data;
     }
-];
+};
 
 // ===================== MAIN COMPONENT =====================
 const TaskManagement = () => {
@@ -67,10 +179,22 @@ const TaskManagement = () => {
     const [loading, setLoading] = useState(true);
     const [showAddModal, setShowAddModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
     const [selectedNoteId, setSelectedNoteId] = useState(null);
+    const [selectedNote, setSelectedNote] = useState(null);
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [categoryFilter, setCategoryFilter] = useState('');
+    const [categoryStats, setCategoryStats] = useState(null);
+    const [summary, setSummary] = useState(null);
     
     const [newNote, setNewNote] = useState({
+        title: '',
+        description: '',
+        category: 'Personal'
+    });
+
+    const [editNoteData, setEditNoteData] = useState({
         title: '',
         description: '',
         category: 'Personal'
@@ -84,25 +208,91 @@ const TaskManagement = () => {
     // Category options
     const categories = ['Personal', 'Work', 'Important', 'Study', 'Other'];
 
-    // Load initial data
+    // ===================== LOAD DATA =====================
     useEffect(() => {
-        const timer = setTimeout(() => {
-            setNotes(STATIC_NOTES);
-            setLoading(false);
-        }, 500);
-
-        return () => clearTimeout(timer);
+        fetchAllData();
     }, []);
 
-    // Validate form
-    const validateForm = () => {
+    const fetchAllData = async () => {
+        setLoading(true);
+        try {
+            await Promise.all([
+                fetchNotes(),
+                fetchCategoryStats(),
+                fetchSummary()
+            ]);
+        } catch (error) {
+            showSnackbar('Failed to load data', 'error');
+            console.error('Error fetching data:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const fetchNotes = async (category = '') => {
+        try {
+            const params = {};
+            if (category) params.category = category;
+            const response = await apiService.getAllNotes(params);
+            setNotes(response.data || []);
+        } catch (error) {
+            showSnackbar('Failed to load notes', 'error');
+            console.error('Error fetching notes:', error);
+        }
+    };
+
+    const fetchCategoryStats = async () => {
+        try {
+            const response = await apiService.getCategoryStats();
+            setCategoryStats(response.data);
+        } catch (error) {
+            console.error('Error fetching category stats:', error);
+        }
+    };
+
+    const fetchSummary = async () => {
+        try {
+            const response = await apiService.getNotesSummary();
+            setSummary(response.data);
+        } catch (error) {
+            console.error('Error fetching summary:', error);
+        }
+    };
+
+    // ===================== HANDLE FILTER =====================
+    const handleCategoryFilter = async (category) => {
+        setCategoryFilter(category);
+        if (category) {
+            try {
+                const response = await apiService.getNotesByCategory(category);
+                setNotes(response.data || []);
+            } catch (error) {
+                showSnackbar('Failed to filter notes', 'error');
+                console.error('Error filtering notes:', error);
+            }
+        } else {
+            await fetchNotes();
+        }
+    };
+
+    // ===================== SHOW SNACKBAR =====================
+    const showSnackbar = (message, severity = 'success') => {
+        setSnackbar({
+            open: true,
+            message,
+            severity
+        });
+    };
+
+    // ===================== VALIDATE FORM =====================
+    const validateForm = (noteData) => {
         let isValid = true;
         const newErrors = { title: '' };
 
-        if (!newNote.title.trim()) {
+        if (!noteData.title.trim()) {
             newErrors.title = 'Title is required';
             isValid = false;
-        } else if (newNote.title.trim().length < 3) {
+        } else if (noteData.title.trim().length < 3) {
             newErrors.title = 'Title must be at least 3 characters';
             isValid = false;
         }
@@ -111,63 +301,111 @@ const TaskManagement = () => {
         return isValid;
     };
 
-    // Delete note
+    // ===================== ADD NOTE =====================
+    const handleAddNote = async () => {
+        if (!validateForm(newNote)) {
+            return;
+        }
+
+        setIsSubmitting(true);
+        try {
+            const response = await apiService.addNote({
+                title: newNote.title.trim(),
+                description: newNote.description.trim(),
+                category: newNote.category
+            });
+
+            // Refresh notes
+            await fetchNotes(categoryFilter);
+            await fetchCategoryStats();
+            await fetchSummary();
+
+            setNewNote({
+                title: '',
+                description: '',
+                category: 'Personal'
+            });
+            setErrors({ title: '' });
+            setShowAddModal(false);
+            showSnackbar('Note added successfully!');
+        } catch (error) {
+            showSnackbar(error.message || 'Failed to create note', 'error');
+            console.error('Error creating note:', error);
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    // ===================== DELETE NOTE =====================
     const handleDeleteClick = (noteId) => {
         setSelectedNoteId(noteId);
         setShowDeleteModal(true);
     };
 
-    const confirmDelete = () => {
-        const noteToDelete = notes.find(n => n.id === selectedNoteId);
-        setNotes(prev => prev.filter(note => note.id !== selectedNoteId));
-        setShowDeleteModal(false);
-        setSelectedNoteId(null);
-        
-        // Show success message
-        setSnackbar({
-            open: true,
-            message: `Note "${noteToDelete?.title}" deleted successfully`,
-            severity: 'success'
-        });
+    const confirmDelete = async () => {
+        try {
+            const noteToDelete = notes.find(n => n.id === selectedNoteId);
+            await apiService.deleteNote(selectedNoteId);
+            
+            // Refresh notes
+            await fetchNotes(categoryFilter);
+            await fetchCategoryStats();
+            await fetchSummary();
+            
+            setShowDeleteModal(false);
+            setSelectedNoteId(null);
+            showSnackbar(`Note "${noteToDelete?.title}" deleted successfully`);
+        } catch (error) {
+            showSnackbar('Failed to delete note', 'error');
+            console.error('Error deleting note:', error);
+        }
     };
 
-    // Add new note
-    const handleAddNote = () => {
-        if (!validateForm()) {
+    // ===================== EDIT NOTE =====================
+    const handleEditClick = (note) => {
+        setSelectedNote(note);
+        setEditNoteData({
+            title: note.title,
+            description: note.description || '',
+            category: note.category
+        });
+        setShowEditModal(true);
+    };
+
+    const handleUpdateNote = async () => {
+        if (!validateForm(editNoteData)) {
             return;
         }
 
-        const noteToAdd = {
-            id: Date.now(),
-            title: newNote.title.trim(),
-            description: newNote.description.trim(),
-            category: newNote.category,
-            date: new Date().toISOString().split('T')[0]
-        };
+        setIsSubmitting(true);
+        try {
+            await apiService.updateNote(selectedNote.id, {
+                title: editNoteData.title.trim(),
+                description: editNoteData.description.trim(),
+                category: editNoteData.category
+            });
 
-        setNotes(prev => [noteToAdd, ...prev]);
-        setNewNote({
-            title: '',
-            description: '',
-            category: 'Personal'
-        });
-        setErrors({ title: '' });
-        setShowAddModal(false);
-        
-        // Show success message
-        setSnackbar({
-            open: true,
-            message: 'Note added successfully!',
-            severity: 'success'
-        });
+            // Refresh notes
+            await fetchNotes(categoryFilter);
+            await fetchCategoryStats();
+            await fetchSummary();
+
+            setShowEditModal(false);
+            setSelectedNote(null);
+            showSnackbar('Note updated successfully!');
+        } catch (error) {
+            showSnackbar(error.message || 'Failed to update note', 'error');
+            console.error('Error updating note:', error);
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
-    // Close snackbar
+    // ===================== CLOSE HANDLERS =====================
     const handleCloseSnackbar = () => {
         setSnackbar({ ...snackbar, open: false });
     };
 
-    // Handle modal close
     const handleModalClose = () => {
         setShowAddModal(false);
         setErrors({ title: '' });
@@ -178,7 +416,13 @@ const TaskManagement = () => {
         });
     };
 
-    // Get category color
+    const handleEditModalClose = () => {
+        setShowEditModal(false);
+        setSelectedNote(null);
+        setErrors({ title: '' });
+    };
+
+    // ===================== UTILITY FUNCTIONS =====================
     const getCategoryColor = (category) => {
         const colors = {
             'Personal': '#6366F1',
@@ -190,7 +434,6 @@ const TaskManagement = () => {
         return colors[category] || '#757575';
     };
 
-    // Format date
     const formatDate = (dateStr) => {
         if (!dateStr) return '';
         try {
@@ -205,15 +448,17 @@ const TaskManagement = () => {
         }
     };
 
+    // ===================== LOADING STATE =====================
     if (loading) {
         return (
             <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
                 <CircularProgress />
-                <span style={{ marginLeft: '16px' }}>Loading notes...</span>
+                <span style={{ marginLeft: '16px', color: '#6B7280' }}>Loading notes...</span>
             </Box>
         );
     }
 
+    // ===================== RENDER =====================
     return (
         <>
             {/* Header */}
@@ -222,7 +467,9 @@ const TaskManagement = () => {
                 display: 'flex', 
                 justifyContent: 'space-between', 
                 alignItems: 'center',
-                borderBottom: '1px solid #e5e7eb'
+                borderBottom: '1px solid #e5e7eb',
+                flexWrap: 'wrap',
+                gap: '10px'
             }}>
                 <div>
                     <h2 style={{ 
@@ -238,31 +485,67 @@ const TaskManagement = () => {
                     </h2>
                     <p style={{ margin: '4px 0 0 0', color: '#6B7280', fontSize: '14px' }}>
                         {notes.length} notes total
+                        {summary && ` • ${summary.total_notes || 0} total`}
                     </p>
                 </div>
-                <Button
-                    variant="contained"
-                    startIcon={<Add />}
-                    onClick={() => setShowAddModal(true)}
-                    style={{
-                        borderRadius: '8px',
-                        padding: '8px 20px',
-                        textTransform: 'none',
-                        fontSize: '14px',
-                        backgroundColor: '#6366F1',
-                        boxShadow: '0 4px 12px rgba(99,102,241,0.3)'
-                    }}
-                >
-                    Add Note
-                </Button>
+                <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
+                    {/* Category Filter Dropdown */}
+                    <FormControl size="small" style={{ minWidth: '120px' }}>
+                        <Select
+                            value={categoryFilter}
+                            onChange={(e) => handleCategoryFilter(e.target.value)}
+                            displayEmpty
+                            style={{ backgroundColor: '#1F2937', color: '#fff' }}
+                        >
+                            <MenuItem value="">All Categories</MenuItem>
+                            {categories.map((cat) => (
+                                <MenuItem key={cat} value={cat}>{cat}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                    
+                    <Button
+                        variant="contained"
+                        startIcon={<Add />}
+                        onClick={() => setShowAddModal(true)}
+                        style={{
+                            borderRadius: '8px',
+                            padding: '8px 20px',
+                            textTransform: 'none',
+                            fontSize: '14px',
+                            backgroundColor: '#6366F1',
+                            boxShadow: '0 4px 12px rgba(99,102,241,0.3)'
+                        }}
+                    >
+                        Add Note
+                    </Button>
+                </div>
             </div>
 
-            {/* Notes Grid - Cards */}
+            {/* Category Stats */}
+            {categoryStats && categoryStats.categories && categoryStats.categories.length > 0 && (
+                <div style={{ marginTop: '16px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                    {categoryStats.categories.map((stat) => (
+                        <Chip
+                            key={stat.category}
+                            label={`${stat.category}: ${stat.count}`}
+                            onClick={() => handleCategoryFilter(stat.category)}
+                            style={{
+                                backgroundColor: getCategoryColor(stat.category),
+                                color: '#fff',
+                                cursor: 'pointer'
+                            }}
+                        />
+                    ))}
+                </div>
+            )}
+
+            {/* Notes Grid */}
             <div style={{ marginTop: '24px' }}>
                 {notes.length === 0 ? (
                     <Box textAlign="center" py={8}>
                         <Typography variant="body1" color="text.secondary">
-                            No notes yet. Click "Add Note" to create your first note!
+                            No notes found. Click "Add Note" to create your first note!
                         </Typography>
                     </Box>
                 ) : (
@@ -277,8 +560,9 @@ const TaskManagement = () => {
                                         flexDirection: 'column',
                                         borderRadius: '12px',
                                         transition: 'all 0.2s ease',
+                                        backgroundColor: '#1F2937',
                                         '&:hover': {
-                                            boxShadow: '0 8px 24px rgba(228, 35, 35, 0.12)',
+                                            boxShadow: '0 8px 24px rgba(99,102,241,0.2)',
                                             transform: 'translateY(-2px)'
                                         }
                                     }}
@@ -292,8 +576,11 @@ const TaskManagement = () => {
                                                     fontSize: '16px',
                                                     color: '#d5d9e2',
                                                     mb: 1,
-                                                    pr: 4
+                                                    pr: 4,
+                                                    cursor: 'pointer',
+                                                    '&:hover': { color: '#6366F1' }
                                                 }}
+                                                onClick={() => handleEditClick(note)}
                                             >
                                                 {note.title}
                                             </Typography>
@@ -315,14 +602,14 @@ const TaskManagement = () => {
                                         
                                         <Typography 
                                             variant="body2" 
-                                            color="text.secondary"
                                             sx={{
                                                 mb: 2,
                                                 display: '-webkit-box',
                                                 WebkitLineClamp: 3,
                                                 WebkitBoxOrient: 'vertical',
                                                 overflow: 'hidden',
-                                                minHeight: '60px'
+                                                minHeight: '60px',
+                                                color: '#9CA3AF'
                                             }}
                                         >
                                             {note.description || 'No description'}
@@ -339,8 +626,8 @@ const TaskManagement = () => {
                                                     height: '24px'
                                                 }}
                                             />
-                                            <Typography variant="caption" color="text.secondary">
-                                                {formatDate(note.date)}
+                                            <Typography variant="caption" sx={{ color: '#6B7280' }}>
+                                                {formatDate(note.date || note.createtime)}
                                             </Typography>
                                         </Box>
                                     </CardContent>
@@ -351,7 +638,7 @@ const TaskManagement = () => {
                 )}
             </div>
 
-            {/* Add Note Modal */}
+            {/* ==================== ADD NOTE MODAL ==================== */}
             <Modal
                 show={showAddModal}
                 onHide={handleModalClose}
@@ -361,8 +648,8 @@ const TaskManagement = () => {
                 <Modal.Header
                     closeButton
                     style={{
-                        background: "#ffffff",
-                        borderBottom: "1px solid #e5e7eb",
+                        background: "#1F2937",
+                        borderBottom: "1px solid #374151",
                         padding: "16px 24px"
                     }}
                 >
@@ -373,7 +660,7 @@ const TaskManagement = () => {
                             gap: "10px",
                             fontSize: "18px",
                             fontWeight: "600",
-                            color: "#111827"
+                            color: "#ffffff"
                         }}
                     >
                         <IconSticker2 style={{ color: "#6366F1", fontSize: "22px" }} />
@@ -381,14 +668,14 @@ const TaskManagement = () => {
                     </Modal.Title>
                 </Modal.Header>
 
-                <Modal.Body style={{ padding: "24px", background: "#ffffff" }}>
+                <Modal.Body style={{ padding: "24px", background: "#1F2937" }}>
                     <div style={{ marginBottom: "16px" }}>
                         <label style={{
                             display: "block",
                             marginBottom: "6px",
                             fontSize: "14px",
                             fontWeight: "500",
-                            color: "#374151"
+                            color: "#9CA3AF"
                         }}>
                             Title *
                         </label>
@@ -413,6 +700,18 @@ const TaskManagement = () => {
                                     setErrors({ ...errors, title: 'Title is required' });
                                 }
                             }}
+                            sx={{
+                                '& .MuiInputBase-root': {
+                                    backgroundColor: '#374151',
+                                    color: '#fff'
+                                },
+                                '& .MuiInputLabel-root': {
+                                    color: '#9CA3AF'
+                                },
+                                '& .MuiFormHelperText-root': {
+                                    color: '#f44336'
+                                }
+                            }}
                         />
                     </div>
 
@@ -422,7 +721,7 @@ const TaskManagement = () => {
                             marginBottom: "6px",
                             fontSize: "14px",
                             fontWeight: "500",
-                            color: "#374151"
+                            color: "#9CA3AF"
                         }}>
                             Description
                         </label>
@@ -439,6 +738,12 @@ const TaskManagement = () => {
                                     description: e.target.value,
                                 }))
                             }
+                            sx={{
+                                '& .MuiInputBase-root': {
+                                    backgroundColor: '#374151',
+                                    color: '#fff'
+                                }
+                            }}
                         />
                     </div>
 
@@ -448,7 +753,7 @@ const TaskManagement = () => {
                             marginBottom: "6px",
                             fontSize: "14px",
                             fontWeight: "500",
-                            color: "#374151"
+                            color: "#9CA3AF"
                         }}>
                             Category
                         </label>
@@ -461,6 +766,10 @@ const TaskManagement = () => {
                                         category: e.target.value,
                                     }))
                                 }
+                                style={{
+                                    backgroundColor: '#374151',
+                                    color: '#fff'
+                                }}
                             >
                                 {categories.map((cat) => (
                                     <MenuItem key={cat} value={cat}>
@@ -474,22 +783,25 @@ const TaskManagement = () => {
 
                 <Modal.Footer
                     style={{
-                        borderTop: "1px solid #e5e7eb",
+                        borderTop: "1px solid #374151",
                         padding: "12px 24px",
                         display: "flex",
                         justifyContent: "flex-end",
                         gap: "10px",
-                        background: "#fafafa"
+                        background: "#1F2937"
                     }}
                 >
                     <Button
                         variant="outlined"
                         onClick={handleModalClose}
+                        disabled={isSubmitting}
                         style={{
                             borderRadius: "8px",
                             padding: "6px 20px",
                             textTransform: "none",
-                            fontSize: "14px"
+                            fontSize: "14px",
+                            color: '#9CA3AF',
+                            borderColor: '#374151'
                         }}
                     >
                         Cancel
@@ -497,6 +809,7 @@ const TaskManagement = () => {
                     <Button
                         variant="contained"
                         onClick={handleAddNote}
+                        disabled={isSubmitting}
                         style={{
                             background: "#6366F1",
                             color: "#fff",
@@ -507,12 +820,191 @@ const TaskManagement = () => {
                             boxShadow: "0 4px 12px rgba(99,102,241,0.3)"
                         }}
                     >
-                        Save Note
+                        {isSubmitting ? 'Saving...' : 'Save Note'}
                     </Button>
                 </Modal.Footer>
             </Modal>
 
-            {/* Delete Confirmation Modal */}
+            {/* ==================== EDIT NOTE MODAL ==================== */}
+            <Modal
+                show={showEditModal}
+                onHide={handleEditModalClose}
+                centered
+                size="sm"
+            >
+                <Modal.Header
+                    closeButton
+                    style={{
+                        background: "#1F2937",
+                        borderBottom: "1px solid #374151",
+                        padding: "16px 24px"
+                    }}
+                >
+                    <Modal.Title
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "10px",
+                            fontSize: "18px",
+                            fontWeight: "600",
+                            color: "#ffffff"
+                        }}
+                    >
+                        <IconSticker2 style={{ color: "#6366F1", fontSize: "22px" }} />
+                        Edit Note
+                    </Modal.Title>
+                </Modal.Header>
+
+                <Modal.Body style={{ padding: "24px", background: "#1F2937" }}>
+                    <div style={{ marginBottom: "16px" }}>
+                        <label style={{
+                            display: "block",
+                            marginBottom: "6px",
+                            fontSize: "14px",
+                            fontWeight: "500",
+                            color: "#9CA3AF"
+                        }}>
+                            Title *
+                        </label>
+                        <TextField
+                            fullWidth
+                            size="small"
+                            placeholder="Enter note title..."
+                            value={editNoteData.title}
+                            onChange={(e) => {
+                                setEditNoteData((prev) => ({
+                                    ...prev,
+                                    title: e.target.value,
+                                }));
+                                if (errors.title) {
+                                    setErrors({ ...errors, title: '' });
+                                }
+                            }}
+                            error={!!errors.title}
+                            helperText={errors.title}
+                            sx={{
+                                '& .MuiInputBase-root': {
+                                    backgroundColor: '#374151',
+                                    color: '#fff'
+                                },
+                                '& .MuiFormHelperText-root': {
+                                    color: '#f44336'
+                                }
+                            }}
+                        />
+                    </div>
+
+                    <div style={{ marginBottom: "16px" }}>
+                        <label style={{
+                            display: "block",
+                            marginBottom: "6px",
+                            fontSize: "14px",
+                            fontWeight: "500",
+                            color: "#9CA3AF"
+                        }}>
+                            Description
+                        </label>
+                        <TextField
+                            fullWidth
+                            multiline
+                            rows={3}
+                            size="small"
+                            placeholder="Write your note..."
+                            value={editNoteData.description}
+                            onChange={(e) =>
+                                setEditNoteData((prev) => ({
+                                    ...prev,
+                                    description: e.target.value,
+                                }))
+                            }
+                            sx={{
+                                '& .MuiInputBase-root': {
+                                    backgroundColor: '#374151',
+                                    color: '#fff'
+                                }
+                            }}
+                        />
+                    </div>
+
+                    <div>
+                        <label style={{
+                            display: "block",
+                            marginBottom: "6px",
+                            fontSize: "14px",
+                            fontWeight: "500",
+                            color: "#9CA3AF"
+                        }}>
+                            Category
+                        </label>
+                        <FormControl fullWidth size="small">
+                            <Select
+                                value={editNoteData.category}
+                                onChange={(e) =>
+                                    setEditNoteData((prev) => ({
+                                        ...prev,
+                                        category: e.target.value,
+                                    }))
+                                }
+                                style={{
+                                    backgroundColor: '#374151',
+                                    color: '#fff'
+                                }}
+                            >
+                                {categories.map((cat) => (
+                                    <MenuItem key={cat} value={cat}>
+                                        {cat}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </div>
+                </Modal.Body>
+
+                <Modal.Footer
+                    style={{
+                        borderTop: "1px solid #374151",
+                        padding: "12px 24px",
+                        display: "flex",
+                        justifyContent: "flex-end",
+                        gap: "10px",
+                        background: "#1F2937"
+                    }}
+                >
+                    <Button
+                        variant="outlined"
+                        onClick={handleEditModalClose}
+                        disabled={isSubmitting}
+                        style={{
+                            borderRadius: "8px",
+                            padding: "6px 20px",
+                            textTransform: "none",
+                            fontSize: "14px",
+                            color: '#9CA3AF',
+                            borderColor: '#374151'
+                        }}
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        variant="contained"
+                        onClick={handleUpdateNote}
+                        disabled={isSubmitting}
+                        style={{
+                            background: "#6366F1",
+                            color: "#fff",
+                            borderRadius: "8px",
+                            padding: "6px 20px",
+                            textTransform: "none",
+                            fontSize: "14px",
+                            boxShadow: "0 4px 12px rgba(99,102,241,0.3)"
+                        }}
+                    >
+                        {isSubmitting ? 'Updating...' : 'Update Note'}
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+            {/* ==================== DELETE CONFIRMATION MODAL ==================== */}
             <Modal
                 show={showDeleteModal}
                 onHide={() => setShowDeleteModal(false)}
@@ -522,8 +1014,8 @@ const TaskManagement = () => {
                 <Modal.Header
                     closeButton
                     style={{
-                        background: "#ffffff",
-                        borderBottom: "1px solid #e5e7eb",
+                        background: "#1F2937",
+                        borderBottom: "1px solid #374151",
                         padding: "16px 24px"
                     }}
                 >
@@ -531,19 +1023,19 @@ const TaskManagement = () => {
                         style={{
                             fontSize: "18px",
                             fontWeight: "600",
-                            color: "#111827"
+                            color: "#ffffff"
                         }}
                     >
                         Delete Note
                     </Modal.Title>
                 </Modal.Header>
 
-                <Modal.Body style={{ padding: "24px", background: "#ffffff" }}>
-                    <Typography variant="body1" sx={{ color: '#374151' }}>
+                <Modal.Body style={{ padding: "24px", background: "#1F2937" }}>
+                    <Typography variant="body1" sx={{ color: '#9CA3AF' }}>
                         Are you sure you want to delete this note?
                     </Typography>
                     {selectedNoteId && (
-                        <Typography variant="body2" sx={{ color: '#6B7280', mt: 1, fontWeight: 500 }}>
+                        <Typography variant="body2" sx={{ color: '#d5d9e2', mt: 1, fontWeight: 500 }}>
                             "{notes.find(n => n.id === selectedNoteId)?.title}"
                         </Typography>
                     )}
@@ -551,12 +1043,12 @@ const TaskManagement = () => {
 
                 <Modal.Footer
                     style={{
-                        borderTop: "1px solid #e5e7eb",
+                        borderTop: "1px solid #374151",
                         padding: "12px 24px",
                         display: "flex",
                         justifyContent: "flex-end",
                         gap: "10px",
-                        background: "#fafafa"
+                        background: "#1F2937"
                     }}
                 >
                     <Button
@@ -566,7 +1058,9 @@ const TaskManagement = () => {
                             borderRadius: "8px",
                             padding: "6px 20px",
                             textTransform: "none",
-                            fontSize: "14px"
+                            fontSize: "14px",
+                            color: '#9CA3AF',
+                            borderColor: '#374151'
                         }}
                     >
                         Cancel
@@ -588,7 +1082,7 @@ const TaskManagement = () => {
                 </Modal.Footer>
             </Modal>
 
-            {/* Snackbar for Success Messages */}
+            {/* ==================== SNACKBAR ==================== */}
             <Snackbar
                 open={snackbar.open}
                 autoHideDuration={3000}
@@ -601,7 +1095,9 @@ const TaskManagement = () => {
                     sx={{ 
                         width: '100%',
                         borderRadius: '8px',
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                        backgroundColor: snackbar.severity === 'success' ? '#1F2937' : '#1F2937',
+                        color: '#fff'
                     }}
                 >
                     {snackbar.message}

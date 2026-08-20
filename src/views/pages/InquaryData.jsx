@@ -922,10 +922,10 @@ const optionIcons = {
             <div className="col-xl-12" style={{  borderRadius: '12px', padding: '10px', marginBottom: '20px' }}>
                 <div style={{ backgroundColor: '#f0f4f8', padding: '15px', borderRadius: '8px', marginBottom: '20px' }}>
                 <p style={{ fontSize: '1.25rem', color: '#121926', fontWeight: '600', fontFamily: 'Poppins', lineHeight: '1.167', marginBottom: '5px' }}>
-                    Manage Users & Students
+                    Manage Enquiries & Students
                 </p>
                 <p style={{ fontSize: '0.875rem', color: '#6B7280', marginBottom: '0' }}>
-                    View and manage all users including students, enquiries, and admissions
+                    View and manage all students, enquiries, and admissions
                 </p>
                 </div>
 

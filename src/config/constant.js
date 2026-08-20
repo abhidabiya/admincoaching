@@ -1,5 +1,5 @@
 export const BASE_TITLE = '';
-export const APP_PREFIX_PATH = '/2024/parkom/admin';
+export const APP_PREFIX_PATH = '/2027/coaching/admin';
 export const API_URL = 'http://localhost:3003/coaching/adminapi/';
 
 
