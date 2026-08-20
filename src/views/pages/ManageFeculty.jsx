@@ -33,7 +33,7 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import SubjectIcon from '@mui/icons-material/Subject';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import { Avatar } from '@mui/material';
-
+import placeholderImage from '../../assets/images/teacher.png';
 const columns = [
     { id: 'S_No', label: 'S.No.', align: 'center' },
     { id: 'actions', label: 'Actions', minWidth: 150, align: 'center' },
@@ -532,11 +532,11 @@ const ManageFaculty = () => {
                                         </TableCell>
 
                                         <TableCell style={{ textAlign: 'center' }}>
-                                            <Avatar
-                                                sx={{ width: 40, height: 40, margin: 'auto', backgroundColor: '#3268f1' }}
-                                            >
-                                                {row.name?.charAt(0)?.toUpperCase() || 'F'}
-                                            </Avatar>
+                                            
+                                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                               
+                                               <img  src={placeholderImage} style={{width : "90PX"}}/>
+                                            </div>
                                         </TableCell>
 
                                         <TableCell style={{ textAlign: 'center' }}>

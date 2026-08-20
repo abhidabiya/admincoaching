@@ -99,12 +99,7 @@ const StudentUserList = () => {
 
     const userTypeLabels = {
         0: 'Admin',
-        1: 'User',
-        2: 'Guard',
-        3: 'Society Admin',
-        4: 'Society Sub Admin',
-        5: 'Student Enquiry',
-        6: 'Student Admitted'
+        1: 'Student'
     };
 
     const admissionTypeLabels = {
@@ -631,13 +626,13 @@ const StudentUserList = () => {
                     <Paper elevation={2} sx={{ p: 2, borderRadius: '8px', backgroundColor: '#fff7ed' }}>
                         <p style={{ margin: 0, fontSize: '14px', color: '#ea580c' }}>Fees Collected</p>
                         <p style={{ margin: '8px 0 0 0', fontSize: '24px', fontWeight: '600', color: '#c2410c' }}>
-                            {formatCurrency(stats.total_fees_collected)}
+                            {formatCurrency(stats.total_fees)}
                         </p>
                     </Paper>
                     <Paper elevation={2} sx={{ p: 2, borderRadius: '8px', backgroundColor: '#fef2f2' }}>
                         <p style={{ margin: 0, fontSize: '14px', color: '#dc2626' }}>Fees Pending</p>
                         <p style={{ margin: '8px 0 0 0', fontSize: '24px', fontWeight: '600', color: '#b91c1c' }}>
-                            {formatCurrency(stats.total_fees_pending)}
+                            {formatCurrency(stats.total_pending)}
                         </p>
                     </Paper>
                 </div>
@@ -842,14 +837,14 @@ const StudentUserList = () => {
                                                     </MenuItem>
                                                 )}
                                                 
-                                                <MenuItem
+                                                {/* <MenuItem
                                                     onClick={() => handleAction('Edit', row)}
                                                     className="menu-icons"
                                                     style={{ fontSize: '14px' }}
                                                 >
                                                     <Edit style={{ marginRight: '8px', fontSize: '18px' }} />
                                                     Edit
-                                                </MenuItem>
+                                                </MenuItem> */}
                                                 
                                                 {row.user_type !== 5 && row.user_type !== 6 && (
                                                     <MenuItem
