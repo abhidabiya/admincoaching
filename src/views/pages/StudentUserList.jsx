@@ -41,7 +41,7 @@ const columns = [
     { id: 'number', label: 'S.No.', minWidth: 70, align: 'center' },
     { id: 'Action', label: 'Action', minWidth: 140, align: 'center' },
     { id: 'name', label: 'Name', minWidth: 150, align: 'center' },
-    { id: 'user_type', label: 'User Type', minWidth: 130, align: 'center' },
+    { id: 'user_type', label: 'Student Type', minWidth: 130, align: 'center' },
     { id: 'admission_type', label: 'Admission Type', minWidth: 130, align: 'center' },
     { id: 'course_name', label: 'Course', minWidth: 150, align: 'center' },
     { id: 'qualification', label: 'Qualification', minWidth: 130, align: 'center' },
@@ -94,7 +94,7 @@ const StudentUserList = () => {
     const navigate = useNavigate();
 
     const [open, setOpen] = useState(false);
-    const [selectedOption, setSelectedOption] = useState("All Users");
+    const [selectedOption, setSelectedOption] = useState("All Student");
     const dropdownRef = useRef(null);
 
     const userTypeLabels = {
@@ -174,7 +174,7 @@ const StudentUserList = () => {
                 } else {
                     setUserAllData([]);
                 }
-                setSelectedOption("All Users");
+                setSelectedOption("All Student");
             } else {
                 setUserAllData([]);
                 console.warn('No valid user data found:', response.data);
@@ -598,10 +598,10 @@ const StudentUserList = () => {
         <>
             <div className="col-xl-12" style={{ backgroundColor: '#FFF', borderRadius: '12px', padding: '10px', marginBottom: '20px' }}>
                 <p style={{ fontSize: '1.25rem', color: '#121926', fontWeight: '600', fontFamily: 'Poppins', lineHeight: '1.167', marginBottom: '5px' }}>
-                    Manage Users & Students
+                    Manage Students
                 </p>
                 <p style={{ fontSize: '0.875rem', color: '#6B7280', marginBottom: '0' }}>
-                    View and manage all users including students, enquiries, and admissions
+                    View and manage all students, enquiries, and admissions
                 </p>
                 
                 {/* Statistics Dashboard */}
@@ -691,7 +691,7 @@ const StudentUserList = () => {
                                     }} 
                                     onClick={() => handleSelect("All Users", fetchAllUsers)}
                                 >
-                                    <PersonOutline fontSize="small" /> All Users
+                                    <PersonOutline fontSize="small" /> All Student
                                 </li>
                                 <li 
                                     style={{ 
@@ -1013,7 +1013,7 @@ const StudentUserList = () => {
                     <div style={{ color: '#9ca3af', fontSize: '16px' }}>
                         <ErrorOutline style={{ fontSize: '48px', marginBottom: '16px', color: '#d1d5db' }} />
                         <p style={{ marginBottom: '8px', fontSize: '18px', fontWeight: '500' }}>No Data Available</p>
-                        <p>No users found. Try changing your search or filter criteria.</p>
+                        <p>No Student found. Try changing your search or filter criteria.</p>
                         <Button 
                             variant="contained" 
                             onClick={fetchUserData}
@@ -1032,7 +1032,7 @@ const StudentUserList = () => {
                 </Modal.Header>
                 <Modal.Body>
                     {activemodalUserid.user_side !== 3 
-                        ? `Are you sure you want to ${msg === 1 ? "activate" : "deactivate"} this user?` 
+                        ? `Are you sure you want to ${msg === 1 ? "activate" : "deactivate"} this Student?` 
                         : ""}
                     
                     <br /><br />
@@ -1111,10 +1111,10 @@ const StudentUserList = () => {
             {/* Delete User Modal */}
             <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>Delete User</Modal.Title>
+                    <Modal.Title>Delete Student</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>Are you sure you want to delete this user? This action cannot be undone.</p>
+                    <p>Are you sure you want to delete this Student? This action cannot be undone.</p>
                     <div className="form-group">
                         <label>Reason for deletion:</label>
                         <textarea

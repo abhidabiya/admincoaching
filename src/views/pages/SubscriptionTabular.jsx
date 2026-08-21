@@ -28,7 +28,7 @@ import { encode as base64_encode } from 'base-64';
 const columns = [
   { id: 'number', label: 'S.No.', minWidth: 70, align: 'center' },
   { id: 'action', label: 'Action', minWidth: 130, align: 'center' },
-  { id: 'Username', label: 'User Name', minWidth: 130, align: 'center' },
+  { id: 'Username', label: 'Student Name', minWidth: 130, align: 'center' },
   { id: 'Amount', label: 'Amount (In Dollar)', minWidth: 165, align: 'center' },
   { id: 'Subscription Type', label: 'Subscription Type', minWidth: 200, align: 'center' },
   { id: 'transaction_id', label: 'Transaction Id', minWidth: 200, align: 'center' },

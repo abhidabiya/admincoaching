@@ -30,7 +30,7 @@ const columns = [
     { id: 'f_name', label: 'Name', minWidth: 130, align: 'center' },
     { id: 'image', label: 'Image', minWidth: 100, align: 'center' },
     { id: 'email', label: 'Email', minWidth: 170, align: 'center' },
-    { id: 'user_type', label: 'User Type', minWidth: 170, align: 'center' },
+    { id: 'user_type', label: 'Students Type', minWidth: 170, align: 'center' },
     { id: 'mobile', label: 'Mobile No.', minWidth: 170, align: 'center' },
     { id: 'status1', label: 'Parkom Status', minWidth: 170, align: 'center' },
     { id: 'status2', label: 'Gatepass Status', minWidth: 170, align: 'center' },
@@ -53,7 +53,7 @@ const CustomerList = () => {
     const navigate = useNavigate();
 
     const [open, setOpen] = useState(false);
-    const [selectedOption, setSelectedOption] = useState("All User"); // Default value
+    const [selectedOption, setSelectedOption] = useState("All Students"); // Default value
     const dropdownRef = useRef(null);
 
     const handleToggle = () => {
@@ -71,7 +71,7 @@ const fetchUserData=()=>{
             .get(`${API_URL}get_all_user_data`)
             .then((response) => {
                 setUserAllData(response.data.user_arr);
-                setSelectedOption("All User");
+                setSelectedOption("All Students");
 
             })
             .catch((error) => {
@@ -240,7 +240,7 @@ const fetchUserData=()=>{
         <>
             <div className="col-xl-12" style={{ backgroundColor: '#FFF', borderRadius: '12px', padding: '10px', marginBottom: '20px' }}>
                 <p style={{ fontSize: '1.25rem', color: '#121926', fontWeight: '600', fontFamily: 'Poppins', lineHeight: '1.167', marginBottom: '5px' }}>
-                    Manage User List
+                    Manage Students List
                 </p>
             </div>
             <Box alignItems="center" justifyContent="space-start" display="flex" className="mobile-res">

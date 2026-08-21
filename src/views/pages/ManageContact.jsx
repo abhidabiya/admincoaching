@@ -27,7 +27,7 @@ import ReplyIcon from '@mui/icons-material/Reply';
 const columns = [
   { id: 'number', label: 'S.No.', minWidth: 70, align: 'center' },
   { id: 'actions', label: 'Action', minWidth: 100, align: 'center' },
-  { id: 'user_name', label: 'User Name', minWidth: 170, align: 'center' },
+  { id: 'user_name', label: 'Students Name', minWidth: 170, align: 'center' },
   { id: 'email', label: 'Email', minWidth: 170, align: 'center' },
   { id: 'message', label: 'Message', minWidth: 100, align: 'center' },
   { id: 'reply_time', label: 'Replied Date & Time', minWidth: 200, align: 'center' },

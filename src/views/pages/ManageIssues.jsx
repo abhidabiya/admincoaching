@@ -377,7 +377,7 @@ const ManageIssues = () => {
           </Modal.Header>
           <Modal.Body>
             <>
-              <p>User Message: {messages != null ? messages : 'No Message'}</p>
+              <p>Student Message: {messages != null ? messages : 'No Message'}</p>
               <p>Admin Reply: {reply != null ? reply : 'No Reply'}</p>
             </>
           </Modal.Body>

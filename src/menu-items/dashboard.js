@@ -102,7 +102,7 @@ const menuItems = {
         
         {
             id: 'manage-customer',
-            title: 'Manage Users',
+            title: 'Manage Students',
             type: 'collapse',
             icon: icons.IconUsers,
             children: [{
@@ -217,7 +217,7 @@ const menuItems = {
             icon: icons.IconReport,
             children: [{
                     id: 'customer_tabular_report',
-                    title: 'User Tabular Report',
+                    title: 'Students Tabular Report',
                     type: 'item',
                     url: APP_PREFIX_PATH + '/user-tabular-report',
                     icon: icons.IconTable,
@@ -241,7 +241,7 @@ const menuItems = {
             icon: icons.IconReportAnalytics,
             children: [{
                     id: 'customer_ana_report',
-                    title: 'User Analytics Report',
+                    title: 'Students Analytics Report',
                     type: 'item',
                     url: APP_PREFIX_PATH + '/user-ana-report',
                     icon: icons.IconReportAnalytics,

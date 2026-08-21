@@ -284,7 +284,7 @@ const EditStudentUser = () => {
             const response = await axios.put(`${API_URL}update_student/${userId}`, formData);
             
             if (response.data.success) {
-                setSuccess(response.data.message || 'User updated successfully!');
+                setSuccess(response.data.message || 'Students updated successfully!');
                 // Update original data
                 setOriginalData({ ...originalData, ...formData });
                 
@@ -293,7 +293,7 @@ const EditStudentUser = () => {
                     navigate(`${APP_PREFIX_PATH}/student-management`);
                 }, 2000);
             } else {
-                setError(response.data.message || 'Failed to update user');
+                setError(response.data.message || 'Failed to update Students');
             }
         } catch (error) {
             console.error('Error updating user:', error);

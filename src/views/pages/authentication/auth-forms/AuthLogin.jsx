@@ -22,7 +22,7 @@ import Stack from '@mui/material/Stack';
 // third party
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-// import axios from 'axios'; // Uncomment when using API
+import axios from 'axios'; // Uncomment when using API
 
 // project imports
 import AnimateButton from 'ui-component/extended/AnimateButton';
@@ -73,39 +73,44 @@ const AuthLogin = ({ ...others }) => {
         onSubmit={async (values, { setSubmitting, setErrors }) => {
           try {
             // --- MOCK LOGIN (Temporary) ---
-            const mockUser = {
-              user_id: 1,
-              username: 'Demo Admin',
-              email: values.email || 'demo@admin.com',
-              mobile: '9876543210',
-              address: 'Demo Address',
-              user_type: '0'
-            };
+            // const mockUser = {
+            //   user_id: 1,
+            //   username: 'Demo Admin',
+            //   email: values.email || 'demo@admin.com',
+            //   mobile: '9876543210',
+            //   address: 'Demo Address',
+            //   user_type: '0'
+            // };
 
-            sessionStorage.setItem('token', 'demo-token-' + Date.now());
-            sessionStorage.setItem('id', mockUser.user_id);
-            sessionStorage.setItem('name', mockUser.username);
-            sessionStorage.setItem('email', mockUser.email);
-            sessionStorage.setItem('mobile', mockUser.mobile);
-            sessionStorage.setItem('address', mockUser.address);
-            sessionStorage.setItem('user_type', mockUser.user_type);
+            // sessionStorage.setItem('token', 'demo-token-' + Date.now());
+            // sessionStorage.setItem('id', mockUser.user_id);
+            // sessionStorage.setItem('name', mockUser.username);
+            // sessionStorage.setItem('email', mockUser.email);
+            // sessionStorage.setItem('mobile', mockUser.mobile);
+            // sessionStorage.setItem('address', mockUser.address);
+            // sessionStorage.setItem('user_type', mockUser.user_type);
 
             const sessionDuration = 30 * 60 * 1000;
             const expirationTime = new Date().getTime() + sessionDuration;
             sessionStorage.setItem('expirationTime', expirationTime);
 
-            if (checked) {
-              sessionStorage.setItem('rememberedEmail', values.email);
-              sessionStorage.setItem('rememberedPassword', values.password);
-            } else {
-              sessionStorage.removeItem('rememberedEmail');
-              sessionStorage.removeItem('rememberedPassword');
-            }
+            // if (checked) {
+            //   sessionStorage.setItem('rememberedEmail', values.email);
+            //   sessionStorage.setItem('rememberedPassword', values.password);
+            // } else {
+            //   sessionStorage.removeItem('rememberedEmail');
+            //   sessionStorage.removeItem('rememberedPassword');
+            // }
             
-            navigate(APP_PREFIX_PATH + '/dashboard');
+            // navigate(APP_PREFIX_PATH + '/dashboard');
+
+
+
+
+
             
             // --- ORIGINAL API CODE (Uncomment when ready) ---
-            /*
+            
             const trimmedEmail = values.email.trim();
             const trimmedPassword = values.password.trim();
             const response = await axios.post(`${API_URL}admin_login`, {
@@ -145,12 +150,12 @@ const AuthLogin = ({ ...others }) => {
                 setErrors({ submit: 'Email address and password are invalid' });
               }
             }
-            */
+            
           } catch (error) {
             console.error('Login error:', error);
-            sessionStorage.setItem('token', 'demo-token-error-' + Date.now());
-            sessionStorage.setItem('user_type', '0');
-            navigate(APP_PREFIX_PATH + '/dashboard');
+            // sessionStorage.setItem('token', 'demo-token-error-' + Date.now());
+            // sessionStorage.setItem('user_type', '0');
+            // navigate(APP_PREFIX_PATH + '/dashboard');
           }
           setSubmitting(false);
         }}

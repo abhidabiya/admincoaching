@@ -147,10 +147,10 @@ const CustomerReportedList = () => {
             marginBottom:" 5px",
           }}
         >
-          Manage User Tabular Reports
+          Manage Students Tabular Reports
         </p>
       </div>
-      <MainCard title="User Report" className="mb-3">
+      <MainCard title="Students Report" className="mb-3">
         <Form onSubmit={handleSubmit}>
           <Row>
             <Col md={5}>

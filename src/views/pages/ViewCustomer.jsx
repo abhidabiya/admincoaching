@@ -273,7 +273,7 @@ const InfoChip = styled(Chip)(({ theme }) => ({
 
 const DetailItem = ({ label, value }) => (
   <Box sx={{ py: 1 }}>
-    <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 500, display: 'block', fontSize: '15px', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+    <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 500, display: 'block', fontSize: '16px', textTransform: 'uppercase', letterSpacing: 0.5 }}>
       {label}
     </Typography>
     <Typography variant="body1" sx={{ fontWeight: 600, color: '#f2f4f1a9' }}>

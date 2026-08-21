@@ -7,654 +7,670 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
-import { ArrowDropDown } from '@mui/icons-material';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
 import './main.css';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { IconSearch } from '@tabler/icons-react';
 import InputAdornment from '@mui/material/InputAdornment';
 import { useTheme } from '@mui/material/styles';
 import AddIcon from '@mui/icons-material/Add';
-import { useState } from 'react';
-import { Modal } from 'react-bootstrap';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import axios from 'axios';
 import { API_URL } from 'config/constant';
-import { APP_PREFIX_PATH } from 'config/constant';
-import { useNavigate } from "react-router-dom";
-import { encode as base64_encode } from 'base-64';
-import { minWidth, width } from '@mui/system';
-
-// excle
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
-
+import {
+    ToggleButton,
+    ToggleButtonGroup,
+    CircularProgress,
+    Alert,
+    Snackbar,
+    Chip,
+    Stack,
+    Typography,
+    Grid,
+    Card,
+    CardContent
+} from '@mui/material';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import PeopleIcon from '@mui/icons-material/People';
+import PaymentIcon from '@mui/icons-material/Payment';
+import PendingIcon from '@mui/icons-material/Pending';
+import { styled } from '@mui/material/styles';
 
 const columns = [
-
-    { id: 'S_No', label: 'S.No.', align: 'center',  },
-    // { id: 'actions', label: 'Actions', minWidth: 150, align: 'center' },
-    { id: 'name', label: 'Name', align: 'center' , minWidth: "170px" },
-    { id: 'email', label: 'Course Name', align: 'center' , minWidth: "150px"},
-    // { id: 'password', label: 'Password', align: 'center' },
-    { id: 'society', label: 'Amount',  align: 'center', minWidth: "130px" },
-    { id: 'Building', label: 'Payment Mode', align: 'center' , minWidth: "130px"},
-    // { id: 'role', label: 'Role', align: 'center' },
-    { id: 'role', label: 'Payment Date', align: 'center' },
-    { id: 'number', label: 'Duration', minWidth: 170, align: 'center' },
-    { id: 'date_time', label: 'Create Date & Time', minWidth: "180px", align: 'center' }
+    { id: 'S_No', label: 'S.No.', align: 'center' },
+    { id: 'name', label: 'Name', align: 'center', minWidth: "170px" },
+    { id: 'course_name', label: 'Course Name', align: 'center', minWidth: "150px" },
+    { id: 'total_earning', label: 'Total Earning', align: 'center', minWidth: "130px" },
+    { id: 'fees_submitted', label: 'Fees Submitted', align: 'center', minWidth: "130px" },
+    { id: 'fees_pending', label: 'Fees Pending', align: 'center', minWidth: "130px" },
+    { id: 'payment_mode', label: 'Payment Mode', align: 'center', minWidth: "130px" },
+    { id: 'payment_date', label: 'Payment Date', align: 'center' },
+    { id: 'create_datetime', label: 'Create Date & Time', minWidth: "180px", align: 'center' }
 ];
 
+// Styled Toggle Button with custom design
+const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
+    color: '#ffffff',
+    backgroundColor: '#1a1a2e',
+    border: '1px solid #2d2d44',
+    padding: '8px 20px',
+    fontWeight: 500,
+    fontSize: '0.875rem',
+    textTransform: 'none',
+    transition: 'all 0.3s ease-in-out',
+    '&:hover': {
+        backgroundColor: '#3268f1 !important',
+        color: '#ffffff !important',
+        borderColor: '#3268f1',
+        transform: 'translateY(-2px)',
+        boxShadow: '0 4px 12px rgba(50, 104, 241, 0.3)',
+    },
+    '&.Mui-selected': {
+        backgroundColor: '#3268f1 !important',
+        color: '#ffffff !important',
+        borderColor: '#3268f1',
+        boxShadow: '0 4px 12px rgba(50, 104, 241, 0.4)',
+        '&:hover': {
+            backgroundColor: '#2851c4 !important',
+            boxShadow: '0 6px 20px rgba(50, 104, 241, 0.5)',
+            transform: 'translateY(-2px)',
+        }
+    },
+    '&.Mui-disabled': {
+        opacity: 0.6,
+    },
+    '&:first-of-type': {
+        borderTopLeftRadius: '8px',
+        borderBottomLeftRadius: '8px',
+    },
+    '&:last-of-type': {
+        borderTopRightRadius: '8px',
+        borderBottomRightRadius: '8px',
+    },
+    '&:not(:first-of-type)': {
+        borderLeft: '1px solid #2d2d44',
+    },
+    '@media (max-width: 600px)': {
+        padding: '6px 12px',
+        fontSize: '0.75rem',
+    }
+}));
+
+// Styled Toggle Button Group
+const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
+    backgroundColor: '#0f0f1a',
+    borderRadius: '8px',
+    padding: '4px',
+    border: '1px solid #2d2d44',
+    gap: '2px',
+    '& .MuiToggleButton-root': {
+        borderRadius: '6px !important',
+        border: 'none',
+        margin: '0 2px',
+        '&:first-of-type': {
+            borderRadius: '6px !important',
+        },
+        '&:last-of-type': {
+            borderRadius: '6px !important',
+        },
+    },
+}));
+
+// Styled Summary Cards
+const StyledCard = styled(Card)(({ theme, bgcolor }) => ({
+    backgroundColor: bgcolor || '#ffffff',
+    borderRadius: '12px',
+    boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+    transition: 'all 0.3s ease',
+    '&:hover': {
+        transform: 'translateY(-4px)',
+        boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
+    },
+    '& .MuiCardContent-root': {
+        padding: '20px',
+        '&:last-child': {
+            paddingBottom: '20px',
+        }
+    },
+    '& .MuiTypography-colorTextSecondary': {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        fontSize: '0.875rem',
+        fontWeight: 500,
+        color: '#6b7280',
+    },
+    '& .MuiTypography-h4': {
+        fontWeight: 700,
+        fontSize: '1.75rem',
+        marginTop: '8px',
+    }
+}));
 
 const ManageEarning = () => {
-
-    const navigate = useNavigate();
-
-    const randomData = [
-        {
-            SNo: 1,
-            Name: "Alejandro Gómez",
-            Email: "alejandro.gomez@example.com",
-            TransactionID: "TXN123456",
-            Points: "1 hour",
-            Number: "Z1-001",
-            Earning: "2050",
-            CreateDateTime: "25-01-2025 12:28 AM"
-        },
-        {
-            SNo: 2,
-            Name: "Sophia Müller",
-            Email: "sophia.muller@example.de",
-            TransactionID: "TXN789012",
-            Points: "2 hours",
-            Number: "P2-040",
-            Earning: "3575",
-            CreateDateTime: "14-02-2025 10:28 AM"
-        },
-        {
-            SNo: 3,
-            Name: "Hiroshi Tanaka",
-            Email: "hiroshi.tanaka@example.jp",
-            TransactionID: "TXN345678",
-            Points: "9 hours",
-            Number: "K1-123",
-            Earning: "1000",
-            CreateDateTime: "15-02-2025 11:28 AM"
-        },
-        {
-            SNo: 4,
-            Name: "Isabelle Dupont",
-            Email: "isabelle.dupont@example.fr",
-            TransactionID: "TXN567890",
-            Points: "3 hours",
-            Number: "Z3-004",
-            Earning: "5025",
-            CreateDateTime: "24-01-2025 10:28 AM"
-        },
-        {
-            SNo: 5,
-            Name: "Luca Rossi",
-            Email: "luca.rossi@example.it",
-            TransactionID: "TXN678901",
-            Points: "4 hours",
-            Number: "A2-009",
-            Earning: "2580",
-            CreateDateTime: "14-02-2025 10:28 AM"
-        }
-    ];
-
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(50);
     const theme = useTheme();
-    const [showModal2, setShowModal2] = useState(false);
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const [selectedIndex, setSelectedIndex] = React.useState(null);
-    const [faq_data, setfaqData] = React.useState([]);
-    const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [ShowEditModal, setShowEditModal] = useState(false);
-    const [faqToDelete, setFaqDelete] = useState('');
-    const [guardedit, setGuardedit] = useState('');
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(50);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filterType, setFilterType] = useState('this_month');
+    const [earningsData, setEarningsData] = useState([]);
+    const [summaryData, setSummaryData] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [totalRecords, setTotalRecords] = useState(0);
+    const [currentMonth, setCurrentMonth] = useState('');
 
-    const [editQuestion, setEditQuestion] = useState('');
-    const [editAnswer, setEditAnswer] = useState('');
-    const [editAnswerError, setEditAnswerError] = useState('');
-    const [showMsgModal, setShowMsgModal] = useState(false);
-    const [editQuestionError, setEditQuestionError] = useState('');
-    const [error, setError] = useState('');
-    const [addQuestion, setAddQuestion] = useState('');
-    const [addQuestionError, setAddQuestionError] = useState('');
-    const [addAnswer, setAddAnswer] = useState('');
-    const [addAnswerError, setAddAnswerError] = useState('');
-    const [searchQuery, setSearchQuery] = React.useState('');
-    const [question, setQuestion] = React.useState('');
-    const [answer, setAnswer] = React.useState('');
-    const handleClick = (event, index) => {
-        setAnchorEl(event.currentTarget);
-        setSelectedIndex(index);
+    // Fetch earnings data
+    const fetchEarnings = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await axios.get(`${API_URL}get_earnings`, {
+                params: {
+                    page: page + 1,
+                    limit: rowsPerPage,
+                    search: searchQuery,
+                    filter: filterType
+                }
+            });
+
+            if (response.data.success) {
+                setEarningsData(response.data.data || []);
+                setSummaryData(response.data.summary || null);
+                setTotalRecords(response.data.pagination?.total || 0);
+                setCurrentMonth(response.data.current_month || '');
+            } else {
+                setError('Failed to fetch earnings data');
+            }
+        } catch (err) {
+            console.error('Error fetching earnings:', err);
+            setError('Error fetching earnings data. Please try again.');
+        } finally {
+            setLoading(false);
+        }
     };
-    const handleClose = () => {
-        setAnchorEl(null);
-        setSelectedIndex(null);
+
+    // Fetch on page, filter, or search change
+    useEffect(() => {
+        fetchEarnings();
+    }, [page, rowsPerPage, filterType, searchQuery]);
+
+    // Handle filter change
+    const handleFilterChange = (event, newFilter) => {
+        if (newFilter !== null) {
+            setFilterType(newFilter);
+            setPage(0);
+        }
     };
+
+    // Handle search
+    const handleSearch = (event) => {
+        setSearchQuery(event.target.value);
+        setPage(0);
+    };
+
+    // Handle page change
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
 
-    var fetchData = () => {
-        axios
-            .get(`${API_URL}get_all_guard`)
-            .then((response) => {
-                // setfaqData(response.data.user_arr);
-                console.log("Guard Data :-", response.data.user_arr)
-            })
-            .catch((error) => {
-                console.error('Error fetching faq data :', error);
+    // Export to Excel
+    const exportToExcel = async () => {
+        try {
+            const response = await axios.post(`${API_URL}export_earnings`, {
+                filter: filterType
             });
-    };
-    React.useEffect(() => {
-        fetchData();
-        setfaqData(randomData);
-    }, []);
 
-    const handleAction = (action, faqData) => {
-        if (action === 'Edit') {
-            var sub = faqData.user_id;
-            var id = base64_encode(sub.toString());
-            navigate(APP_PREFIX_PATH + `/edit-guard/${id}`);
-            // navigate(APP_PREFIX_PATH + "/edit-guard")
+            if (response.data.success && response.data.data.length > 0) {
+                const exportData = response.data.data.map((item, index) => ({
+                    'S. No.': index + 1,
+                    'Name': item.name || 'N/A',
+                    'Email': item.email || 'N/A',
+                    'Mobile': item.mobile || 'N/A',
+                    'Course': item.course_name || 'N/A',
+                    'Total Fees': item.total_fees || 0,
+                    'Fees Submitted': item.fees_submitted || 0,
+                    'Fees Pending': item.fees_pending || 0,
+                    'Registration Fee': item.registration_fee || 0,
+                    'Total Earning': item.total_earning || 0,
+                    'Payment Mode': item.payment_mode || 'N/A',
+                    'Payment Date': item.payment_date || 'N/A',
+                    'Admission Date': item.admission_date || 'N/A',
+                    'Batch Timing': item.batch_timing || 'N/A',
+                    'Enquiry Source': item.enquiry_source || 'N/A',
+                    'Create Date Time': item.create_datetime || 'N/A'
+                }));
 
+                const ws = XLSX.utils.json_to_sheet(exportData);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, 'EarningsReport');
+                
+                const colWidths = [
+                    { wch: 8 }, { wch: 25 }, { wch: 30 }, { wch: 15 },
+                    { wch: 20 }, { wch: 15 }, { wch: 18 }, { wch: 15 },
+                    { wch: 18 }, { wch: 18 }, { wch: 15 }, { wch: 15 },
+                    { wch: 18 }, { wch: 20 }, { wch: 20 }, { wch: 25 }
+                ];
+                ws['!cols'] = colWidths;
 
-
-        } else if (action === 'Delete') {
-            setShowDeleteModal(true);
-            setFaqDelete(faqData.user_id);
-            setSelectedIndex(null);
-        } else if (action === 'view') {
-            var sub = faqData.user_id;
-            var id = base64_encode(sub.toString());
-            navigate(APP_PREFIX_PATH + `/view-guard/${id}`);
+                const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+                const blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+                const fileName = `EarningsReport_${new Date().toISOString().split('T')[0]}.xlsx`;
+                saveAs(blob, fileName);
+            } else {
+                setError('No data available to export');
+            }
+        } catch (err) {
+            console.error('Export error:', err);
+            setError('Error exporting data. Please try again.');
         }
     };
-    const deleteFAQ = () => {
-        axios
-            .post(`${API_URL}delete_guard`, { user_id: faqToDelete })
-            .then((response) => {
-                if (response.data.success) {
-                    setShowDeleteModal(false);
-                    fetchData();
-                } else {
-                    console.error('Error deleting category:', response.data.message);
-                }
-            })
-            .catch((error) => {
-                console.error('Error deleting category:', error);
-            });
-    };
 
-    const handleEdit = (e) => {
-        e.preventDefault();
-
-        let hasError = false;
-
-        if (!editQuestion) {
-            setEditQuestionError('Please Enter Question');
-            hasError = true;
-        } else {
-            setEditQuestionError('');
+    // Get status chip color
+    const getStatusColor = (status) => {
+        switch(status) {
+            case 3: return 'success';
+            case 4: return 'info';
+            case 5: return 'error';
+            default: return 'warning';
         }
+    };
 
-        if (!editAnswer) {
-            setEditAnswerError('Please Enter Answer');
-            hasError = true;
-        } else {
-            setEditAnswerError('');
+    const getStatusLabel = (status) => {
+        switch(status) {
+            case 3: return 'Active';
+            case 4: return 'Completed';
+            case 5: return 'Discontinued';
+            default: return 'Pending';
         }
-
-        if (hasError) {
-            return;
-        }
-
-        const data = new FormData();
-        data.append('faq_id', faqToDelete);
-        data.append('question', editQuestion);
-        data.append('answer', editAnswer);
-
-        axios
-            .post(`${API_URL}edit_faq`, data)
-            .then((response) => {
-                if (response.data.key === 'faqAlreadyExist' || response.data.key === 'faqNotFound') {
-                    response.data.key === 'faqAlreadyExist' ? setEditQuestionError('Question Already Exists') : setError('FAQ Not Found');
-                } else {
-                    fetchData();
-                    setEditQuestion('');
-                    setEditAnswer('');
-                    setEditAnswerError('');
-                    setShowEditModal(false);
-                    setEditQuestionError('');
-                    setError('');
-                }
-            })
-            .catch((error) => {
-                console.error('Error updating faq:', error);
-                setError('Error updating category.');
-            });
     };
 
-    const handleAdd = (e) => {
-        e.preventDefault();
-
-        let hasError = false;
-
-        if (!addQuestion) {
-            setAddQuestionError('Please Enter Question');
-            hasError = true;
-        } else {
-            setAddQuestionError('');
-        }
-
-        if (!addAnswer) {
-            setAddAnswerError('Please Enter Answer');
-            hasError = true;
-        } else {
-            setAddAnswerError('');
-        }
-
-        if (hasError) {
-            return;
-        }
-
-        const data = new FormData();
-        data.append('question', addQuestion);
-        data.append('answer', addAnswer);
-        axios
-            .post(`${API_URL}add_faq`, data)
-            .then((response) => {
-                if (response.data.key === 'FaqAlreadyExist') {
-                    setAddQuestionError('Question Already Exists');
-                } else {
-                    setShowModal2(false);
-                    fetchData();
-                    setAddQuestion('');
-                    setAddQuestionError('');
-                    setAddAnswer('');
-                    setAddAnswerError('');
-                }
-            })
-            .catch((error) => {
-                console.error('Error adding FAQ:', error);
-            });
+    // Format currency
+    const formatCurrency = (amount) => {
+        return new Intl.NumberFormat('en-IN', {
+            style: 'currency',
+            currency: 'INR',
+            minimumFractionDigits: 0
+        }).format(amount || 0);
     };
 
-
-    // const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
-    // const currentItemsall = data;
-
-    const exportToExcel = () => {
-        const ws = XLSX.utils.json_to_sheet(
-            randomData.map((user, index) => ({
-                'S. No.': 1,
-                Name: user.Name,
-                Email: user.Email,
-                TransactionID: user.TransactionID,
-                Points: user.Points,
-                Number: user.Number,
-                Earning: user.Earning,
-                // Total_Earnings: user.Total_Earnings,
-                Create_Date_Time: user.CreateDateTime
-
-                // 'Create Date & Time': formatDate(user.createtime)
-            }))
-        );
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, 'UserReport');
-        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-        const blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
-        saveAs(blob, 'EarningReport.xlsx');
-    };
-
-
-    const handleSearch = (event) => {
-        setSearchQuery(event.target.value);
-    };
-
-    const filteredUsers = randomData.filter((user) => {
-        const lowercasedTerm = searchQuery.toLowerCase();
-        const nameMatch = user.Name?.toLowerCase().includes(lowercasedTerm);
-        const roleMatch = user.Email?.toLowerCase().includes(lowercasedTerm);
-        const societyMatch = user.TransactionID?.toLowerCase().includes(lowercasedTerm);
-        // const wingMatch = user.Points?.toLowerCase().includes(lowercasedTerm);
-        const numberMatch = user.Earning ? String(user.Earning).toLowerCase().includes(lowercasedTerm) : false;
-        const NumberMatch = user.Number ? String(user.Number).toLowerCase().includes(lowercasedTerm) : false;
-        const PointsMatch = user.Points ? String(user.Points).toLowerCase().includes(lowercasedTerm) : false;
-
-        const dateMatch = user.CreateDateTime ? String(user.CreateDateTime).toLowerCase().includes(lowercasedTerm) : false;
-        return nameMatch || roleMatch || societyMatch || PointsMatch || numberMatch || NumberMatch || dateMatch;
-    });
-
-    const handleShowModal2 = () => setShowModal2(true);
-    const handleCloseModal2 = () => {
-        setShowModal2(false);
-        setAddQuestionError('');
-        setAddQuestion('');
-        setAddress(''), setAddressError('');
-    };
-
-    const handleCloseModal = () => {
-        setShowMsgModal(false);
-        setQuestion('');
-    };
     return (
         <>
             <div className="col-xl-12" style={{ backgroundColor: '#FFF', borderRadius: '12px', padding: '10px', marginBottom: '20px' }}>
-                <p
-                    style={{
-                        // margin: '2px',
-                        fontSize: '1.25rem',
-                        color: '#121926',
-                        fontWeight: '600',
-                        fontFamily: 'Poppins',
-                        lineHeight: '1.167',
-                        // fontWeight: ' 500',
-                        marginBottom: ' 5px'
-                    }}
-                >
-                    Manage Earning
-                </p>
+                <Typography variant="h5" sx={{ fontWeight: 600, color: '#121926', fontFamily: 'Poppins' }}>
+                    Manage Earnings {currentMonth && `- ${currentMonth}`}
+                </Typography>
             </div>
-            <Box alignItems="center" justifyContent="space-between" display="flex" className="mobile-res">
-                <OutlinedInput
-                    sx={{ pr: 1, pl: 2, my: 2 }}
-                    id="input-search-profile"
-                    onChange={handleSearch}
-                    placeholder="Search"
-                    startAdornment={
-                        <InputAdornment position="start">
-                            <IconSearch stroke={1.5} size="1rem" color={theme.palette.grey[500]} />
-                        </InputAdornment>
-                    }
-                    aria-describedby="search-helper-text"
-                    inputProps={{
-                        'aria-label': 'weight'
-                    }}
-                />
-                <Button className="btn" onClick={exportToExcel} 
-                style={{ width: '180px'  , backgroundColor: '#3268f1', color: '#fff' ,marginLeft: '10px' }}
-                 >
-                    <AddIcon />
-                    Export to Excel
-                </Button>
+
+            {/* Summary Cards */}
+            {summaryData && (
+                <Grid container spacing={3} sx={{ mb: 3 }}>
+                    <Grid item xs={12} sm={6} md={3}>
+                        <StyledCard bgcolor="#e3f2fd">
+                            <CardContent>
+                                <Typography color="textSecondary" gutterBottom>
+                                    <PeopleIcon sx={{ fontSize: '1.2rem' }} />
+                                    Total Students
+                                </Typography>
+                                <Typography variant="h4" color="#1565c0">
+                                    {summaryData.total_students || 0}
+                                </Typography>
+                            </CardContent>
+                        </StyledCard>
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={3}>
+                        <StyledCard bgcolor="#e8f5e9">
+                            <CardContent>
+                                <Typography color="textSecondary" gutterBottom>
+                                    <TrendingUpIcon sx={{ fontSize: '1.2rem' }} />
+                                    Total Earnings
+                                </Typography>
+                                <Typography variant="h4" color="#2e7d32">
+                                    {formatCurrency(summaryData.total_earnings)}
+                                </Typography>
+                            </CardContent>
+                        </StyledCard>
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={3}>
+                        <StyledCard bgcolor="#fff3e0">
+                            <CardContent>
+                                <Typography color="textSecondary" gutterBottom>
+                                    <PaymentIcon sx={{ fontSize: '1.2rem' }} />
+                                    Fees Submitted
+                                </Typography>
+                                <Typography variant="h4" color="#e65100">
+                                    {formatCurrency(summaryData.total_fees_submitted)}
+                                </Typography>
+                            </CardContent>
+                        </StyledCard>
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={3}>
+                        <StyledCard bgcolor="#fce4ec">
+                            <CardContent>
+                                <Typography color="textSecondary" gutterBottom>
+                                    <PendingIcon sx={{ fontSize: '1.2rem' }} />
+                                    Fees Pending
+                                </Typography>
+                                <Typography variant="h4" color="#c62828">
+                                    {formatCurrency(summaryData.total_fees_pending)}
+                                </Typography>
+                            </CardContent>
+                        </StyledCard>
+                    </Grid>
+                </Grid>
+            )}
+
+            {/* Filter and Search Section */}
+            <Box 
+                alignItems="center" 
+                justifyContent="space-between" 
+                display="flex" 
+                className="mobile-res" 
+                flexWrap="wrap" 
+                gap={2}
+                sx={{ 
+                    backgroundColor: '#0f0f1a', 
+                    padding: '12px', 
+                    borderRadius: '12px',
+                    border: '1px solid #2d2d44'
+                }}
+            >
+                <StyledToggleButtonGroup
+                    value={filterType}
+                    exclusive
+                    onChange={handleFilterChange}
+                    aria-label="filter options"
+                    size="small"
+                >
+                    <StyledToggleButton value="today">
+                        Today
+                    </StyledToggleButton>
+                    <StyledToggleButton value="this_month">
+                        This Month
+                    </StyledToggleButton>
+                    <StyledToggleButton value="last_month">
+                        Last Month
+                    </StyledToggleButton>
+                    <StyledToggleButton value="this_year">
+                        This Year
+                    </StyledToggleButton>
+                    <StyledToggleButton value="last_year">
+                        Last Year
+                    </StyledToggleButton>
+                    <StyledToggleButton value="all">
+                        All Time
+                    </StyledToggleButton>
+                </StyledToggleButtonGroup>
+
+                <Box display="flex" gap={2} alignItems="center" flexWrap="wrap">
+                    <OutlinedInput
+                        sx={{ 
+                            pr: 1, 
+                            pl: 2, 
+                            my: 1,
+                            backgroundColor: '#1a1a2e',
+                            borderRadius: '8px',
+                            '& .MuiOutlinedInput-notchedOutline': {
+                                borderColor: '#2d2d44',
+                            },
+                            '&:hover .MuiOutlinedInput-notchedOutline': {
+                                borderColor: '#3268f1',
+                            },
+                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                borderColor: '#3268f1',
+                            },
+                            input: {
+                                color: '#ffffff',
+                            }
+                        }}
+                        id="input-search-profile"
+                        onChange={handleSearch}
+                        placeholder="Search by name, course, payment..."
+                        value={searchQuery}
+                        startAdornment={
+                            <InputAdornment position="start">
+                                <IconSearch stroke={1.5} size="1rem" color="#6b7280" />
+                            </InputAdornment>
+                        }
+                    />
+                    <Button 
+                        variant="contained" 
+                        onClick={exportToExcel}
+                        sx={{ 
+                            backgroundColor: '#3268f1', 
+                            color: '#fff',
+                            borderRadius: '8px',
+                            padding: '10px 24px',
+                            fontWeight: 600,
+                            textTransform: 'none',
+                            '&:hover': { 
+                                backgroundColor: '#2851c4',
+                                transform: 'translateY(-2px)',
+                                boxShadow: '0 4px 12px rgba(50, 104, 241, 0.3)',
+                            },
+                            transition: 'all 0.3s ease',
+                        }}
+                        disabled={loading || earningsData.length === 0}
+                    >
+                        <AddIcon sx={{ mr: 1 }} />
+                        Export to Excel
+                    </Button>
+                </Box>
             </Box>
-            <Paper sx={{ width: '100%', marginTop: '20px' }}>
-                {/* <SearchSection /> */}
-                <TableContainer sx={{ maxHeight: 640 }}>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                {columns.map((column) => (
-                                    <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
-                                        {column.label}
-                                    </TableCell>
-                                ))}
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {randomData.length > 0 ? (
-                                filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
-                                    <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-                                        <TableCell style={{ textAlign: 'center' }}>{row.SNo}</TableCell>
-                                        {/* <TableCell style={{ textAlign: 'center' }}>
-                                            <Button
-                                                className="btn btn-primary"
-                                                aria-label="more"
-                                                aria-controls="long-menu"
-                                                aria-haspopup="true"
-                                                onClick={(event) => handleClick(event, index)}
+
+            {/* Table Section */}
+            <Paper sx={{ 
+                width: '100%', 
+                marginTop: '20px', 
+                overflow: 'hidden',
+                backgroundColor: '#0f0f1a',
+                border: '1px solid #2d2d44',
+                borderRadius: '12px',
+            }}>
+                {loading ? (
+                    <Box sx={{ display: 'flex', justifyContent: 'center', p: 5 }}>
+                        <CircularProgress sx={{ color: '#3268f1' }} />
+                    </Box>
+                ) : error ? (
+                    <Alert severity="error" sx={{ m: 2 }}>{error}</Alert>
+                ) : (
+                    <>
+                        <TableContainer sx={{ maxHeight: 640 }}>
+                            <Table stickyHeader>
+                                <TableHead>
+                                    <TableRow>
+                                        {columns.map((column) => (
+                                            <TableCell 
+                                                key={column.id} 
+                                                align={column.align} 
+                                                style={{ 
+                                                    minWidth: column.minWidth, 
+                                                    fontWeight: 700,
+                                                    color: '#ffffff',
+                                                    backgroundColor: '#1a1a2e',
+                                                    borderBottom: '2px solid #2d2d44',
+                                                }}
                                             >
-                                                Actions <ArrowDropDown />
-                                            </Button>
-                                            <Menu
-                                                id="long-menu"
-                                                anchorEl={anchorEl}
-                                                keepMounted
-                                                open={selectedIndex === index}
-                                                onClose={handleClose}
-                                            >
-                                                <MenuItem onClick={() => handleAction('view', row)} className="menu-icons">
-                                                    <VisibilityIcon style={{ marginRight: '8px' }} />
-                                                    View
-                                                </MenuItem>
-                                                <MenuItem 
-                                                onClick={() => handleAction('Edit', row)} 
-                                                // onClick={() => navigate(APP_PREFIX_PATH + "/edit-guard")}
-                                                className="menu-icons">
-                                                    <EditIcon style={{ marginRight: '8px' }} />
-                                                    Edit
-                                                </MenuItem>
-                                                <MenuItem onClick={() => handleAction('Delete', row)} className="menu-icons">
-                                                    <DeleteIcon style={{ marginRight: '8px' }} />
-                                                    Delete
-                                                </MenuItem>
-                                            </Menu>
-                                        </TableCell> */}
-
-
-                                        <TableCell style={{ textAlign: 'center' }}>{row.Name}</TableCell>
-                                        <TableCell style={{ textAlign: 'center' }}>{row.Email}</TableCell>
-                                        {/* <TableCell style={{ textAlign: 'center' }}>{row.password}</TableCell> */}
-
-                                        <TableCell style={{ textAlign: 'center' }}>{row.TransactionID}</TableCell>
-                                        <TableCell style={{ textAlign: 'center' }}>{row.Points}</TableCell>
-                                        {/* <TableCell style={{ textAlign: 'center' }}>{row.role === 1 ? "Security Guard" : row.role === 2 ? "Gate Guard" : "Unknown Role"}</TableCell> */}
-                                        <TableCell style={{ textAlign: 'center' }}>{row.Number}</TableCell>
-                                        <TableCell style={{ textAlign: 'center' }}> {row.Earning} </TableCell>
-
-                                        <TableCell style={{ textAlign: 'center' }}>{row.CreateDateTime}</TableCell>
-
+                                                {column.label}
+                                            </TableCell>
+                                        ))}
                                     </TableRow>
-                                ))
-                            ) : (
-                                <TableRow>
-                                    <TableCell colSpan={columns.length} style={{ textAlign: 'center', padding: '20px' }}>
-                                        No Data Available
-                                    </TableCell>
-                                </TableRow>
-                            )}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                                </TableHead>
+                                <TableBody>
+                                    {earningsData.length > 0 ? (
+                                        earningsData.map((row) => (
+                                            <TableRow 
+                                                hover 
+                                                role="checkbox" 
+                                                tabIndex={-1} 
+                                                key={row.user_id || row.SNo}
+                                                sx={{
+                                                    '&:hover': {
+                                                        backgroundColor: 'rgba(50, 104, 241, 0.05)',
+                                                    },
+                                                    '&:nth-of-type(odd)': {
+                                                        backgroundColor: 'rgba(255, 255, 255, 0.02)',
+                                                    },
+                                                }}
+                                            >
+                                                <TableCell align="center" sx={{ color: '#e0e0e0' }}>
+                                                    {row.SNo}
+                                                </TableCell>
+                                                <TableCell align="center" sx={{ color: '#e0e0e0' }}>
+                                                    <Stack direction="column" alignItems="center" spacing={0.5}>
+                                                        <Typography variant="body2" sx={{ color: '#ffffff', fontWeight: 500 }}>
+                                                            {row.Name}
+                                                        </Typography>
+                                                        {row.Mobile && row.Mobile !== 'N/A' && (
+                                                            <Typography variant="caption" sx={{ color: '#6b7280' }}>
+                                                                {row.Mobile}
+                                                            </Typography>
+                                                        )}
+                                                    </Stack>
+                                                </TableCell>
+                                                <TableCell align="center" sx={{ color: '#e0e0e0' }}>
+                                                    <Stack direction="column" alignItems="center" spacing={0.5}>
+                                                        <Typography variant="body2" sx={{ color: '#ffffff' }}>
+                                                            {row.CourseName}
+                                                        </Typography>
+                                                        {row.BatchTiming && row.BatchTiming !== 'N/A' && (
+                                                            <Chip 
+                                                                label={row.BatchTiming} 
+                                                                size="small" 
+                                                                variant="outlined"
+                                                                sx={{ 
+                                                                    color: '#6b7280',
+                                                                    borderColor: '#2d2d44',
+                                                                }}
+                                                            />
+                                                        )}
+                                                    </Stack>
+                                                </TableCell>
+                                                <TableCell align="center">
+                                                    <Typography sx={{ color: '#4caf50', fontWeight: 700 }}>
+                                                        {formatCurrency(row.TotalEarning || row.FeesSubmitted + row.RegistrationFee)}
+                                                    </Typography>
+                                                </TableCell>
+                                                <TableCell align="center" sx={{ color: '#e0e0e0' }}>
+                                                    {formatCurrency(row.FeesSubmitted)}
+                                                </TableCell>
+                                                <TableCell align="center" sx={{ color: '#ef5350' }}>
+                                                    {formatCurrency(row.FeesPending)}
+                                                </TableCell>
+                                                <TableCell align="center">
+                                                    <Chip 
+                                                        label={row.PaymentMode || 'N/A'} 
+                                                        size="small" 
+                                                        sx={{ 
+                                                            backgroundColor: row.PaymentMode ? 'rgba(50, 104, 241, 0.1)' : 'rgba(255, 193, 7, 0.1)',
+                                                            color: row.PaymentMode ? '#3268f1' : '#ffc107',
+                                                            border: `1px solid ${row.PaymentMode ? 'rgba(50, 104, 241, 0.3)' : 'rgba(255, 193, 7, 0.3)'}`,
+                                                        }}
+                                                    />
+                                                </TableCell>
+                                                <TableCell align="center" sx={{ color: '#e0e0e0' }}>
+                                                    {row.PaymentDate || 'N/A'}
+                                                </TableCell>
+                                                <TableCell align="center">
+                                                    <Stack direction="column" alignItems="center" spacing={0.5}>
+                                                        <Typography variant="body2" sx={{ color: '#e0e0e0' }}>
+                                                            {row.CreateDateTime || 'N/A'}
+                                                        </Typography>
+                                                        {row.StudentStatus !== undefined && (
+                                                            <Chip 
+                                                                label={getStatusLabel(row.StudentStatus)} 
+                                                                size="small" 
+                                                                color={getStatusColor(row.StudentStatus)}
+                                                            />
+                                                        )}
+                                                    </Stack>
+                                                </TableCell>
+                                            </TableRow>
+                                        ))
+                                    ) : (
+                                        <TableRow>
+                                            <TableCell colSpan={columns.length} align="center" sx={{ py: 5 }}>
+                                                <Typography variant="body1" sx={{ color: '#6b7280' }}>
+                                                    No earnings data available
+                                                </Typography>
+                                            </TableCell>
+                                        </TableRow>
+                                    )}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
 
-                {/* <TablePagination
-          labelRowsPerPage={
-            filteredUsers.length > 0
-              ? `Showing ${indexOfFirstUser + 1} to ${Math.min(indexOfLastUser, filteredUsers.length)} of ${filteredUsers.length} entries`
-              : 'No entries to show'
-          }
-          component="div"
-          count={filteredUsers.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          labelDisplayedRows={({ from, to, count }) => `${from} - ${to} of ${count}`}
-          rowsPerPageOptions={[5, 10, 25, 100]}
-        /> */}
-
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <p
-                        style={{ marginLeft: '26px', marginTop: '15px' }}
-                    >{`Showing ${Math.min(filteredUsers.length > 0 ? page * rowsPerPage + 1 : 0, filteredUsers.length)} to ${Math.min((page + 1) * rowsPerPage, filteredUsers.length)} of ${filteredUsers.length} entries`}</p>
-                    <div style={{ marginRight: '15px' }}>
-                        <button onClick={() => handleChangePage(null, page - 1)} disabled={page === 0} 
-                        style={{ marginRight: '8px' , border: '1px solid #bcb9b9', padding: '5px 10px', borderRadius: '4px', color: '#fff', cursor: page === 0 ? 'not-allowed' : 'pointer' , backgroundColor : 'transparent' }}
-                        >
-                            {'<'}
-                        </button>
-                        <button
-                            onClick={() => handleChangePage(null, page + 1)}
-                            disabled={(page + 1) * rowsPerPage >= filteredUsers.length}
-                            style={{ border: '1px solid #bcb9b9', padding: '5px 10px', borderRadius: '4px', color: '#fff', cursor: (page + 1) * rowsPerPage >= filteredUsers.length ? 'not-allowed' : 'pointer' , backgroundColor : 'transparent' }}
-                        >
-                            {'>'}
-                        </button>
-                    </div>
-                </div>
-
-                <Modal
-                    show={showModal2}
-                    onHide={() => {
-                        setAddQuestionError('');
-                        setAddQuestion('');
-                        setError('');
-                        setAddAnswerError('');
-                        setAddAnswer('');
-                        handleCloseModal2(false);
-
-                        // setAddAnswerError('')
-                    }}
-                >
-                    <Modal.Header closeButton>
-                        <Modal.Title style={{ fontSize: '17px' }}>Add Guard</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        {/* Add your form fields here */}
-                        <form>
-                            <div className="mb-3">
-                                <label htmlFor="editCategoryName" className="form-label">
-                                    Enter Question
-                                </label>
-                                <textarea
-                                    type="text"
-                                    value={addQuestion}
-                                    onChange={(e) => {
-                                        setAddQuestion(e.target.value);
-                                        setAddQuestionError('');
+                        {/* Pagination */}
+                        <Box sx={{ 
+                            display: 'flex', 
+                            justifyContent: 'space-between', 
+                            alignItems: 'center', 
+                            p: 2, 
+                            flexWrap: 'wrap',
+                            borderTop: '1px solid #2d2d44',
+                            backgroundColor: '#0f0f1a',
+                        }}>
+                            <Typography variant="body2" sx={{ color: '#6b7280' }}>
+                                Showing {Math.min(earningsData.length > 0 ? page * rowsPerPage + 1 : 0, totalRecords)} to {Math.min((page + 1) * rowsPerPage, totalRecords)} of {totalRecords} entries
+                            </Typography>
+                            <Box>
+                                <Button
+                                    onClick={() => handleChangePage(null, page - 1)}
+                                    disabled={page === 0 || loading}
+                                    sx={{ 
+                                        mr: 1,
+                                        color: '#ffffff',
+                                        border: '1px solid #2d2d44',
+                                        borderRadius: '8px',
+                                        '&:hover': {
+                                            backgroundColor: '#3268f1',
+                                            borderColor: '#3268f1',
+                                        },
+                                        '&.Mui-disabled': {
+                                            color: '#6b7280',
+                                        }
                                     }}
-                                    className="form-control"
-                                    id="editCategoryName"
-                                    placeholder="Enter Question "
-                                    maxLength={250}
-                                />
-                                <p style={{ color: 'red' }}>{addQuestionError}</p>
-                            </div>
-
-                            <div className="mb-3">
-                                <label htmlFor="editCategoryName" className="form-label">
-                                    Enter Answer
-                                </label>
-                                <textarea
-                                    type="text"
-                                    value={addAnswer}
-                                    onChange={(e) => {
-                                        setAddAnswer(e.target.value);
-                                        setAddAnswerError('');
+                                >
+                                    Previous
+                                </Button>
+                                <Button
+                                    onClick={() => handleChangePage(null, page + 1)}
+                                    disabled={(page + 1) * rowsPerPage >= totalRecords || loading}
+                                    sx={{ 
+                                        color: '#ffffff',
+                                        border: '1px solid #2d2d44',
+                                        borderRadius: '8px',
+                                        '&:hover': {
+                                            backgroundColor: '#3268f1',
+                                            borderColor: '#3268f1',
+                                        },
+                                        '&.Mui-disabled': {
+                                            color: '#6b7280',
+                                        }
                                     }}
-                                    className="form-control"
-                                    id="editCategoryName"
-                                    placeholder="Enter answer "
-                                    maxLength={350}
-                                />
-                                <p style={{ color: 'red' }}>{addAnswerError}</p>
-                            </div>
-
-                            {error && <p style={{ color: 'red' }}>{error}</p>}
-                        </form>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="primary" className="btn btn-primary " onClick={handleAdd}>
-                            Add FAQ
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
-
-                <Modal
-                    show={ShowEditModal}
-                    onHide={() => {
-                        setShowEditModal(false), setEditQuestionError(''), setEditQuestion('');
-                        setEditAnswer(''), setEditAnswerError('');
-                        setError('');
-                    }}
-                >
-                    <Modal.Header closeButton>
-                        <Modal.Title style={{ fontSize: '17px' }}>Edit FAQ</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <form>
-                            <div className="mb-3">
-                                <label htmlFor="editCategoryName" className="form-label">
-                                    Enter Question
-                                </label>
-                                <textarea
-                                    type="text"
-                                    value={editQuestion}
-                                    onChange={(e) => {
-                                        setEditQuestion(e.target.value);
-                                        setEditQuestionError('');
-                                    }}
-                                    className="form-control"
-                                    id="editCategoryName"
-                                    placeholder="Enter Question"
-                                    maxLength={250}
-                                />
-                                <p style={{ color: 'red' }}>{editQuestionError}</p>
-                            </div>
-                            <div className="mb-3">
-                                <label htmlFor="editCategoryName" className="form-label">
-                                    Enter Answer
-                                </label>
-                                <textarea
-                                    type="text"
-                                    value={editAnswer}
-                                    onChange={(e) => {
-                                        setEditAnswer(e.target.value);
-                                        setEditAnswerError('');
-                                    }}
-                                    className="form-control"
-                                    id="editCategoryName"
-                                    placeholder="Enter Answer "
-                                    maxLength={350}
-                                />
-                                <p style={{ color: 'red' }}>{editAnswerError}</p>
-                            </div>
-                            {error && <p style={{ color: 'red' }}>{error}</p>}
-                        </form>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="primary" className="btn btn-primary " onClick={handleEdit}>
-                            Edit FAQ
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
-
-                <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Confirm Delete</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>Are you sure you want to delete this Guard?</Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="danger" className="btn btn-primary" onClick={deleteFAQ}>
-                            Delete
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
-
-                <Modal show={showMsgModal} onHide={handleCloseModal} style={{ zIndex: '99999' }}>
-                    <Modal.Header closeButton>
-                        <Modal.Title style={{ fontSize: '17px' }}>View FAQ</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <>
-                            <p>Question : {question != null ? question : 'NA'}</p>
-                            <p>Answer : {answer != null ? answer : 'NA'}</p>
-                        </>
-                    </Modal.Body>
-                    <Modal.Footer></Modal.Footer>
-                </Modal>
+                                >
+                                    Next
+                                </Button>
+                            </Box>
+                        </Box>
+                    </>
+                )}
             </Paper>
+
+            {/* Error Snackbar */}
+            <Snackbar
+                open={!!error}
+                autoHideDuration={6000}
+                onClose={() => setError(null)}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+                <Alert onClose={() => setError(null)} severity="error" sx={{ width: '100%' }}>
+                    {error}
+                </Alert>
+            </Snackbar>
         </>
     );
 };
