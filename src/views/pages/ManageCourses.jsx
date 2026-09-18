@@ -398,7 +398,7 @@ const ManageCourses = () => {
                                         </TableCell>
                                         
                                         <TableCell align="center">
-                                            <Button
+                                            <Button style={{color : "#ffff", backgroundColor : "#17263dba"}}
                                                 variant="contained"
                                                 size="small"
                                                 onClick={(e) => handleClick(e, index)}
@@ -527,50 +527,50 @@ const ManageCourses = () => {
                             <div className="col-md-6">
                                 <div className="mb-3">
                                     <label className="form-label fw-bold " style={{color : "#4f4e4e9f" , fontFamily : 'revert-layer' }}>Course Name:</label>
-                                    <p style={{color : "#bed9e0"}}>{viewCourse.course_name}</p>
+                                    <p style={{color : "#2f94f9"}}>{viewCourse.course_name}</p>
                                 </div>
                                 <div className="mb-3">
                                     <label className="form-label fw-bold" style={{color : "#4f4e4e9f" , fontFamily : 'revert-layer'}}>Course Title:</label>
-                                    <p style={{color : "#bed9e0"}}>{viewCourse.title}</p>
+                                    <p style={{color : "#2f94f9"}}>{viewCourse.title}</p>
                                 </div>
                                 <div className="mb-3">
                                     <label className="form-label fw-bold" style={{color : "#4f4e4e9f" , fontFamily : 'revert-layer'}}>Fees:</label>
-                                    <p style={{color : "#bed9e0"}} className="fw-bold">
+                                    <p style={{color : "#2f94f9"}} className="fw-bold">
                                         <CurrencyRupee fontSize="small" />
                                         {viewCourse.fees}
                                     </p>
                                 </div>
                                 <div className="mb-3">
                                     <label className="form-label fw-bold" style={{color : "#4f4e4e9f" , fontFamily : 'revert-layer'}}>Duration:</label>
-                                    <p style={{color : "#bed9e0"}}>{viewCourse.duration || 'N/A'}</p>
+                                    <p style={{color : "#2f94f9"}}>{viewCourse.duration || 'N/A'}</p>
                                 </div>
                                 <div className="mb-3">
                                     <label className="form-label fw-bold" style={{color : "#4f4e4e9f" , fontFamily : 'revert-layer'}}>Category:</label>
-                                    <p style={{color : "#bed9e0"}}>{viewCourse.category || 'N/A'}</p>
+                                    <p style={{color : "#2f94f9"}}>{viewCourse.category || 'N/A'}</p>
                                 </div>
                             </div>
                             <div className="col-md-6">
                                 <div className="mb-3">
                                     <label className="form-label fw-bold" style={{color : "#4f4e4e9f" , fontFamily : 'revert-layer'}}>Minimum Fees:</label>
-                                    <p style={{color : "#bed9e0"}}>
+                                    <p style={{color : "#2f94f9"}}>
                                         <CurrencyRupee fontSize="small" />
                                         {viewCourse.minimum_fees}
                                     </p>
                                 </div>
                                 <div className="mb-3">
                                     <label className="form-label fw-bold"style={{color : "#4f4e4e9f" , fontFamily : 'revert-layer'}}>Maximum Fees:</label>
-                                    <p style={{color : "#bed9e0"}}>
+                                    <p style={{color : "#2f94f9"}}>
                                         <CurrencyRupee fontSize="small" />
                                         {viewCourse.maximum_fees}
                                     </p>
                                 </div>
                                 <div className="mb-3">
                                     <label className="form-label fw-bold" style={{color : "#4f4e4e9f" , fontFamily : 'revert-layer'}}>Status:</label>
-                                    <p style={{color : "#bed9e0"}}>{getStatusBadge(viewCourse.active)}</p>
+                                    <p style={{color : "#2f94f9"}}>{getStatusBadge(viewCourse.active)}</p>
                                 </div>
                                 <div className="mb-3">
                                     <label className="form-label fw-bold"style={{color : "#4f4e4e9f" , fontFamily : 'revert-layer'}}>Created Date:</label>
-                                    <p style={{color : "#bed9e0"}}>{viewCourse.createtime}</p>
+                                    <p style={{color : "#2f94f9"}}>{viewCourse.createtime}</p>
                                 </div>
                             </div>
                             
@@ -596,7 +596,7 @@ const ManageCourses = () => {
                                 <label className="form-label fw-bold"style={{color : "#4f4e4e9f" , fontFamily : 'revert-layer'}}>Description:</label>
                                 <div 
                                     className="border p-3 rounded bg-light fw-bold"
-                                    style={{ maxHeight: '300px', overflowY: 'auto' , color: "red" ,  }}
+                                    style={{ maxHeight: '300px', overflowY: 'auto' , color: "#f25959d4" ,  }}
                                     dangerouslySetInnerHTML={{ __html: viewCourse.description || 'No description available' }}
                                 />
                             </div>
@@ -784,7 +784,7 @@ const ManageCourses = () => {
                         
                         <div className="row mb-3">
                             <div className="col-md-6">
-                                <Form.Label >Status</Form.Label>
+                                <Form.Label style={{color : "#797878"}} >Status</Form.Label>
                                 <Form.Select
                                     value={editActive}
                                     onChange={(e) => setEditActive(parseInt(e.target.value))}
@@ -829,7 +829,7 @@ const ManageCourses = () => {
                     <Button style={{color : "#797878"}} variant="secondary" onClick={() => setShowEditModal(false)} disabled={loading}>
                         Cancel
                     </Button>
-                    <Button variant="primary" onClick={handleEditSubmit} disabled={loading} style={{color : "#3d619e"}}>
+                    <Button variant="primary" onClick={handleEditSubmit} disabled={loading} style={{color : "#232424"}}>
                         {loading ? 'Updating...' : 'Update Course'}
                     </Button>
                 </Modal.Footer>
@@ -838,17 +838,17 @@ const ManageCourses = () => {
             {/* Delete Confirmation Modal */}
             <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>Confirm Delete</Modal.Title>
+                    <Modal.Title style={ {color : "#292929"}}>Confirm Delete</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>Are you sure you want to delete the course "{courseToDelete?.course_name}"?</p>
+                    <p style={{ color : "#4e4e4e"}}>Are you sure you want to delete the course "{courseToDelete?.course_name}"?</p>
                     <p className="text-danger"><small>This action cannot be undone. All course data will be permanently deleted.</small></p>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowDeleteModal(false)} disabled={loading}>
+                    <Button style={{color : "#5f5f5f"}} variant="secondary" onClick={() => setShowDeleteModal(false)} disabled={loading}>
                         Cancel
                     </Button>
-                    <Button variant="danger" onClick={deleteCourse} disabled={loading}>
+                    <Button style={{color : "#000000"}} variant="danger" onClick={deleteCourse} disabled={loading}>
                         {loading ? 'Deleting...' : 'Delete'}
                     </Button>
                 </Modal.Footer>

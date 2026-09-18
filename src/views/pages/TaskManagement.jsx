@@ -477,10 +477,11 @@ const TaskManagement = () => {
                         display: 'flex', 
                         alignItems: 'center', 
                         gap: '10px',
-                        fontSize: '24px',
-                        color: '#ffffff'
+                        fontSize: '28px',
+                        color: '#ffffff',
+                        fontWeight : 600
                     }}>
-                        <IconSticker2 style={{ color: '#6366F1' }} />
+                        <IconSticker2 style={{ color: '#6371f1' }} />
                         My Notes
                     </h2>
                     <p style={{ margin: '4px 0 0 0', color: '#6B7280', fontSize: '14px' }}>
@@ -513,9 +514,12 @@ const TaskManagement = () => {
                             padding: '8px 20px',
                             textTransform: 'none',
                             fontSize: '14px',
-                            backgroundColor: '#6366F1',
+                            width: '150px' ,
+                            backgroundColor: '#3268f1',
+                            color: '#fff',
                             boxShadow: '0 4px 12px rgba(99,102,241,0.3)'
                         }}
+                
                     >
                         Add Note
                     </Button>
@@ -560,9 +564,9 @@ const TaskManagement = () => {
                                         flexDirection: 'column',
                                         borderRadius: '12px',
                                         transition: 'all 0.2s ease',
-                                        backgroundColor: '#1F2937',
+                                        backgroundColor: '#0b387c24',
                                         '&:hover': {
-                                            boxShadow: '0 8px 24px rgba(99,102,241,0.2)',
+                                            boxShadow: '0 0 10px rgba(152, 158, 244, 0.44)',
                                             transform: 'translateY(-2px)'
                                         }
                                     }}
@@ -644,6 +648,7 @@ const TaskManagement = () => {
                 onHide={handleModalClose}
                 centered
                 size="sm"
+                
             >
                 <Modal.Header
                     closeButton
@@ -660,7 +665,7 @@ const TaskManagement = () => {
                             gap: "10px",
                             fontSize: "18px",
                             fontWeight: "600",
-                            color: "#ffffff"
+                            color: "#ffffff",
                         }}
                     >
                         <IconSticker2 style={{ color: "#6366F1", fontSize: "22px" }} />

@@ -43,14 +43,14 @@ const StyledCard = styled(Card)(({ theme, borderColor }) => ({
     borderLeft: `4px solid ${borderColor || '#60a5fa'}`,
     height: '100%',
     transition: 'all 0.3s ease-in-out',
-    cursor: 'pointer',
-    backgroundColor: '#0f0f1a',
+    // cursor: 'pointer',
+    // backgroundColor: '#0f0f1a',
     border: `1px solid #2d2d44`,
-    '&:hover': {
-        transform: 'translateY(-5px)',
-        boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
-        borderColor: borderColor || '#60a5fa',
-    }
+    // '&:hover': {
+    //     transform: 'translateY(-5px)',
+    //     boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
+    //     borderColor: borderColor || '#60a5fa',
+    // }
 }));
 
 const StatCard = ({ title, value, icon, change, color, subtitle, loading }) => (
@@ -201,12 +201,12 @@ const Dashboard = () => {
     return (
         <Box sx={{ 
             padding: '24px',
-            backgroundColor: '#0a0a14',
+            // backgroundColor: '#0a0a14',
             minHeight: '100vh'
         }}>
             {/* Header Section */}
             <Box sx={{ 
-                backgroundColor: '#0f0f1a', 
+                backgroundColor: '#0f172a', 
                 borderRadius: '12px', 
                 padding: '24px',
                 marginBottom: '24px',
@@ -222,18 +222,19 @@ const Dashboard = () => {
                     <Box>
                         <Typography variant="h4" sx={{
                             color: '#ffffff',
-                            fontWeight: 700,
+                            fontWeight: 600,
+                            fontSize : "22px",
                             fontFamily: 'Poppins, sans-serif',
                             marginBottom: '4px'
                         }}>
                             Coaching Desk Dashboard
                         </Typography>
                         <Typography variant="body1" sx={{
-                            color: '#6b7280',
+                            color: '#949aa6',
                             fontSize: '14px',
                             marginTop: '6px'
                         }}>
-                            {getGreeting()}, <span style={{ fontWeight: 500, color: '#3268f1' }}>{userName}</span>! Here's what's happening today.
+                            {getGreeting()}, <span style={{ fontWeight: 500, color: '#487af8d6' }}>{userName}</span>! Here's what's happening today.
                         </Typography>
                         {currentMonth && (
                             <Chip 
@@ -242,7 +243,7 @@ const Dashboard = () => {
                                 sx={{ 
                                     mt: 1,
                                     backgroundColor: 'rgba(50, 104, 241, 0.1)',
-                                    color: '#3268f1',
+                                    color: '#487af8d6',
                                     border: '1px solid rgba(50, 104, 241, 0.3)'
                                 }}
                             />
@@ -297,7 +298,6 @@ const Dashboard = () => {
                     {error}
                 </Alert>
             )}
-
             {/* Main Stats Grid */}
             <Grid container spacing={gridSpacing} sx={{ marginBottom: '24px' }}>
                {/* <Link to={`${APP_PREFIX_PATH}/`}> */}
@@ -317,7 +317,7 @@ const Dashboard = () => {
                         title="This Month Students"
                         value={dashboardData.monthlyStudents}
                         icon={<GroupsIcon sx={{ fontSize: '28px', color: '#10B981' }} />}
-                        color="#10B981"
+                        color="#13b910"
                         subtitle="New admissions this month"
                         loading={loading}
                     />
@@ -399,13 +399,13 @@ const Dashboard = () => {
                         <CardContent>
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                 <Box>
-                                    <Typography variant="body2" sx={{ color: '#6b7280', fontWeight: 500 }}>
+                                    <Typography variant="body2" sx={{ color: '#e2a247', fontWeight: 500 }}>
                                         📝 Total Notes
                                     </Typography>
                                     {loading ? (
                                         <CircularProgress size={24} sx={{ color: '#3268f1' }} />
                                     ) : (
-                                        <Typography variant="h4" sx={{ fontWeight: 700, color: '#ffffff' }}>
+                                        <Typography variant="h4" sx={{  fontWeight: 700, color: '#ffffff' , marginLeft: "6px" , marginTop : "2px" }}>
                                             {dashboardData.totalNotes}
                                         </Typography>
                                     )}
@@ -429,14 +429,14 @@ const Dashboard = () => {
                         <CardContent>
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                 <Box>
-                                    <Typography variant="body2" sx={{ color: '#6b7280', fontWeight: 500 }}>
+                                    <Typography variant="body2" sx={{ color: '#6a93f9', fontWeight: 500 ,  }}>
                                         📚 Attendance Today
                                     </Typography>
                                     {loading ? (
                                         <CircularProgress size={24} sx={{ color: '#3268f1' }} />
                                     ) : (
-                                        <Typography variant="h4" sx={{ fontWeight: 700, color: '#ffffff' }}>
-                                            92%
+                                        <Typography variant="h4" sx={{ fontWeight: 700, color: '#ffffff',  marginLeft: "5px" , marginTop : "2px" }}>
+                                         92%
                                         </Typography>
                                     )}
                                 </Box>
@@ -463,7 +463,7 @@ const Dashboard = () => {
                     <Card sx={{ 
                         borderRadius: '12px',
                         height: '100%',
-                        backgroundColor: '#0f0f1a',
+                        // backgroundColor: '#0f0f1a',
                         border: '1px solid #2d2d44'
                     }}>
                         <CardContent sx={{ padding: '24px' }}>
@@ -554,7 +554,7 @@ const Dashboard = () => {
                                                         </Typography>
                                                     </td>
                                                     <td style={{ padding: '16px' }}>
-                                                        <Typography variant="body2" sx={{ fontWeight: 600, color: '#4caf50' }}>
+                                                        <Typography variant="body2" sx={{ fontWeight: 600, color: '#07b641ac' }}>
                                                             ₹{parseFloat(transaction.amount || 0).toLocaleString()}
                                                         </Typography>
                                                     </td>
@@ -570,6 +570,8 @@ const Dashboard = () => {
                                                             color={getStatusColor(transaction.status)}
                                                             sx={{ 
                                                                 fontWeight: 600,
+                                                                backgroundColor : "#07b641ac",
+                                                                color : "#1312129d",
                                                                 '& .MuiChip-label': {
                                                                     px: 1
                                                                 }
@@ -597,7 +599,7 @@ const Dashboard = () => {
                     <Card sx={{ 
                         borderRadius: '12px',
                         height: '100%',
-                        backgroundColor: '#0f0f1a',
+                        // backgroundColor: '#0f0f1a',
                         border: '1px solid #2d2d44'
                     }}>
                         <CardContent sx={{ padding: '24px' }}>
@@ -626,10 +628,10 @@ const Dashboard = () => {
                                         padding: '16px',
                                         marginBottom: '12px',
                                         transition: 'all 0.2s',
-                                        '&:hover': {
-                                            borderColor: '#3268f1',
-                                            boxShadow: '0 2px 8px rgba(50, 104, 241, 0.1)'
-                                        }
+                                        // '&:hover': {
+                                        //     borderColor: '#3268f1',
+                                        //     boxShadow: '0 2px 8px rgba(50, 104, 241, 0.1)'
+                                        // }
                                     }}>
                                         <Box sx={{ 
                                             display: 'flex', 

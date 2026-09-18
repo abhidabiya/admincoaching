@@ -367,10 +367,9 @@ const EnquiryManagement = () => {
                                             align={column.align} 
                                             style={{ 
                                                 minWidth: column.minWidth,
-                                                backgroundColor: '#f8fafc',
                                                 fontWeight: '600',
                                                 fontSize: '14px',
-                                                color: '#1f2937',
+                                                color: '#ffffffd7',
                                                 borderBottom: '2px solid #e5e7eb'
                                             }}
                                         >
@@ -382,7 +381,7 @@ const EnquiryManagement = () => {
                             <TableBody>
                                 {filteredEnquiries.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
                                     <TableRow hover role="checkbox" tabIndex={-1} key={row.user_id || index}>
-                                        <TableCell style={{ textAlign: 'center', color: '#4b5563' }}>
+                                        <TableCell style={{ textAlign: 'center', color: '#ffffff' }}>
                                             {page * rowsPerPage + index + 1}
                                         </TableCell>
                                         
@@ -468,7 +467,7 @@ const EnquiryManagement = () => {
                                             {row.parent_contact || 'N/A'}
                                         </TableCell>
                                         
-                                        <TableCell style={{ textAlign: 'center', color: '#374151' }}>
+                                        <TableCell style={{ textAlign: 'center', color: '#5d8dee' }}>
                                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
                                                 <School fontSize="small" />
                                                 {row.course_name || 'N/A'}
@@ -547,43 +546,25 @@ const EnquiryManagement = () => {
                         justifyContent: 'space-between', 
                         alignItems: 'center',
                         padding: '16px 24px',
-                        backgroundColor: '#f9fafb',
                         borderTop: '1px solid #e5e7eb'
                     }}>
-                        <p style={{ margin: 0, color: '#6b7280', fontSize: '14px' }}>
+                        <p style={{ margin: 0, color: '#e6e6e6', fontSize: '14px' }}>
                             {`Showing ${Math.min(filteredEnquiries.length > 0 ? page * rowsPerPage + 1 : 0, filteredEnquiries.length)} to ${Math.min((page + 1) * rowsPerPage, filteredEnquiries.length)} of ${filteredEnquiries.length} entries`}
                         </p>
                         <div>
                             <button
                                 onClick={() => handleChangePage(null, page - 1)}
                                 disabled={page === 0}
-                                style={{ 
-                                    marginRight: '8px', 
-                                    borderRadius: '6px', 
-                                    background: page === 0 ? '#f3f4f6' : '#3b82f6',
-                                    color: page === 0 ? '#9ca3af' : 'white',
-                                    border: '1px solid #e5e7eb',
-                                    padding: '8px 16px',
-                                    cursor: page === 0 ? 'not-allowed' : 'pointer',
-                                    fontSize: '14px'
-                                }}
+                                style={{ marginRight: '8px', border: '1px solid #bcb9b9', padding: '5px 10px', borderRadius: '4px', color: '#fff', cursor: page === 0 ? 'not-allowed' : 'pointer', backgroundColor: 'transparent' }}
                             >
-                                Previous
+                                {'<'}
                             </button>
                             <button
                                 onClick={() => handleChangePage(null, page + 1)}
                                 disabled={(page + 1) * rowsPerPage >= filteredEnquiries.length}
-                                style={{ 
-                                    borderRadius: '6px', 
-                                    background: (page + 1) * rowsPerPage >= filteredEnquiries.length ? '#f3f4f6' : '#3b82f6',
-                                    color: (page + 1) * rowsPerPage >= filteredEnquiries.length ? '#9ca3af' : 'white',
-                                    border: '1px solid #e5e7eb',
-                                    padding: '8px 16px',
-                                    cursor: (page + 1) * rowsPerPage >= filteredEnquiries.length ? 'not-allowed' : 'pointer',
-                                    fontSize: '14px'
-                                }}
+                                style={{ marginRight: '8px', border: '1px solid #bcb9b9', padding: '5px 10px', borderRadius: '4px', color: '#fff', cursor: page === 0 ? 'not-allowed' : 'pointer', backgroundColor: 'transparent' }}
                             >
-                                Next
+                                 {'>'}
                             </button>
                         </div>
                     </div>
@@ -608,9 +589,9 @@ const EnquiryManagement = () => {
             {/* Update Follow-up Modal */}
             <Modal show={showFollowupModal} onHide={handleCloseModal} centered size="lg">
                 <Modal.Header closeButton>
-                    <Modal.Title>Update Follow-up Details</Modal.Title>
+                    <Modal.Title style={{color : "#313131d7"}}>Update Follow-up Details</Modal.Title>
                     {selectedEnquiry && (
-                        <span style={{ marginLeft: '12px', fontSize: '14px', color: '#6b7280' }}>
+                        <span style={{ marginLeft: '12px', fontSize: '14px', color: '#818a9b' }}>
                             For: {selectedEnquiry.name}
                         </span>
                     )}
@@ -618,7 +599,7 @@ const EnquiryManagement = () => {
                 <Modal.Body>
                     <div className="row">
                         <div className="col-md-6 mb-3">
-                            <label className="form-label">Follow-up Date</label>
+                            <label className="form-label" style={{color : "#484747d7"}}>Follow-up Date</label>
                             <input
                                 type="date"
                                 className="form-control"
@@ -627,7 +608,7 @@ const EnquiryManagement = () => {
                             />
                         </div>
                         <div className="col-md-6 mb-3">
-                            <label className="form-label">Follow-up Time</label>
+                            <label className="form-label" style={{color : "#484747d7"}}>Follow-up Time</label>
                             <input
                                 type="time"
                                 className="form-control"
@@ -636,7 +617,7 @@ const EnquiryManagement = () => {
                             />
                         </div>
                         <div className="col-md-6 mb-3">
-                            <label className="form-label">Next Follow-up Date</label>
+                            <label className="form-label" style={{color : "#484747d7"}}>Next Follow-up Date</label>
                             <input
                                 type="date"
                                 className="form-control"
@@ -645,7 +626,7 @@ const EnquiryManagement = () => {
                             />
                         </div>
                         <div className="col-md-6 mb-3">
-                            <label className="form-label">Next Follow-up Time</label>
+                            <label className="form-label"style={{color : "#484747d7"}}>Next Follow-up Time</label>
                             <input
                                 type="time"
                                 className="form-control"
@@ -654,7 +635,7 @@ const EnquiryManagement = () => {
                             />
                         </div>
                         <div className="col-md-12 mb-3">
-                            <label className="form-label">Status</label>
+                            <label className="form-label" style={{color : "#484747d7"}}>Status</label>
                             <select
                                 className="form-control"
                                 value={followupDetails.status}
@@ -666,7 +647,7 @@ const EnquiryManagement = () => {
                             </select>
                         </div>
                         <div className="col-md-12 mb-3">
-                            <label className="form-label">Notes</label>
+                            <label className="form-label" style={{color : "#484747d7"}}>Notes</label>
                             <textarea
                                 className="form-control"
                                 value={followupDetails.notes}
@@ -678,13 +659,13 @@ const EnquiryManagement = () => {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCloseModal}>
+                    <Button  style={{color : "#484747d7"}} variant="secondary" onClick={handleCloseModal}>
                         Cancel
                     </Button>
                     <Button 
                         variant="primary" 
                         onClick={handleUpdateFollowup}
-                        style={{ background: 'linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)', border: 'none' }}
+                        style={{color : "#0d0d0df1"}}
                     >
                         Update Follow-up
                     </Button>

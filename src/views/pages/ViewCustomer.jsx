@@ -249,6 +249,7 @@ import { Box, Typography, Chip, Card, CardContent, Grid, Divider, Avatar, Stack,
 import { styled } from '@mui/material/styles';
 import Logo_Student from '../../../src/assets/images/Student_logo.png';
 import { fontSize } from '@mui/system';
+import { color } from 'framer-motion';
 
 // Styled components for modern look
 const StatCard = styled(Card)(({ theme }) => ({
@@ -418,7 +419,7 @@ const ViewCustomer = () => {
   const statusInfo = getStatusColor(user_data.student_status);
 
   return (
-    <Box sx={{ p: { xs: 2, md: 4 }, bgcolor: '#f4f7fc', minHeight: '100vh' }}>
+    <Box sx={{ p: { xs: 2, md: 4 }, minHeight: '100vh' }}>
       <MainCard 
         title="Student Profile" 
         sx={{ 
@@ -447,7 +448,7 @@ const ViewCustomer = () => {
                   <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 500, display: 'block' }}>
                     Course
                   </Typography>
-                  <Typography variant="h6" sx={{ fontSize: "30px" ,fontWeight: 700, lineHeight: 1.2, color: '#35c522' }}>
+                  <Typography variant="h6" sx={{ fontSize: "30px" ,fontWeight: 700, lineHeight: 1.2, color: '#376df4' }}>
                     {user_data.course_name || 'NA'}
                   </Typography>
                 </Box>
@@ -473,7 +474,7 @@ const ViewCustomer = () => {
                   <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 500, display: 'block' }}>
                     Total Fees
                   </Typography>
-                  <Typography variant="h6" sx={{ fontSize: "30px" ,fontWeight: 700, lineHeight: 1.2, color: '#35c522' }}>
+                  <Typography variant="h6" sx={{ fontSize: "30px" ,fontWeight: 700, lineHeight: 1.2, color: '#047906bf' }}>
                     ₹{user_data.total_fees?.toLocaleString() || 0}
                   </Typography>
                 </Box>
@@ -499,7 +500,7 @@ const ViewCustomer = () => {
                   <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 500, display: 'block' }}>
                     Pending
                   </Typography>
-                  <Typography variant="h6" sx={{ fontSize: "30px" ,fontWeight: 700, lineHeight: 1.2, color: '#d5dd3b' }}>
+                  <Typography variant="h6" sx={{ fontSize: "30px" ,fontWeight: 700, lineHeight: 1.2, color: '#e18803' }}>
                     ₹{user_data.fees_pending?.toLocaleString() || 0}
                   </Typography>
                 </Box>
@@ -525,7 +526,7 @@ const ViewCustomer = () => {
                   <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 500, display: 'block' }}>
                     Status
                   </Typography>
-                  <Typography variant="h6" sx={{ fontSize: "30px" ,fontWeight: 700, lineHeight: 1.2, color: '#35c522' }}>
+                  <Typography variant="h6" sx={{ fontSize: "30px" ,fontWeight: 700, lineHeight: 1.2, color: '#1ca30a' }}>
                     {statusInfo.label}
                   </Typography>
                 </Box>
@@ -573,12 +574,12 @@ const ViewCustomer = () => {
                 <InfoChip 
                   label={`ID: ${user_data.user_id}`} 
                   size="small"
-                  sx={{ bgcolor: alpha(theme.palette.primary.main, 0.08), color: theme.palette.primary.main }}
+                  sx={{ bgcolor: alpha(theme.palette.primary.main, 0.08), color : "#dd0606"}}
                 />
                 <InfoChip 
                   label={user_data.mobile || 'NA'} 
                   size="small"
-                  sx={{ bgcolor: alpha('#22c55e', 0.08), color: '#22c55e' }}
+                  sx={{ bgcolor: alpha('#22c55e', 0.08), color: '#3683f6' }}
                 />
               </Stack>
             </Card>
@@ -592,14 +593,14 @@ const ViewCustomer = () => {
               border: '1px solid #eef2f6',
               height: '100%'
             }}>
-              <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: theme.palette.primary.main }}>
+              <Typography variant="h3" sx={{ fontWeight: 600, mb: 2, color : "#9d9d9d" }}>
                 <i className="fas fa-user-graduate" style={{ marginRight: 8 }} />
-                Student Information
+                Student Information 
               </Typography>
               
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
-                  <DetailItem label="Full Name" value={user_data.name}  />
+                  <DetailItem   label="Full Name" value={user_data.name}  />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <DetailItem label="Email" value={user_data.email} />
@@ -638,7 +639,7 @@ const ViewCustomer = () => {
           boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
           border: '1px solid #eef2f6'
         }}>
-          <Typography variant="h6" sx={{ fontWeight: 700, mb: 3, color: theme.palette.primary.main }}>
+          <Typography variant="h3" sx={{ fontWeight: 600, mb: 3, color : "#9d9d9d"  }}>
             <i className="fas fa-file-invoice-dollar" style={{ marginRight: 8 }} />
             Fees & Payment Details
           </Typography>
@@ -659,7 +660,7 @@ const ViewCustomer = () => {
                 <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 500, display: 'block' }}>
                   Fees Submitted
                 </Typography>
-                <Typography variant="h5" sx={{ fontWeight: 700, color: '#22c55e' }}>
+                <Typography variant="h5" sx={{ fontWeight: 700, color: '#18a51a' }}>
                   ₹{user_data.fees_submitted?.toLocaleString() || 0}
                 </Typography>
               </Box>
@@ -669,7 +670,7 @@ const ViewCustomer = () => {
                 <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 500, display: 'block' }}>
                   Fees Pending
                 </Typography>
-                <Typography variant="h5" sx={{ fontWeight: 700, color: '#f59e0b' }}>
+                <Typography variant="h5" sx={{ fontWeight: 700, color: '#e18803' }}>
                   ₹{user_data.fees_pending?.toLocaleString() || 0}
                 </Typography>
               </Box>
@@ -706,7 +707,7 @@ const ViewCustomer = () => {
           boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
           border: '1px solid #eef2f6'
         }}>
-          <Typography variant="h6" sx={{ fontWeight: 700, mb: 3, color: theme.palette.primary.main }}>
+          <Typography variant="h3" sx={{ fontWeight: 600, mb: 3,  color : "#9d9d9d"  }}>
             <i className="fas fa-ellipsis-h" style={{ marginRight: 8 }} />
             Additional Information
           </Typography>

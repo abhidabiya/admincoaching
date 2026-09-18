@@ -227,7 +227,7 @@ const CustomerReportedList = () => {
                     variant="success"
                     onClick={exportToExcel}
                     className="mb-3"
-                    style={{ backgroundColor: '#19253D', border: 'none', marginTop: '22px', marginBottom: '5px', color: '#f2f2f2' }}
+                    style={{ backgroundColor: '#0855ef', border: 'none', marginTop: '22px', marginBottom: '5px', color: '#f2f2f2' }}
                   >
                     Export to Excel
                   </Button>

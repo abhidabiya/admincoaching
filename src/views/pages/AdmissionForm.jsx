@@ -399,43 +399,43 @@ const SummaryCard = ({ formData, isAdmissionForm }) => (
             </Box>
             <Grid container spacing={1.5}>
                 <Grid item xs={12} md={6}>
-                    <Typography variant="body2"><strong style={{ color: '#070707dc' }}>Student:</strong> {formData.name || 'Not provided'}</Typography>
+                    <Typography style={{color : "#0059ff"}} variant="body2"><strong style={{ color: '#070707dc' }}>Student:</strong> { formData.name || 'Not provided'}</Typography>
                 </Grid>
                 <Grid item xs={12} md={6}>
-                    <Typography variant="body2"><strong style={{ color: '#070707dc' }}>Contact:</strong> {formData.contact_number || 'Not provided'}</Typography>
+                    <Typography style={{color : "#0059ff"}} variant="body2"><strong style={{ color: '#070707dc' }}>Contact:</strong> {formData.contact_number || 'Not provided'}</Typography>
                 </Grid>
                 {isAdmissionForm ? (
                     <>
                         <Grid item xs={12} md={6}>
-                            <Typography variant="body2"><strong style={{ color: '#070707dc' }}>Admission Date:</strong> {formData.date_of_admission || 'Not selected'}</Typography>
+                            <Typography style={{color : "#0059ff"}} variant="body2"><strong style={{ color: '#070707dc' }}>Admission Date:</strong> {formData.date_of_admission || 'Not selected'}</Typography>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <Typography variant="body2"><strong style={{ color: '#070707dc' }}>Course:</strong> {formData.course_name || 'Not selected'}</Typography>
+                            <Typography style={{color : "#0059ff"}} variant="body2"><strong style={{ color: '#070707dc' }}>Course:</strong> {formData.course_name || 'Not selected'}</Typography>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <Typography variant="body2"><strong style={{ color: '#070707dc' }}>Qualification:</strong> {formData.qualification || 'Not selected'}</Typography>
+                            <Typography style={{color : "#0059ff"}} variant="body2"><strong style={{ color: '#070707dc' }}>Qualification:</strong> {formData.qualification || 'Not selected'}</Typography>
                         </Grid>
                         <Grid item xs={12}>
                             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mt: 1 }}>
-                                <Typography variant="body2"><strong style={{ color: '#555' }}>Total:</strong> <span style={{ color: '#1976d2', fontWeight: 'bold' }}>₹{(parseFloat(formData.total_fees) || 0).toLocaleString()}</span></Typography>
-                                <Typography variant="body2"><strong style={{ color: '#555' }}>Submitted:</strong> <span style={{ color: '#2e7d32', fontWeight: 'bold' }}>₹{(parseFloat(formData.fees_submitted) || 0).toLocaleString()}</span></Typography>
-                                <Typography variant="body2"><strong style={{ color: '#555' }}>Pending:</strong> <span style={{ color: parseFloat(formData.fees_pending || 0) > 0 ? '#d32f2f' : '#f59037', fontWeight: 'bold' }}>₹{(parseFloat(formData.fees_pending) || 0).toLocaleString()}</span></Typography>
+                                <Typography variant="body2"><strong style={{ color: '#504f4fdc' }}>Total:</strong> <span style={{ color: '#1976d2', fontWeight: 'bold' }}>₹{(parseFloat(formData.total_fees) || 0).toLocaleString()}</span></Typography>
+                                <Typography variant="body2"><strong style={{ color: '#504f4fdc' }}>Submitted:</strong> <span style={{ color: '#2e7d32', fontWeight: 'bold' }}>₹{(parseFloat(formData.fees_submitted) || 0).toLocaleString()}</span></Typography>
+                                <Typography variant="body2"><strong style={{ color: '#504f4fdc' }}>Pending:</strong> <span style={{ color: parseFloat(formData.fees_pending || 0) > 0 ? '#d32f2f' : '#f59037', fontWeight: 'bold' }}>₹{(parseFloat(formData.fees_pending) || 0).toLocaleString()}</span></Typography>
                             </Box>
                         </Grid>
                     </>
                 ) : (
                     <>
                         <Grid item xs={12} md={6}>
-                            <Typography variant="body2"><strong style={{ color: '#555' }}>Enquiry Type:</strong> {formData.enquiry_type || 'Not selected'}</Typography>
+                            <Typography style={{color : "#0059ff"}} variant="body2"><strong style={{ color: '#070707dc' }}>Enquiry Type:</strong> {formData.enquiry_type || 'Not selected'}</Typography>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <Typography variant="body2"><strong style={{ color: '#555' }}>Course:</strong> {formData.course_name || 'Not selected'}</Typography>
+                            <Typography style={{color : "#0059ff"}} variant="body2"><strong style={{ color: '#070707dc' }}>Course:</strong> {formData.course_name || 'Not selected'}</Typography>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <Typography variant="body2"><strong style={{ color: '#555' }}>Preferred Timing:</strong> {formData.preferred_timing || 'Not specified'}</Typography>
+                            <Typography  style={{color : "#0059ff"}} variant="body2"><strong style={{ color: '#070707dc' }}>Preferred Timing:</strong> {formData.preferred_timing || 'Not specified'}</Typography>
                         </Grid>
                         <Grid item xs={12}>
-                            <Typography variant="body2"><strong style={{ color: '#555' }}>Registration Fee:</strong> <span style={{ fontWeight: 'bold', color: parseFloat(formData.registration_fee || 0) === 100 ? '#2e7d32' : '#d32f2f' }}>₹{(parseFloat(formData.registration_fee) || 0).toLocaleString()} {parseFloat(formData.registration_fee || 0) === 100 ? '(Paid)' : '(Not Paid)'}</span></Typography>
+                            <Typography variant="body2"><strong style={{ color: '#504f4fdc' }}>Registration Fee:</strong> <span style={{ fontWeight: 'bold', color: parseFloat(formData.registration_fee || 0) === 100 ? '#2e7d32' : '#d32f2f' }}>₹{(parseFloat(formData.registration_fee) || 0).toLocaleString()} {parseFloat(formData.registration_fee || 0) === 100 ? '(Paid)' : '(Not Paid)'}</span></Typography>
                         </Grid>
                     </>
                 )}

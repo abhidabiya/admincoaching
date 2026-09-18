@@ -628,7 +628,7 @@ const InquaryData = () => {
                             border: 'none'
                         }}
                     >
-                        <PersonOutline fontSize="small" />
+                        {/* <PersonOutline fontSize="small" /> */}
                         {selectedOption}
                         <ArrowDropDown />
                     </button>
@@ -649,15 +649,15 @@ const InquaryData = () => {
                                     style={{
                                         padding: "12px 16px",
                                         cursor: "pointer",
-                                        borderBottom: "1px solid #f0f0f0",
+                                        borderBottom: "1px solid #939292a4",
                                         display: "flex",
                                         alignItems: "center",
                                         gap: "8px",
-                                        color: "#82b2f9",
+                                        // color: "#82b2f9",
                                         transition: "all 0.3s ease"
                                     }}
                                     onMouseEnter={(e) => {
-                                        e.currentTarget.style.background = "#060e82b3";
+                                        e.currentTarget.style.background = "#0f123db3";
                                         e.currentTarget.style.color = "#fff";
                                         e.currentTarget.style.paddingLeft = "22px";
                                     }}
@@ -674,15 +674,15 @@ const InquaryData = () => {
                                     style={{
                                         padding: "12px 16px",
                                         cursor: "pointer",
-                                        borderBottom: "1px solid #f0f0f0",
+                                        borderBottom: "1px solid #939292a4",
                                         display: "flex",
                                         alignItems: "center",
                                         gap: "8px",
-                                        color: "#82b2f9",
+                                        // color: "#82b2f9",
                                         transition: "all 0.3s ease"
                                     }}
                                     onMouseEnter={(e) => {
-                                        e.currentTarget.style.background = "#060e82b3";
+                                        e.currentTarget.style.background = "#0f123db3";
                                         e.currentTarget.style.color = "#fff";
                                         e.currentTarget.style.paddingLeft = "22px";
                                     }}
@@ -699,15 +699,15 @@ const InquaryData = () => {
                                     style={{
                                         padding: "12px 16px",
                                         cursor: "pointer",
-                                        borderBottom: "1px solid #f0f0f0",
+                                        borderBottom: "1px solid #939292a4",
                                         display: "flex",
                                         alignItems: "center",
                                         gap: "8px",
-                                        color: "#82b2f9",
+                                        // color: "#82b2f9",
                                         transition: "all 0.3s ease"
                                     }}
                                     onMouseEnter={(e) => {
-                                        e.currentTarget.style.background = "#060e82b3";
+                                        e.currentTarget.style.background = "#0f123db3";
                                         e.currentTarget.style.color = "#fff";
                                         e.currentTarget.style.paddingLeft = "22px";
                                     }}
@@ -727,11 +727,11 @@ const InquaryData = () => {
                                         display: "flex",
                                         alignItems: "center",
                                         gap: "8px",
-                                        color: "#82b2f9",
+                                        // color: "#82b2f9",
                                         transition: "all 0.3s ease"
                                     }}
                                     onMouseEnter={(e) => {
-                                        e.currentTarget.style.background = "#060e82b3";
+                                        e.currentTarget.style.background = "#0f123db3";
                                         e.currentTarget.style.color = "#fff";
                                         e.currentTarget.style.paddingLeft = "22px";
                                     }}

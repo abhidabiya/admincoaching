@@ -939,10 +939,10 @@ const ManageExpenses = () => {
               disabled={page === 0 || loading} 
               style={{ 
                 marginRight: '8px', 
-                border: '1px solid #bcb9b9', 
+                border: '1px solid #ffff', 
                 padding: '5px 10px', 
                 borderRadius: '4px', 
-                color: '#333',
+                color: '#fff',
                 cursor: (page === 0 || loading) ? 'not-allowed' : 'pointer',
                 backgroundColor: 'transparent',
                 opacity: (page === 0 || loading) ? 0.5 : 1
@@ -954,10 +954,10 @@ const ManageExpenses = () => {
               onClick={() => handleChangePage(null, page + 1)}
               disabled={(page + 1) * rowsPerPage >= filteredExpenses.length || loading}
               style={{ 
-                border: '1px solid #bcb9b9', 
+                border: '1px solid #fff', 
                 padding: '5px 10px', 
                 borderRadius: '4px', 
-                color: '#333',
+                color: '#fff',
                 cursor: ((page + 1) * rowsPerPage >= filteredExpenses.length || loading) ? 'not-allowed' : 'pointer',
                 backgroundColor: 'transparent',
                 opacity: ((page + 1) * rowsPerPage >= filteredExpenses.length || loading) ? 0.5 : 1
@@ -1022,15 +1022,15 @@ const ManageExpenses = () => {
                 
                 <div className="col-md-6 mb-3">
                   <h6 style={{ color: '#525252ea' }}>Payment Mode</h6>
-                  <p style={{ color: '#716e6ec5' }}>
-                    <PaidIcon fontSize="small" className="me-2" />
+                  <p style={{ color: '#028461b8' }}>
+                    <PaidIcon  fontSize="small" className="me-2" />
                     {expenseToView.payment_mode || 'Cash'}
                   </p>
                 </div>
                 
                 <div className="col-md-6 mb-3">
                   <h6 style={{ color: '#525252ea' }}>Remarks</h6>
-                  <p className="p-2 bg-light rounded" style={{ color: '#716e6ec5' }}>
+                  <p className="p-2 bg-light rounded" style={{ color: '#ff0000c5' }}>
                     {expenseToView.remarks || 'No remarks'}
                   </p>
                 </div>
@@ -1348,9 +1348,9 @@ const ManageExpenses = () => {
         centered
       >
         <Modal.Header closeButton>
-          <Modal.Title style={{ color: '#545252' }}>Confirm Delete</Modal.Title>
+          <Modal.Title style={{ color: '#1a1919' }}>Confirm Delete</Modal.Title>
         </Modal.Header>
-        <Modal.Body style={{ color: '#989898' }}>
+        <Modal.Body style={{ color: '#484848' }}>
           Are you sure you want to delete this expense record? This action cannot be undone.
         </Modal.Body>
         <Modal.Footer>

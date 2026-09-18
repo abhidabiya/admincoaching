@@ -614,10 +614,10 @@ const ManageFaculty = () => {
                             disabled={page === 0 || loading} 
                             style={{ 
                                 marginRight: '8px', 
-                                border: '1px solid #bcb9b9', 
+                                border: '1px solid #ffffff', 
                                 padding: '5px 10px', 
                                 borderRadius: '4px', 
-                                color: '#333',
+                                color: '#ffff',
                                 cursor: (page === 0 || loading) ? 'not-allowed' : 'pointer',
                                 backgroundColor: 'transparent',
                                 opacity: (page === 0 || loading) ? 0.5 : 1
@@ -630,10 +630,10 @@ const ManageFaculty = () => {
                             disabled={(page + 1) * rowsPerPage >= filteredFaculty.length || loading}
                             style={{ 
                                 marginRight: '8px', 
-                                border: '1px solid #bcb9b9', 
+                                border: '1px solid #ffffff', 
                                 padding: '5px 10px', 
                                 borderRadius: '4px', 
-                                color: '#333',
+                                color: '#ffff',
                                 cursor: ((page + 1) * rowsPerPage >= filteredFaculty.length || loading) ? 'not-allowed' : 'pointer',
                                 backgroundColor: 'transparent',
                                 opacity: ((page + 1) * rowsPerPage >= filteredFaculty.length || loading) ? 0.5 : 1
@@ -1003,16 +1003,16 @@ const ManageFaculty = () => {
                     centered
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title style={{color : "#545252"}}>Confirm Delete</Modal.Title>
+                        <Modal.Title style={{color : "#161616"}}>Confirm Delete</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body style={{color : "#989898"}}>
+                    <Modal.Body style={{color : "#2d2d2d"}}>
                         Are you sure you want to delete this faculty member? This action cannot be undone.
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button style={{color : "#8e8d8d"}} variant="secondary" onClick={() => setShowDeleteModal(false)} disabled={loading}>
+                        <Button style={{color : "#525252"}} variant="secondary" onClick={() => setShowDeleteModal(false)} disabled={loading}>
                             Cancel
                         </Button>
-                        <Button style={{color : "#3d3d3d"}} variant="danger" onClick={deleteFaculty} disabled={loading}>
+                        <Button style={{color : "#050505"}} variant="danger" onClick={deleteFaculty} disabled={loading}>
                             {loading ? 'Deleting...' : 'Delete'}
                         </Button>
                     </Modal.Footer>

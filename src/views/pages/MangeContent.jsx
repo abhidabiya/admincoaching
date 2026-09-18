@@ -9,6 +9,7 @@ import './main.css';
 import MainCard from 'ui-component/cards/MainCard';
 import { API_URL } from 'config/constant';
 import { Modal } from 'react-bootstrap';
+import { style } from '@mui/system';
 
 const ManageContent = () => {
   const options = [
@@ -68,6 +69,8 @@ const ManageContent = () => {
     fetchContent('ios app url', setIos);
     fetchContent('Share Message', setShare);
   }, []);
+
+
 
   const fetchContent = (contentType) => {
     console.log(contentType, 'contentType');
@@ -256,7 +259,7 @@ const ManageContent = () => {
               />
               <br />
               <p style={{ color: 'red' }}>{emptycontent}</p>
-              <button className="btn mt-2 btn-primary" onClick={() => handleUpdateContent('Terms & Conditions')}>
+              <button className="btn mt-2 " onClick={() => handleUpdateContent('Terms & Conditions')}  style={{ backgroundColor: '#3268f1', color: '#fff' }}>
                 Update
               </button>
             </div>
@@ -277,7 +280,7 @@ const ManageContent = () => {
               />
               <br />
               <p style={{ color: 'red' }}>{emptycontent}</p>
-              <button className="btn mt-2 btn-primary" onClick={() => handleUpdateContent('Privacy Policy')}>
+              <button className="btn mt-2 " onClick={() => handleUpdateContent('Privacy Policy')}  style={{ backgroundColor: '#3268f1', color: '#fff' }}>
                 Update
               </button>
             </div>
@@ -300,7 +303,7 @@ const ManageContent = () => {
 
               <br />
               <p style={{ color: 'red' }}>{emptycontent}</p>
-              <button className="btn mt-2 btn-primary" onClick={() => handleUpdateContent('android app url')}>
+              <button className="btn mt-2 " onClick={() => handleUpdateContent('android app url')}  style={{ backgroundColor: '#3268f1', color: '#fff' }}>
                 Update
               </button>
             </div>
@@ -323,7 +326,7 @@ const ManageContent = () => {
 
               <br />
               <p style={{ color: 'red' }}>{emptycontent}</p>
-              <button className="btn mt-2 btn-primary" onClick={() => handleUpdateContent('ios app url')}>
+              <button className="btn mt-2" onClick={() => handleUpdateContent('ios app url')}  style={{ backgroundColor: '#3268f1', color: '#fff' }}>
                 Update
               </button>
             </div>
@@ -364,7 +367,7 @@ const ManageContent = () => {
 
               <br />
               <p style={{ color: 'red' }}>{emptycontent}</p>
-              <button className="btn mt-2 btn-primary" onClick={() => handleUpdateContent('Share Message')}>
+              <button className="btn mt-2 " onClick={() => handleUpdateContent('Share Message')}  style={{ backgroundColor: '#3268f1', color: '#fff' }}>
                 Update
               </button>
             </div>
@@ -372,9 +375,9 @@ const ManageContent = () => {
         </MainCard>
         <Modal show={showModal} onHide={() => setShowModal(false)}>
           <Modal.Header>
-            <Modal.Title>Update</Modal.Title>
+            <Modal.Title style={{color : "#232222"}}>Update</Modal.Title>
           </Modal.Header>
-          <Modal.Body>{toastMessage}</Modal.Body>
+          <Modal.Body style={{color : "#5e5e5e"}}>{toastMessage}</Modal.Body>
         </Modal>
       </div>
     </>

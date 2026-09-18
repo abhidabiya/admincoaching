@@ -54,8 +54,8 @@ const columns = [
 // Styled Toggle Button with custom design
 const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
     color: '#ffffff',
-    backgroundColor: '#1a1a2e',
-    border: '1px solid #2d2d44',
+    // backgroundColor: '#1a1a2e',
+    // border: '1px solid #ebebec',
     padding: '8px 20px',
     fontWeight: 500,
     fontSize: '0.875rem',
@@ -65,19 +65,19 @@ const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
         backgroundColor: '#3268f1 !important',
         color: '#ffffff !important',
         borderColor: '#3268f1',
-        transform: 'translateY(-2px)',
-        boxShadow: '0 4px 12px rgba(50, 104, 241, 0.3)',
+        // transform: 'translateY(-2px)',
+        // boxShadow: '0 4px 12px rgba(50, 104, 241, 0.3)',
     },
     '&.Mui-selected': {
         backgroundColor: '#3268f1 !important',
         color: '#ffffff !important',
         borderColor: '#3268f1',
         boxShadow: '0 4px 12px rgba(50, 104, 241, 0.4)',
-        '&:hover': {
-            backgroundColor: '#2851c4 !important',
-            boxShadow: '0 6px 20px rgba(50, 104, 241, 0.5)',
-            transform: 'translateY(-2px)',
-        }
+        // '&:hover': {
+        //     backgroundColor: '#2851c4 !important',
+        //     boxShadow: '0 6px 20px rgba(50, 104, 241, 0.5)',
+        //     transform: 'translateY(-2px)',
+        // }
     },
     '&.Mui-disabled': {
         opacity: 0.6,
@@ -101,10 +101,10 @@ const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
 
 // Styled Toggle Button Group
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
-    backgroundColor: '#0f0f1a',
+    // backgroundColor: '#0f0f1a',
     borderRadius: '8px',
     padding: '4px',
-    border: '1px solid #2d2d44',
+    border: '1px solid #7b7b7f',
     gap: '2px',
     '& .MuiToggleButton-root': {
         borderRadius: '6px !important',
@@ -125,10 +125,10 @@ const StyledCard = styled(Card)(({ theme, bgcolor }) => ({
     borderRadius: '12px',
     boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
     transition: 'all 0.3s ease',
-    '&:hover': {
-        transform: 'translateY(-4px)',
-        boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
-    },
+    // '&:hover': {
+    //     transform: 'translateY(-4px)',
+    //     boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
+    // },
     '& .MuiCardContent-root': {
         padding: '20px',
         '&:last-child': {
@@ -277,9 +277,9 @@ const ManageEarning = () => {
             case 5: return 'error';
             default: return 'warning';
         }
+        
     };
-
-    const getStatusLabel = (status) => {
+        const getStatusLabel = (status) => {
         switch(status) {
             case 3: return 'Active';
             case 4: return 'Completed';
@@ -300,7 +300,7 @@ const ManageEarning = () => {
     return (
         <>
             <div className="col-xl-12" style={{ backgroundColor: '#FFF', borderRadius: '12px', padding: '10px', marginBottom: '20px' }}>
-                <Typography variant="h5" sx={{ fontWeight: 600, color: '#121926', fontFamily: 'Poppins' }}>
+                <Typography variant="h5" sx={{ fontWeight: 600, color: '#121926', fontFamily: 'Poppins', fontSize :'20px' }}>
                     Manage Earnings {currentMonth && `- ${currentMonth}`}
                 </Typography>
             </div>
@@ -312,10 +312,10 @@ const ManageEarning = () => {
                         <StyledCard bgcolor="#e3f2fd">
                             <CardContent>
                                 <Typography color="textSecondary" gutterBottom>
-                                    <PeopleIcon sx={{ fontSize: '1.2rem' }} />
+                                    <PeopleIcon sx={{ fontSize: '1.2rem', color : "#6cc8f3" , marginRight : "5px"}} />
                                     Total Students
                                 </Typography>
-                                <Typography variant="h4" color="#1565c0">
+                                <Typography variant="h4" color="#1565c0" marginLeft='10px'>
                                     {summaryData.total_students || 0}
                                 </Typography>
                             </CardContent>
@@ -325,10 +325,10 @@ const ManageEarning = () => {
                         <StyledCard bgcolor="#e8f5e9">
                             <CardContent>
                                 <Typography color="textSecondary" gutterBottom>
-                                    <TrendingUpIcon sx={{ fontSize: '1.2rem' }} />
+                                    <TrendingUpIcon sx={{ fontSize: '1.2rem' , color : "#1a9809", marginRight : "5px" }} />
                                     Total Earnings
                                 </Typography>
-                                <Typography variant="h4" color="#2e7d32">
+                                <Typography variant="h4" color="#2e7d32"  marginLeft='10px' >
                                     {formatCurrency(summaryData.total_earnings)}
                                 </Typography>
                             </CardContent>
@@ -338,10 +338,10 @@ const ManageEarning = () => {
                         <StyledCard bgcolor="#fff3e0">
                             <CardContent>
                                 <Typography color="textSecondary" gutterBottom>
-                                    <PaymentIcon sx={{ fontSize: '1.2rem' }} />
+                                    <PaymentIcon sx={{ fontSize: '1.2rem' , color : "#f7a82a", marginRight : "5px"}} />
                                     Fees Submitted
                                 </Typography>
-                                <Typography variant="h4" color="#e65100">
+                                <Typography variant="h4" color="#e65100"  marginLeft='10px'>
                                     {formatCurrency(summaryData.total_fees_submitted)}
                                 </Typography>
                             </CardContent>
@@ -351,10 +351,10 @@ const ManageEarning = () => {
                         <StyledCard bgcolor="#fce4ec">
                             <CardContent>
                                 <Typography color="textSecondary" gutterBottom>
-                                    <PendingIcon sx={{ fontSize: '1.2rem' }} />
+                                    <PendingIcon sx={{ fontSize: '1.2rem' , color : "#f25454", marginRight : "5px"}} />
                                     Fees Pending
                                 </Typography>
-                                <Typography variant="h4" color="#c62828">
+                                <Typography variant="h4" color="#c62828"  marginLeft='10px'>
                                     {formatCurrency(summaryData.total_fees_pending)}
                                 </Typography>
                             </CardContent>
@@ -372,10 +372,10 @@ const ManageEarning = () => {
                 flexWrap="wrap" 
                 gap={2}
                 sx={{ 
-                    backgroundColor: '#0f0f1a', 
+                    // backgroundColor: '#0f0f1a', 
                     padding: '12px', 
                     borderRadius: '12px',
-                    border: '1px solid #2d2d44'
+                    // border: '1px solid #2d2d44'
                 }}
             >
                 <StyledToggleButtonGroup
@@ -411,20 +411,20 @@ const ManageEarning = () => {
                             pr: 1, 
                             pl: 2, 
                             my: 1,
-                            backgroundColor: '#1a1a2e',
+                            // backgroundColor: '#1a1a2e',
                             borderRadius: '8px',
-                            '& .MuiOutlinedInput-notchedOutline': {
-                                borderColor: '#2d2d44',
-                            },
-                            '&:hover .MuiOutlinedInput-notchedOutline': {
-                                borderColor: '#3268f1',
-                            },
-                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                borderColor: '#3268f1',
-                            },
-                            input: {
-                                color: '#ffffff',
-                            }
+                            // '& .MuiOutlinedInput-notchedOutline': {
+                            //     borderColor: '#2d2d44',
+                            // },
+                            // '&:hover .MuiOutlinedInput-notchedOutline': {
+                            //     borderColor: '#3268f1',
+                            // },
+                            // '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                            //     borderColor: '#3268f1',
+                            // },
+                            // input: {
+                            //     color: '#ffffff',
+                            // }
                         }}
                         id="input-search-profile"
                         onChange={handleSearch}
@@ -446,11 +446,11 @@ const ManageEarning = () => {
                             padding: '10px 24px',
                             fontWeight: 600,
                             textTransform: 'none',
-                            '&:hover': { 
-                                backgroundColor: '#2851c4',
-                                transform: 'translateY(-2px)',
-                                boxShadow: '0 4px 12px rgba(50, 104, 241, 0.3)',
-                            },
+                            // '&:hover': { 
+                            //     backgroundColor: '#2851c4',
+                            //     transform: 'translateY(-2px)',
+                            //     boxShadow: '0 4px 12px rgba(50, 104, 241, 0.3)',
+                            // },
                             transition: 'all 0.3s ease',
                         }}
                         disabled={loading || earningsData.length === 0}
@@ -466,7 +466,7 @@ const ManageEarning = () => {
                 width: '100%', 
                 marginTop: '20px', 
                 overflow: 'hidden',
-                backgroundColor: '#0f0f1a',
+                // backgroundColor: '#0f0f1a',
                 border: '1px solid #2d2d44',
                 borderRadius: '12px',
             }}>
@@ -488,9 +488,9 @@ const ManageEarning = () => {
                                                 align={column.align} 
                                                 style={{ 
                                                     minWidth: column.minWidth, 
-                                                    fontWeight: 700,
-                                                    color: '#ffffff',
-                                                    backgroundColor: '#1a1a2e',
+                                                    // fontWeight: 700,
+                                                    color: '#cccaca',
+                                                    // backgroundColor: '#1a1a2e',
                                                     borderBottom: '2px solid #2d2d44',
                                                 }}
                                             >
@@ -507,21 +507,21 @@ const ManageEarning = () => {
                                                 role="checkbox" 
                                                 tabIndex={-1} 
                                                 key={row.user_id || row.SNo}
-                                                sx={{
-                                                    '&:hover': {
-                                                        backgroundColor: 'rgba(50, 104, 241, 0.05)',
-                                                    },
-                                                    '&:nth-of-type(odd)': {
-                                                        backgroundColor: 'rgba(255, 255, 255, 0.02)',
-                                                    },
-                                                }}
+                                                // sx={{
+                                                //     '&:hover': {
+                                                //         backgroundColor: 'rgba(50, 104, 241, 0.05)',
+                                                //     },
+                                                //     '&:nth-of-type(odd)': {
+                                                //         backgroundColor: 'rgba(255, 255, 255, 0.02)',
+                                                //     },
+                                                // }}
                                             >
-                                                <TableCell align="center" sx={{ color: '#e0e0e0' }}>
+                                                <TableCell align="center" sx={{ color: '#cac7c7' }}>
                                                     {row.SNo}
                                                 </TableCell>
                                                 <TableCell align="center" sx={{ color: '#e0e0e0' }}>
                                                     <Stack direction="column" alignItems="center" spacing={0.5}>
-                                                        <Typography variant="body2" sx={{ color: '#ffffff', fontWeight: 500 }}>
+                                                        <Typography variant="body2" sx={{ color: '#cac7c7', fontWeight: 500 }}>
                                                             {row.Name}
                                                         </Typography>
                                                         {row.Mobile && row.Mobile !== 'N/A' && (
@@ -533,7 +533,7 @@ const ManageEarning = () => {
                                                 </TableCell>
                                                 <TableCell align="center" sx={{ color: '#e0e0e0' }}>
                                                     <Stack direction="column" alignItems="center" spacing={0.5}>
-                                                        <Typography variant="body2" sx={{ color: '#ffffff' }}>
+                                                        <Typography variant="body2" sx={{ color: '#cac7c7' }}>
                                                             {row.CourseName}
                                                         </Typography>
                                                         {row.BatchTiming && row.BatchTiming !== 'N/A' && (
@@ -542,22 +542,22 @@ const ManageEarning = () => {
                                                                 size="small" 
                                                                 variant="outlined"
                                                                 sx={{ 
-                                                                    color: '#6b7280',
-                                                                    borderColor: '#2d2d44',
+                                                                    color: '#3e71d5c6',
+                                                                    borderColor: '#575782b1',
                                                                 }}
                                                             />
                                                         )}
                                                     </Stack>
                                                 </TableCell>
                                                 <TableCell align="center">
-                                                    <Typography sx={{ color: '#4caf50', fontWeight: 700 }}>
+                                                    <Typography sx={{ color: '#0e9912', fontWeight: 600 }}>
                                                         {formatCurrency(row.TotalEarning || row.FeesSubmitted + row.RegistrationFee)}
                                                     </Typography>
                                                 </TableCell>
-                                                <TableCell align="center" sx={{ color: '#e0e0e0' }}>
+                                                <TableCell align="center" sx={{ color: '#cac7c7' }}>
                                                     {formatCurrency(row.FeesSubmitted)}
                                                 </TableCell>
-                                                <TableCell align="center" sx={{ color: '#ef5350' }}>
+                                                <TableCell align="center" sx={{ color: '#f1a044de' }}>
                                                     {formatCurrency(row.FeesPending)}
                                                 </TableCell>
                                                 <TableCell align="center">
@@ -566,17 +566,17 @@ const ManageEarning = () => {
                                                         size="small" 
                                                         sx={{ 
                                                             backgroundColor: row.PaymentMode ? 'rgba(50, 104, 241, 0.1)' : 'rgba(255, 193, 7, 0.1)',
-                                                            color: row.PaymentMode ? '#3268f1' : '#ffc107',
-                                                            border: `1px solid ${row.PaymentMode ? 'rgba(50, 104, 241, 0.3)' : 'rgba(255, 193, 7, 0.3)'}`,
+                                                            color: row.PaymentMode ? '#468aff' : '#ffc107',
+                                                            border: `1px solid ${row.PaymentMode ? 'rgba(171, 191, 240, 0.3)' : 'rgba(255, 193, 7, 0.3)'}`,
                                                         }}
                                                     />
                                                 </TableCell>
-                                                <TableCell align="center" sx={{ color: '#e0e0e0' }}>
+                                                <TableCell align="center" sx={{ color: '#cac7c7' }}>
                                                     {row.PaymentDate || 'N/A'}
                                                 </TableCell>
                                                 <TableCell align="center">
                                                     <Stack direction="column" alignItems="center" spacing={0.5}>
-                                                        <Typography variant="body2" sx={{ color: '#e0e0e0' }}>
+                                                        <Typography variant="body2" sx={{ color: '#cac7c7' }}>
                                                             {row.CreateDateTime || 'N/A'}
                                                         </Typography>
                                                         {row.StudentStatus !== undefined && (
@@ -611,48 +611,25 @@ const ManageEarning = () => {
                             p: 2, 
                             flexWrap: 'wrap',
                             borderTop: '1px solid #2d2d44',
-                            backgroundColor: '#0f0f1a',
+                            // backgroundColor: '#0f0f1a',
                         }}>
-                            <Typography variant="body2" sx={{ color: '#6b7280' }}>
+                            <Typography variant="body2" sx={{ color: '#dddedf' }}>
                                 Showing {Math.min(earningsData.length > 0 ? page * rowsPerPage + 1 : 0, totalRecords)} to {Math.min((page + 1) * rowsPerPage, totalRecords)} of {totalRecords} entries
                             </Typography>
                             <Box>
                                 <Button
                                     onClick={() => handleChangePage(null, page - 1)}
                                     disabled={page === 0 || loading}
-                                    sx={{ 
-                                        mr: 1,
-                                        color: '#ffffff',
-                                        border: '1px solid #2d2d44',
-                                        borderRadius: '8px',
-                                        '&:hover': {
-                                            backgroundColor: '#3268f1',
-                                            borderColor: '#3268f1',
-                                        },
-                                        '&.Mui-disabled': {
-                                            color: '#6b7280',
-                                        }
-                                    }}
+                                    style={{ marginRight: '8px' , border: '1px solid #bcb9b9', padding: '5px 10px', borderRadius: '4px', color: '#fff', cursor: page === 0 ? 'not-allowed' : 'pointer' , backgroundColor : 'transparent' }}
                                 >
-                                    Previous
+                                    {'<'}
                                 </Button>
                                 <Button
                                     onClick={() => handleChangePage(null, page + 1)}
                                     disabled={(page + 1) * rowsPerPage >= totalRecords || loading}
-                                    sx={{ 
-                                        color: '#ffffff',
-                                        border: '1px solid #2d2d44',
-                                        borderRadius: '8px',
-                                        '&:hover': {
-                                            backgroundColor: '#3268f1',
-                                            borderColor: '#3268f1',
-                                        },
-                                        '&.Mui-disabled': {
-                                            color: '#6b7280',
-                                        }
-                                    }}
+                                    style={{ marginRight: '2px' , border: '1px solid #bcb9b9', padding: '5px 10px', borderRadius: '4px', color: '#fff', cursor: page === 0 ? 'not-allowed' : 'pointer' , backgroundColor : 'transparent' }}
                                 >
-                                    Next
+                                    {'>'}
                                 </Button>
                             </Box>
                         </Box>

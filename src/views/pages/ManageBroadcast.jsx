@@ -197,9 +197,9 @@ const ManageBroadcast = () => {
                     {errors.message && <Form.Control.Feedback type="invalid">{errors.message}</Form.Control.Feedback>}
                   </Col>
                 </Form.Group>
-                <Button className="btn btn-primary" type="button" onClick={SendBroadcast} disabled={isButtonDisabled}  >
+                <button className="btn" type="button" onClick={SendBroadcast} disabled={isButtonDisabled}  style={{ backgroundColor: '#3268f1', color: '#fff' }} >
                   Submit
-                </Button>
+                </button>
               </Form>
             </Col>
           </Row>
@@ -262,9 +262,9 @@ const ManageBroadcast = () => {
                     {errors.message && <Form.Control.Feedback type="invalid">{errors.message}</Form.Control.Feedback>}
                   </Col>
                 </Form.Group>
-                <Button className="btn btn-primary" type="button" onClick={SendBroadcast} disabled={isButtonDisabled}>
+                <button className="btn" type="button" onClick={SendBroadcast} disabled={isButtonDisabled}  style={{ backgroundColor: '#3268f1', color: '#fff' }}>
                   Send
-                </Button>
+                </button>
               </Form>
             </Col>
           </Row>
@@ -306,11 +306,11 @@ const ManageBroadcast = () => {
                     {errors.message && <Form.Control.Feedback type="invalid">{errors.message}</Form.Control.Feedback>}
                   </Col>
                 </Form.Group>
-                <Button className="btn"  type="button" onClick={SendBroadcast} disabled={isButtonDisabled}  
-                //  style={{ backgroundColor: '#3268f1', color: '#fff' }}
+                <button className="btn"  type="button" onClick={SendBroadcast} disabled={isButtonDisabled}  
+                 style={{ backgroundColor: '#3268f1', color: '#fff' }}
                   >
                   Submit
-                </Button>
+                </button>
               </Form>
             </Col>
           </Row>
@@ -373,20 +373,20 @@ const ManageBroadcast = () => {
                     {errors.message && <Form.Control.Feedback type="invalid">{errors.message}</Form.Control.Feedback>}
                   </Col>
                 </Form.Group>
-                <Button className="btn btn-primary" type="button" onClick={SendBroadcast} disabled={isButtonDisabled}>
+                <button className="btn " type="button" onClick={SendBroadcast} disabled={isButtonDisabled}  style={{ backgroundColor: '#3268f1', color: '#fff' }}>
                   Send
-                </Button>
+                </button>
               </Form>
             </Col>
           </Row>
         </TabPanel>
         <Modal show={modalShow} onHide={() => setModalShow(false)}>
           <Modal.Header closeButton>
-            <Modal.Title>{modalTitle}</Modal.Title>
+            <Modal.Title style={{color : "#1d1c1c"}}>{modalTitle}</Modal.Title>
           </Modal.Header>
-          <Modal.Body>{modalMessage}</Modal.Body>
+          <Modal.Body style={ { color : "#303030"}}>{modalMessage}</Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={() => setModalShow(false)}>
+            <Button  style={{color : "#232323", backgroundColor : "transparent" , border : "remove"}} variant="secondary" onClick={() => setModalShow(false)}>
               Close
             </Button>
           </Modal.Footer>

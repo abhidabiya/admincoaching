@@ -767,12 +767,12 @@ const ManageQuiz = () => {
                     }}
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title style={{ fontSize: '17px' }}>Edit Quiz</Modal.Title>
+                        <Modal.Title style={{ fontSize: '22px' , color : "#3e3e3e"}}>Edit Quiz</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <form>
                             <div className="mb-3">
-                                <label htmlFor="editCategoryName" className="form-label">
+                                <label style={{color : "#3d3c3cb7"}} htmlFor="editCategoryName" className="form-label">
                                     Quiz Question
                                 </label>
                                 <input
@@ -790,7 +790,7 @@ const ManageQuiz = () => {
                                 <p style={{ color: 'red' }}>{editQuestionError}</p>
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="editCategoryName" className="form-label">
+                                <label style={{color : "#3d3c3cb7"}} htmlFor="editCategoryName" className="form-label">
                                     Option-1
                                 </label>
                                 <input
@@ -810,7 +810,7 @@ const ManageQuiz = () => {
                             {error && <p style={{ color: 'red' }}>{error}</p>}
 
                             <div className="mb-3">
-                                <label htmlFor="editCategoryName" className="form-label">
+                                <label style={{color : "#3d3c3cb7"}} htmlFor="editCategoryName" className="form-label">
                                 Option-2
                                 </label>
                                 <input
@@ -831,7 +831,7 @@ const ManageQuiz = () => {
 
 
                             <div className="mb-3">
-                                <label htmlFor="editCategoryName" className="form-label">
+                                <label style={{color : "#3d3c3cb7"}} htmlFor="editCategoryName" className="form-label">
                                 Option-3
                                 </label>
                                 <input
@@ -851,7 +851,7 @@ const ManageQuiz = () => {
                             {error && <p style={{ color: 'red' }}>{error}</p>}
 
                             <div className="mb-3">
-                                <label htmlFor="editCategoryName" className="form-label">
+                                <label style={{color : "#3d3c3cb7"}} htmlFor="editCategoryName" className="form-label">
                                 Options-4
                                 </label>
                                 <input
@@ -897,7 +897,7 @@ const ManageQuiz = () => {
 
 
 
-                        <Button variant="primary" className="btn btn-primary " onClick={handleEdit}>
+                        <Button  variant="primary" className="btn btn-primary " onClick={handleEdit}>
                             Update
                         </Button>
                     </Modal.Footer>
@@ -905,9 +905,9 @@ const ManageQuiz = () => {
 
                 <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
                     <Modal.Header closeButton>
-                        <Modal.Title>Confirm Delete</Modal.Title>
+                        <Modal.Title style={{color : "#2e2d2d"}}>Confirm Delete</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>Are you sure you want to delete this Quiz?</Modal.Body>
+                    <Modal.Body style={{color : "#3f3e3e"}}>Are you sure you want to delete this Quiz?</Modal.Body>
                     <Modal.Footer>
                         <Button variant="danger" className="btn btn-primary" onClick={deleteFAQ}>
                             Delete
@@ -917,16 +917,16 @@ const ManageQuiz = () => {
 
                 <Modal show={showMsgModal} onHide={handleCloseModal} style={{ zIndex: '99999' }}>
                     <Modal.Header closeButton>
-                        <Modal.Title style={{ fontSize: '17px' }}>View Quiz </Modal.Title>
+                        <Modal.Title style={{ fontSize: '22px'  , color : "#424141", fontWeight : 600}}>View Quiz </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <>
-                            <p>Question : {question != null ? question : 'NA'}</p>
-                            <p>Option-1 : {option1 != null ? option1 : 'NA'}</p>
-                            <p>Option-2 : {option2 != null ? option2 : 'NA'}</p>
-                            <p>Option-3 : {option3 != null ? option3 : 'NA'}</p>
-                            <p>Option-4 : {option4 != null ? option4 : 'NA'}</p>
-                            <p>Correct Option : {correctAdswer != null ? correctAdswer : 'NA'}</p>
+                            <p style={{color : "#515050" , fontSize : '15px',fontFamily : "cursive"}} >Question : {question != null ? question : 'NA'}</p>
+                            <p style={{color : "#515050" , fontSize : '15px',fontFamily : "cursive"}}>Option-1 : {option1 != null ? option1 : 'NA'}</p>
+                            <p style={{color : "#515050" , fontSize : '15px',fontFamily : "cursive"}}>Option-2 : {option2 != null ? option2 : 'NA'}</p>
+                            <p style={{color : "#515050" , fontSize : '15px',fontFamily : "cursive"}}>Option-3 : {option3 != null ? option3 : 'NA'}</p>
+                            <p style={{color : "#515050" , fontSize : '15px',fontFamily : "cursive"}}>Option-4 : {option4 != null ? option4 : 'NA'}</p>
+                            <p style={{color : "#515050" , fontSize : '15px',fontFamily : "cursive"}}>Correct Option : {correctAdswer != null ? correctAdswer : 'NA'}</p>
 
                         </>
                     </Modal.Body>

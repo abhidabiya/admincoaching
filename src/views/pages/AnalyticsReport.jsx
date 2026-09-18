@@ -10,6 +10,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { API_URL } from 'config/constant';
 
 import Chart from 'react-apexcharts';
+import { color } from 'framer-motion';
 
 // ==============================|| USER ANALYTICAL REPORT ||============================== //
 
@@ -200,7 +201,7 @@ const UserAnaReport = () => {
     },
 
     fill: {
-      colors: ['#19253D']
+      colors: ['#324468']
     },
 
     legend: {
@@ -267,7 +268,7 @@ const UserAnaReport = () => {
     },
 
     fill: {
-      colors: ['#19253D']
+      colors: ['#324468']
     },
 
     legend: {
@@ -343,7 +344,7 @@ const UserAnaReport = () => {
         <Grid item xs={12} md={12}>
           <Card sx={{ marginTop: '10px' }}>
             <div className="chart p-4">
-              <Chart
+              <Chart 
                 options={monthly}
                 series={seriesmonthly}
                 type="bar"

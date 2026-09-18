@@ -330,18 +330,16 @@ const handleCloseImage = () => {
             >{`Showing ${Math.min(filterBanner.length > 0 ? page * rowsPerPage + 1 : 0, filterBanner.length)} to ${Math.min((page + 1) * rowsPerPage, filterBanner.length)} of ${filterBanner.length} entries`}</p>
             <div>
               <button
-                onClick={() => handleChangePage(null, page - 1)}
-                disabled={page === 0}
-                // style={{ marginRight: '8px' }}
-                style={{ marginRight: '8px', borderRadius: '4px', background: 'whitesmoke' }}
+                onClick={() => handleChangePage(null, page - 1)} disabled={page === 0}
+                style={{ marginRight: '8px' , border: '1px solid #bcb9b9', padding: '5px 10px', borderRadius: '4px', color: '#fff', cursor: page === 0 ? 'not-allowed' : 'pointer' , backgroundColor : 'transparent' }}
               >
                 {'<'}
               </button>
               <button
                 onClick={() => handleChangePage(null, page + 1)}
                 disabled={(page + 1) * rowsPerPage >= filterBanner.length}
-                style={{ borderRadius: '4px', marginRight: '10px', background: 'whitesmoke' }}
-              >
+                style={{ marginRight: '8px' , border: '1px solid #bcb9b9', padding: '5px 10px', borderRadius: '4px', color: '#fff', cursor: page === 0 ? 'not-allowed' : 'pointer' , backgroundColor : 'transparent' }}
+              > 
                 {'>'}
               </button>
             </div>
@@ -354,12 +352,12 @@ const handleCloseImage = () => {
             }}
           >
             <Modal.Header closeButton>
-              <Modal.Title style={{ fontSize: '17px' }}>Edit Banner </Modal.Title>
+              <Modal.Title style={{ fontSize: '22px' , color : "#171616df", fontWeight : 600 }}>Edit Banner </Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <form onSubmit={handleEdit}>
                 <div className="mb-3">
-                  <label htmlFor="bannerName" className="form-label">
+                  <label  style={{color : "#484848"}} htmlFor="bannerName" className="form-label">
                     Select Banner Image
                   </label>
                   <input type="file" className="form-control" id="image" onChange={handleChangeEditImage} />
@@ -377,9 +375,9 @@ const handleCloseImage = () => {
 
           <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
             <Modal.Header closeButton>
-              <Modal.Title>Confirm Delete</Modal.Title>
+              <Modal.Title style={{color : "#2c2c2c"}}>Confirm Delete</Modal.Title>
             </Modal.Header>
-            <Modal.Body>Are you sure you want to delete this Banner?</Modal.Body>
+            <Modal.Body style={{color : "#484848"}}>Are you sure you want to delete this Banner?</Modal.Body>
             <Modal.Footer>
               <Button variant="primary" className="btn btn-primary" onClick={deleteAds}>
                 Delete
@@ -413,12 +411,12 @@ const handleCloseImage = () => {
       )}
       <Modal show={showModal2} onHide={handleCloseModal2} style={{ zIndex: '99999' }}>
         <Modal.Header closeButton>
-          <Modal.Title style={{ fontSize: '17px' }}>Add Banner</Modal.Title>
+          <Modal.Title style={{ fontSize: '22px' , color : "rgba(40, 37, 37, 0.82)" , fontWeight : 600 }}>Add Banner</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={handleAddBanner}>
             <div className="mb-3">
-              <label htmlFor="bannerName" className="form-label">
+              <label style={{color : "#484848"}} htmlFor="bannerName" className="form-label">
                 Select Banner Image
               </label>
               <input type="file" className="form-control" id="image" onChange={handleChangeImage} />
@@ -428,7 +426,7 @@ const handleCloseImage = () => {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="primary" className="btn btn-primary" type="submit" onClick={handleAddBanner}>
+          <Button style={{ backgroundColor: '#3268f1', color: '#fff' , width: '100px' }} variant="primary" className="btn" type="submit" onClick={handleAddBanner}>
             Save
           </Button>
         </Modal.Footer>

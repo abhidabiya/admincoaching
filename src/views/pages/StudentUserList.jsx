@@ -596,13 +596,15 @@ const StudentUserList = () => {
 
     return (
         <>
-            <div className="col-xl-12" style={{ backgroundColor: '#FFF', borderRadius: '12px', padding: '10px', marginBottom: '20px' }}>
+            <div className="col-xl-12" style={{borderRadius: '12px', padding: '10px', marginBottom: '20px' }}>
+                <div style={{ backgroundColor: '#f0f4f8', padding: '15px', borderRadius: '8px', marginBottom: '20px' }}>
                 <p style={{ fontSize: '1.25rem', color: '#121926', fontWeight: '600', fontFamily: 'Poppins', lineHeight: '1.167', marginBottom: '5px' }}>
                     Manage Students
                 </p>
                 <p style={{ fontSize: '0.875rem', color: '#6B7280', marginBottom: '0' }}>
                     View and manage all students, enquiries, and admissions
                 </p>
+                </div>
                 
                 {/* Statistics Dashboard */}
                 <div style={{ 
@@ -672,7 +674,7 @@ const StudentUserList = () => {
                             position: "absolute", 
                             top: "45px", 
                             left: "0", 
-                            background: "#fff", 
+                            background: "#0f172a", 
                             boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.15)", 
                             borderRadius: "10px", 
                             width: "200px", 
@@ -684,11 +686,22 @@ const StudentUserList = () => {
                                     style={{ 
                                         padding: "12px 16px", 
                                         cursor: "pointer", 
-                                        borderBottom: "1px solid #f0f0f0",
+                                        borderBottom: "1px solid #939292a4",
                                         display: 'flex',
                                         alignItems: 'center',
-                                        gap: '8px'
+                                        gap: '8px',
+                                        transition: "all 0.3s ease"
                                     }} 
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.background = "#0f123db3";
+                                        e.currentTarget.style.color = "#fff";
+                                        e.currentTarget.style.paddingLeft = "22px";
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.background = "transparent";
+                                        e.currentTarget.style.color = "#82b2f9";
+                                        e.currentTarget.style.paddingLeft = "16px";
+                                    }}
                                     onClick={() => handleSelect("All Users", fetchAllUsers)}
                                 >
                                     <PersonOutline fontSize="small" /> All Student
@@ -697,11 +710,21 @@ const StudentUserList = () => {
                                     style={{ 
                                         padding: "12px 16px", 
                                         cursor: "pointer", 
-                                        borderBottom: "1px solid #f0f0f0",
+                                        borderBottom: "1px solid #939292a4",
                                         display: 'flex',
                                         alignItems: 'center',
                                         gap: '8px'
                                     }} 
+                                     onMouseEnter={(e) => {
+                                        e.currentTarget.style.background = "#0f123db3";
+                                        e.currentTarget.style.color = "#fff";
+                                        e.currentTarget.style.paddingLeft = "22px";
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.background = "transparent";
+                                        e.currentTarget.style.color = "#82b2f9";
+                                        e.currentTarget.style.paddingLeft = "16px";
+                                    }}
                                     onClick={() => handleSelect("Students", fetchStudents)}
                                 >
                                     <School fontSize="small" /> Students
@@ -710,11 +733,21 @@ const StudentUserList = () => {
                                     style={{ 
                                         padding: "12px 16px", 
                                         cursor: "pointer", 
-                                        borderBottom: "1px solid #f0f0f0",
+                                        borderBottom: "1px solid #939292a4",
                                         display: 'flex',
                                         alignItems: 'center',
                                         gap: '8px'
                                     }} 
+                                     onMouseEnter={(e) => {
+                                        e.currentTarget.style.background = "#0f123db3";
+                                        e.currentTarget.style.color = "#fff";
+                                        e.currentTarget.style.paddingLeft = "22px";
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.background = "transparent";
+                                        e.currentTarget.style.color = "#82b2f9";
+                                        e.currentTarget.style.paddingLeft = "16px";
+                                    }}
                                     onClick={() => handleSelect("Enquiries", fetchEnquiries)}
                                 >
                                     <QueryBuilder fontSize="small" /> Enquiries
@@ -727,6 +760,16 @@ const StudentUserList = () => {
                                         alignItems: 'center',
                                         gap: '8px'
                                     }} 
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.background = "#0f123db3";
+                                        e.currentTarget.style.color = "#fff";
+                                        e.currentTarget.style.paddingLeft = "22px";
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.background = "transparent";
+                                        e.currentTarget.style.color = "#82b2f9";
+                                        e.currentTarget.style.paddingLeft = "16px";
+                                    }}
                                     onClick={() => handleSelect("Admissions", fetchAdmissions)}
                                 >
                                     <PersonAdd fontSize="small" /> Admissions
@@ -749,10 +792,9 @@ const StudentUserList = () => {
                                             align={column.align} 
                                             style={{ 
                                                 minWidth: column.minWidth,
-                                                backgroundColor: '#f8fafc',
                                                 fontWeight: '600',
                                                 fontSize: '14px',
-                                                color: '#1f2937',
+                                                color: '#bfc1c6',
                                                 borderBottom: '2px solid #e5e7eb'
                                             }}
                                         >
@@ -768,11 +810,9 @@ const StudentUserList = () => {
                                         role="checkbox" 
                                         tabIndex={-1} 
                                         key={row.user_id || index}
-                                        style={{ 
-                                            backgroundColor: row.user_type === 5 || row.user_type === 6 ? '#f9f9ff' : 'inherit'
-                                        }}
+                                      
                                     >
-                                        <TableCell style={{ textAlign: 'center', color: '#4b5563' }}>
+                                        <TableCell style={{ textAlign: 'center', color: '#ffffff' }}>
                                             {page * rowsPerPage + index + 1}
                                         </TableCell>
                                         
@@ -900,11 +940,11 @@ const StudentUserList = () => {
                                             ) : 'N/A'}
                                         </TableCell>
                                         
-                                        <TableCell style={{ textAlign: 'center', color: '#374151' }}>
+                                        <TableCell style={{ textAlign: 'center', color: '#d3d4d6' }}>
                                             {row.course_name || 'N/A'}
                                         </TableCell>
                                         
-                                        <TableCell style={{ textAlign: 'center', color: '#6b7280' }}>
+                                        <TableCell style={{ textAlign: 'center', color: '#d3d4d6' }}>
                                             {row.qualification || 'N/A'}
                                         </TableCell>
                                         
@@ -931,6 +971,7 @@ const StudentUserList = () => {
                                         </TableCell>
                                         
                                         <TableCell style={{ textAlign: 'center' }}>
+                                            <div style={{ display: 'flex', justifyContent: 'center' }}>
                                             {row.student_status !== undefined && row.student_status !== null ? (
                                                 <span style={{
                                                     padding: '4px 12px',
@@ -943,6 +984,7 @@ const StudentUserList = () => {
                                                     {studentStatusLabels[row.student_status] || 'N/A'}
                                                 </span>
                                             ) : 'N/A'}
+                                            </div>
                                         </TableCell>
                                         
                                         <TableCell style={{ textAlign: 'center', color: '#6b7280' }}>
@@ -967,43 +1009,26 @@ const StudentUserList = () => {
                         justifyContent: 'space-between', 
                         alignItems: 'center',
                         padding: '16px 24px',
-                        backgroundColor: '#f9fafb',
                         borderTop: '1px solid #e5e7eb'
                     }}>
-                        <p style={{ margin: 0, color: '#6b7280', fontSize: '14px' }}>
+                        <p style={{ margin: 0, color: '#cfcfcf', fontSize: '14px' }}>
                             {`Showing ${Math.min(filteredUsers.length > 0 ? page * rowsPerPage + 1 : 0, filteredUsers.length)} to ${Math.min((page + 1) * rowsPerPage, filteredUsers.length)} of ${filteredUsers.length} entries`}
                         </p>
                         <div>
                             <button
                                 onClick={() => handleChangePage(null, page - 1)}
                                 disabled={page === 0}
-                                style={{ 
-                                    marginRight: '8px', 
-                                    borderRadius: '6px', 
-                                    background: page === 0 ? '#f3f4f6' : '#3b82f6',
-                                    color: page === 0 ? '#9ca3af' : 'white',
-                                    border: '1px solid #e5e7eb',
-                                    padding: '8px 16px',
-                                    cursor: page === 0 ? 'not-allowed' : 'pointer',
-                                    fontSize: '14px'
-                                }}
+                                style={{ marginRight: '8px', border: '1px solid #bcb9b9', padding: '5px 10px', borderRadius: '4px', color: '#fff', cursor: page === 0 ? 'not-allowed' : 'pointer', backgroundColor: 'transparent' }}
+
                             >
-                                Previous
+                                 {'<'}
                             </button>
                             <button
                                 onClick={() => handleChangePage(null, page + 1)}
                                 disabled={(page + 1) * rowsPerPage >= filteredUsers.length}
-                                style={{ 
-                                    borderRadius: '6px', 
-                                    background: (page + 1) * rowsPerPage >= filteredUsers.length ? '#f3f4f6' : '#3b82f6',
-                                    color: (page + 1) * rowsPerPage >= filteredUsers.length ? '#9ca3af' : 'white',
-                                    border: '1px solid #e5e7eb',
-                                    padding: '8px 16px',
-                                    cursor: (page + 1) * rowsPerPage >= filteredUsers.length ? 'not-allowed' : 'pointer',
-                                    fontSize: '14px'
-                                }}
+                                style={{ marginRight: '8px', border: '1px solid #bcb9b9', padding: '5px 10px', borderRadius: '4px', color: '#fff', cursor: (page + 1) * rowsPerPage >= filteredUsers.length ? 'not-allowed' : 'pointer', backgroundColor: 'transparent' }}
                             >
-                                Next
+                                {'>'}
                             </button>
                         </div>
                     </div>
@@ -1028,9 +1053,9 @@ const StudentUserList = () => {
             {/* Active/Deactive Modal */}
             <Modal show={showActiveModal} onHide={() => setShowActiveModal(false)} centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>Active/Deactive User</Modal.Title>
+                    <Modal.Title style={{color : "#151515f1"}}> Active/Deactive User</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body style={{color : "#353434d7"}}>
                     {activemodalUserid.user_side !== 3 
                         ? `Are you sure you want to ${msg === 1 ? "activate" : "deactivate"} this Student?` 
                         : ""}
@@ -1094,14 +1119,14 @@ const StudentUserList = () => {
                     )}
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowActiveModal(false)}>
+                    <Button style={{color : "#323232d7" , fontWeight : 600}} variant="secondary" onClick={() => setShowActiveModal(false)}>
                         Cancel
                     </Button>
                     <Button 
                         variant="primary" 
-                        className="btn btn-primary" 
+                        className="btn" 
                         onClick={handleActivateDeactivate}
-                        style={{ background: 'linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)', border: 'none' }}
+                        style={{color : "#040404c1" , fontWeight : 600}}
                     >
                         Confirm
                     </Button>
@@ -1111,12 +1136,12 @@ const StudentUserList = () => {
             {/* Delete User Modal */}
             <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>Delete Student</Modal.Title>
+                    <Modal.Title style={{color : "#1c1a1ad7"}}>Delete Student</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>Are you sure you want to delete this Student? This action cannot be undone.</p>
+                    <p style={{color : "#484747d7"}} >Are you sure you want to delete this Student? This action cannot be undone.</p>
                     <div className="form-group">
-                        <label>Reason for deletion:</label>
+                        <label style={{color : "#000000"}}>Reason for deletion:</label>
                         <textarea
                             className="form-control"
                             value={deleteReason}
@@ -1128,10 +1153,10 @@ const StudentUserList = () => {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+                    <Button  style={{color : "#484747d7"}} variant="secondary" onClick={() => setShowDeleteModal(false)}>
                         Cancel
                     </Button>
-                    <Button 
+                    <Button  style={{color : "#101010f1"}}
                         variant="danger" 
                         onClick={handleDeleteUser}
                         disabled={!deleteReason.trim()}
@@ -1144,12 +1169,12 @@ const StudentUserList = () => {
             {/* Update Follow-up Modal */}
             <Modal show={showFollowupModal} onHide={() => setShowFollowupModal(false)} centered size="lg">
                 <Modal.Header closeButton>
-                    <Modal.Title>Update Follow-up Details</Modal.Title>
+                    <Modal.Title style={{color : "#1c1a1ad7"}}>Update Follow-up Details</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="row">
                         <div className="col-md-6 mb-3">
-                            <label className="form-label">Follow-up Date</label>
+                            <label className="form-label" style={{color : "#484747d7"}}>Follow-up Date</label>
                             <input
                                 type="date"
                                 className="form-control"
@@ -1158,7 +1183,7 @@ const StudentUserList = () => {
                             />
                         </div>
                         <div className="col-md-6 mb-3">
-                            <label className="form-label">Follow-up Time</label>
+                            <label className="form-label" style={{color : "#484747d7"}}>Follow-up Time</label>
                             <input
                                 type="time"
                                 className="form-control"
@@ -1167,7 +1192,7 @@ const StudentUserList = () => {
                             />
                         </div>
                         <div className="col-md-6 mb-3">
-                            <label className="form-label">Next Follow-up Date</label>
+                            <label className="form-label" style={{color : "#484747d7"}}>Next Follow-up Date</label>
                             <input
                                 type="date"
                                 className="form-control"
@@ -1176,7 +1201,7 @@ const StudentUserList = () => {
                             />
                         </div>
                         <div className="col-md-6 mb-3">
-                            <label className="form-label">Next Follow-up Time</label>
+                            <label className="form-label" style={{color : "#484747d7"}}>Next Follow-up Time</label>
                             <input
                                 type="time"
                                 className="form-control"
@@ -1185,7 +1210,7 @@ const StudentUserList = () => {
                             />
                         </div>
                         <div className="col-md-12 mb-3">
-                            <label className="form-label">Status</label>
+                            <label className="form-label" style={{color : "#484747d7"}}>Status</label>
                             <select
                                 className="form-control"
                                 value={followupDetails.status}
@@ -1197,7 +1222,7 @@ const StudentUserList = () => {
                             </select>
                         </div>
                         <div className="col-md-12 mb-3">
-                            <label className="form-label">Notes</label>
+                            <label className="form-label" style={{color : "#484747d7"}}>Notes</label>
                             <textarea
                                 className="form-control"
                                 value={followupDetails.notes}
@@ -1209,10 +1234,10 @@ const StudentUserList = () => {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowFollowupModal(false)}>
+                    <Button  style={{color : "#484747d7"}} variant="secondary" onClick={() => setShowFollowupModal(false)}>
                         Cancel
                     </Button>
-                    <Button 
+                    <Button  style={{color : "#121212"}}
                         variant="primary" 
                         onClick={handleUpdateFollowup}
                     >

@@ -479,12 +479,12 @@ const ManageFaq = () => {
                     }}
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title style={{ fontSize: '17px' }}>Edit FAQ</Modal.Title>
+                        <Modal.Title style={{ fontSize: '22px' , color : "#232323" ,  fontWeight : 600}}>Edit FAQ</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <form>
                             <div className="mb-3">
-                                <label htmlFor="editCategoryName" className="form-label">
+                                <label style={{color : "#484848"}} htmlFor="editCategoryName" className="form-label">
                                     Question
                                 </label>
                                 <textarea
@@ -502,7 +502,7 @@ const ManageFaq = () => {
                                 <p style={{ color: 'red' }}>{editQuestionError}</p>
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="editCategoryName" className="form-label">
+                                <label  style={{color : "#484848"}}htmlFor="editCategoryName" className="form-label">
                                    Answer
                                 </label>
                                 <textarea
@@ -531,9 +531,9 @@ const ManageFaq = () => {
 
                 <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered style={{marginTop:"-40px"  , overflow:"hidden"}}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Confirm Delete</Modal.Title>
+                        <Modal.Title style={{color : "#1e1d1d"}}>Confirm Delete</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>Are you sure you want to delete this FAQ?</Modal.Body>
+                    <Modal.Body style={{color : "#343333"}}>Are you sure you want to delete this FAQ?</Modal.Body>
                     <Modal.Footer>
                         <Button variant="danger" className="btn btn-primary" onClick={deleteFAQ}>
                             Delete
@@ -543,12 +543,12 @@ const ManageFaq = () => {
 
                 <Modal show={showMsgModal} onHide={handleCloseModal} style={{ zIndex: '99999' }}>
                     <Modal.Header closeButton>
-                        <Modal.Title style={{ fontSize: '17px' }}>View FAQ</Modal.Title>
+                        <Modal.Title style={{ fontSize: '22px' , color : "#363636" , fontWeight : 600 }}>View FAQ</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <>
-                            <p>Question : {question != null ? question : 'NA'}</p>
-                            <p>Answer : {answer != null ? answer : 'NA'}</p>
+                            <p style={ { color : "#444343"}}>Question : {question != null ? question : 'NA'}</p>
+                            <p style={ {color : "#1e7afa"}}>Answer : {answer != null ? answer : 'NA'}</p>
                         </>
                     </Modal.Body>
                     <Modal.Footer></Modal.Footer>
